@@ -1,15 +1,17 @@
-import "bootstrap/dist/css/bootstrap.min.css";
-import './App.css'
-import { BrowserRouter, Routes } from "react-router-dom";
+import "./style/custom.scss";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import LandingPage from "./components/LandingPage";
 
 function App() {
 
   return (
+    <div className="App">
     <BrowserRouter>
       <Routes>
-    
+        <Route path="/" element={<LandingPage />} />
       </Routes>
     </BrowserRouter>
+    </div>
   )
 }
 

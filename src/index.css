@@ -1,0 +1,76 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
+
+.btn-reg:hover{
+    background-color: #fd4742;
+    color: white;
+}
+
+.btn-acc:hover{
+    background-color: #fd4742;
+    color: white;
+}
+
+.section-title-one .sub-title {
+    line-height: 1.5;
+    font-weight: 400;
+    color: #161834;
+    position: relative;
+    display: block;
+    padding-left: 85px;
+    margin-bottom: 25px;
+  }
+
+.section-title-one .sub-title::before {
+    position: absolute;
+    content: "";
+    width: 70px;
+    height: 2px;
+    background-color: #fd4742;
+    left: 0;
+    bottom: 0;
+  }
+
+  .section-title-two .sub-title {
+    line-height: 1.5;
+    font-weight: 400;
+    color: #161834;
+    position: relative;
+    display: block;
+    padding-left: 85px;
+    margin-bottom: 25px;
+  }
+
+.section-title-two .sub-title::before {
+    position: absolute;
+    content: "";
+    width: 70px;
+    height: 2px;
+    background-color: #fd4742;
+    left: 0;
+    bottom: 0;
+  }
+
+  .funfaction-container {
+    background-color: #161834 ;
+    color: white;
+  }
+
+  .number-funfacts {
+    font-size: 41px;
+  line-height: 1;
+  margin-bottom: 15px;
+    color: #fd4742;
+  }
+
+  .text-funfacts {
+    font-size: 20px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+  }

@@ -1,0 +1,10 @@
+.hero-container {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white; // Assicura che il testo sia leggibile
+    text-align: center;
+    z-index: 2; // Assicurati che sia sopra l'overlay
+  }
+  

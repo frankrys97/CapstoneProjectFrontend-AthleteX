@@ -9,12 +9,12 @@ const persistConfig = {
     // che si voglia o meno persistere solo alcuni o tutti i reducer
 }
 
+const rootReducer = combineReducers({
+    // Qui ci vanno tutti i reducers normalmente
+    });
+
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-
-const rootReducer = combineReducers({
-// Qui ci vanno tutti i reducers normalmente
-});
 
 const store = configureStore ({ reducer: persistedReducer });
 
