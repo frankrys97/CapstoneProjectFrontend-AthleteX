@@ -1,5 +1,6 @@
 import { Button, Col, Container, Row } from "react-bootstrap"
-import img1 from "../assets/Esecutivi/Img2.png"
+import Img2 from "../assets/Esecutivi/Img2.png"
+import HoverAnimatedImage from "./HoverAnimatedImage";
 
 
 function SectionTwo() {
@@ -19,7 +20,8 @@ const scrollToTop = () => {
                  data-aos-offset="200"
                  >
                 <div className="w-100">
-                <img className="img-fluid" src={img1} alt="Immagine 2" />
+                {/* <img className="img-fluid" src={img1} alt="Immagine 2" /> */}
+                <HoverAnimatedImage src={Img2} alt="Immagine 2" animationType="reverse" />
                 </div>
                 </Col>
                 <Col 
@@ -36,13 +38,12 @@ const scrollToTop = () => {
                     <div className="section-title-two">
                         <h4 className="sub-title">One App, One Team</h4>
                     </div>
-                    <h2> <span style={{fontStyle: "italic", fontWeight: "bold"}}> Tutte </span> le informazioni a portata <br /> di click!</h2>
-                    <p>Tramite <span style={{fontStyle: "italic", fontWeight: "bold"}}>AthleteX</span> avrai la possibilità di consultare tutte le informazioni relative al tuo team, tutte le statistiche della squadra <br /> e dei tuoi giocatori</p>
-                    <p></p>
+                    <h2 className="text-secondary"> <span style={{fontStyle: "italic", fontWeight: "bold"}}> Tutte </span> le informazioni a portata <br /> di click!</h2>
+                    <p style={{color: "#333333"}}>Tramite <span style={{fontStyle: "italic", fontWeight: "bold"}}>AthleteX</span> avrai la possibilità di consultare tutte le informazioni relative al tuo team, tutte le statistiche della squadra <br /> e dei tuoi giocatori</p>
                     </div>
-                    <div className="d-flex gap-4 mt-5 align-items-center">
-                        <Button variant="outline-primary">Iscriviti</Button>
-                        <Button variant="link" onClick={scrollToTop} style={{textDecoration: "none"}}>Per saperne di più</Button>
+                    <div className="d-flex gap-3 mt-5 align-items-center">
+                        <Button variant="outline-primary" className="fw-semibold">Iscriviti</Button>
+                        <Button variant="link" className="fw-semibold" onClick={scrollToTop} style={{textDecoration: "none"}}>Per saperne di più</Button>
                     </div>
                     </div>
                     </Col>
