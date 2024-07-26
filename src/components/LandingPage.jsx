@@ -6,6 +6,7 @@ import SectionTwo from "./SectionTwo"
 import FunfactSection from "./FunFactsSection"
 import TestimonialSection from "./TestimonialSection"
 import TeamsLogoSwiper from "./TeamsLogoSwiper"
+import Footer from "./Footer"
 
 function LandingPage () {
     return (
@@ -18,6 +19,7 @@ function LandingPage () {
             <SectionTwo></SectionTwo>
             <TestimonialSection></TestimonialSection>
             <TeamsLogoSwiper />
+            <Footer />
 
         </div>
     )
