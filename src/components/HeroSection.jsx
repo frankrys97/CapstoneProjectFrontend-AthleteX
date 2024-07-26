@@ -11,9 +11,9 @@ function HeroSection() {
           <p className="fs-5">Semplifica il lavoro e la comunicazioni <br /> all&#39;interno del tuo team</p>
 
        
-          <div className="d-flex gap-3 mt-5"  >
-            <Button variant="outline-light" className="btn-reg fw-semibold">Iscrivi una squadra</Button>
-            <Button variant="light" className="btn-acc fw-semibold">Unisciti ad una squadra</Button>
+          <div className="d-flex flex-column flex-md-row gap-3 mt-5"  >
+            <Button variant="outline-light" className="btn-reg">Iscrivi una squadra</Button>
+            <Button variant="light" className="btn-acc">Unisciti ad una squadra</Button>
           </div>
           </div>
         </Col>

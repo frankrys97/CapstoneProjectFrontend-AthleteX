@@ -29,19 +29,13 @@ const scrollToTop = () => {
                 data-aos-duration="2000"
                 data-aos-offset="100"
                 >
-                    <div className="d-flex flex-column align-items-start ms-5 mt-5">
-
-
-
-                   
-                <div className="d-flex flex-column gap-4">
+                    <div className="d-flex flex-column gap-4 ms-md-5 mt-4">
                     <div className="section-title-two">
                         <h4 className="sub-title">One App, One Team</h4>
                     </div>
                     <h2 className="text-secondary"> <span style={{fontStyle: "italic", fontWeight: "bold"}}> Tutte </span> le informazioni a portata <br /> di click!</h2>
                     <p style={{color: "#333333"}}>Tramite <span style={{fontStyle: "italic", fontWeight: "bold"}}>AthleteX</span> avrai la possibilità di consultare tutte le informazioni relative al tuo team, tutte le statistiche della squadra <br /> e dei tuoi giocatori</p>
-                    </div>
-                    <div className="d-flex gap-3 mt-5 align-items-center">
+                    <div className="d-flex flex-column flex-md-row gap-3 mt-3 align-items-center">
                         <Button variant="outline-primary" className="fw-semibold">Iscriviti</Button>
                         <Button variant="link" className="fw-semibold" onClick={scrollToTop} style={{textDecoration: "none"}}>Per saperne di più</Button>
                     </div>
