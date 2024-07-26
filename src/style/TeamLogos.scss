@@ -1,92 +1,55 @@
 .infinite-scroll-banner {
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-  
-    .scrolling-content {
-      display: flex;
-      align-items: center;
-      white-space: nowrap;
-      animation: scroll 20s linear infinite;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+
+  .scrolling-content {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    animation: scroll 25s linear infinite;
+  }
+
+  .scrolling-content img {
+    height: 80px;
+    margin-right: 150px;
+  }
+
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
     }
-  
-    .scrolling-content img {
-      height: 80px;
-      margin-right: 150px; 
-    }
-  
-    @keyframes scroll {
-      0% {
-        transform: translateX(0);
-      }
-      100% {
-        transform: translateX(-50%);
-      }
-    }
-  
-    // Media queries for responsive design
-    @media (max-width: 1200px) {
-      .scrolling-content img {
-        height: 60px;
-        margin-right: 120px;
-      }
-  
-      @keyframes scroll {
-        0% {
-          transform: translateX(0);
-        }
-        100% {
-          transform: translateX(-60%);
-        }
-      }
-    }
-  
-    @media (max-width: 992px) {
-      .scrolling-content img {
-        height: 50px;
-        margin-right: 100px;
-      }
-  
-      @keyframes scroll {
-        0% {
-          transform: translateX(0);
-        }
-        100% {
-          transform: translateX(-70%);
-        }
-      }
-    }
-  
-    @media (max-width: 768px) {
-      .scrolling-content img {
-        height: 40px;
-        margin-right: 80px;
-      }
-  
-      @keyframes scroll {
-        0% {
-          transform: translateX(0);
-        }
-        100% {
-          transform: translateX(-80%);
-        }
-      }
-    }
-  
-    @media (max-width: 576px) {
-      .scrolling-content img {
-        height: 30px;
-        margin-right: 60px;
-      }
-  
-      @keyframes scroll {
-        0% {
-          transform: translateX(0);
-        }
-        100% {
-          transform: translateX(-90%);
-        }
-      }
+    100% {
+      transform: translateX(-200%);
     }
   }
-  
+
+  // Media queries for responsive design
+  @media (max-width: 1200px) {
+    .scrolling-content img {
+      height: 60px;
+      margin-right: 120px;
+    }
+  }
+
+  @media (max-width: 992px) {
+    .scrolling-content img {
+      height: 50px;
+      margin-right: 100px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .scrolling-content img {
+      height: 40px;
+      margin-right: 80px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .scrolling-content img {
+      height: 30px;
+      margin-right: 60px;
+    }
+  }
+}

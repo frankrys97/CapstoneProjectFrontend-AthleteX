@@ -12,12 +12,16 @@ import logo10 from "../assets/TeamLogos/logo10.png";
 import "../style/TeamLogos.scss";
 import { Col, Container, Row } from "react-bootstrap";
 
+const immagini = [
+  logo1, logo2, logo3, logo4, logo5, logo6, logo7, logo8, logo9, logo10,
+];
+
 function TeamsLogoSwiper() {
   const [styles] = useSpring(() => ({
     loop: true,
     from: { transform: 'translateX(0%)' },
-    to: { transform: 'translateX(-50%)' },
-    config: { duration: 10000 },
+    to: { transform: 'translateX(-100%)' },
+    config: { duration: 500 },
     reset: true,
     onRest: () => styles.start({ transform: 'translateX(0%)' }),
   }));
@@ -32,42 +36,13 @@ function TeamsLogoSwiper() {
         </Row>
       </Container>
       <Container className="my-5">
-      <div className="infinite-scroll-banner">
-        <animated.div className="scrolling-content" style={styles}>
-          <div className="scrolling-wrapper">
-            <img src={logo1} alt="Logo 1" className="img-fluid" />
-            <img src={logo2} alt="Logo 2" className="img-fluid" />
-            <img src={logo3} alt="Logo 3" className="img-fluid" />
-            <img src={logo4} alt="Logo 4" className="img-fluid" />
-            <img src={logo5} alt="Logo 5" className="img-fluid" />
-            <img src={logo6} alt="Logo 6" className="img-fluid" />
-            <img src={logo7} alt="Logo 7" className="img-fluid" />
-            <img src={logo8} alt="Logo 8" className="img-fluid" />
-            <img src={logo9} alt="Logo 9" className="img-fluid" />
-            <img src={logo10} alt="Logo 10" className="img-fluid" />
-            <img src={logo1} alt="Logo 1" className="img-fluid" />
-            <img src={logo2} alt="Logo 2" className="img-fluid" />
-            <img src={logo3} alt="Logo 3" className="img-fluid" />
-            <img src={logo4} alt="Logo 4" className="img-fluid" />
-            <img src={logo5} alt="Logo 5" className="img-fluid" />
-            <img src={logo6} alt="Logo 6" className="img-fluid" />
-            <img src={logo7} alt="Logo 7" className="img-fluid" />
-            <img src={logo8} alt="Logo 8" className="img-fluid" />
-            <img src={logo9} alt="Logo 9" className="img-fluid" />
-            <img src={logo10} alt="Logo 10" className="img-fluid" />
-            <img src={logo1} alt="Logo 1" className="img-fluid" />
-            <img src={logo2} alt="Logo 2" className="img-fluid" />
-            <img src={logo3} alt="Logo 3" className="img-fluid" />
-            <img src={logo4} alt="Logo 4" className="img-fluid" />
-            <img src={logo5} alt="Logo 5" className="img-fluid" />
-            <img src={logo6} alt="Logo 6" className="img-fluid" />
-            <img src={logo7} alt="Logo 7" className="img-fluid" />
-            <img src={logo8} alt="Logo 8" className="img-fluid" />
-            <img src={logo9} alt="Logo 9" className="img-fluid" />
-            <img src={logo10} alt="Logo 10" className="img-fluid" />
-          </div>
-        </animated.div>
-      </div>
+        <div className="infinite-scroll-banner">
+          <animated.div className="scrolling-content" style={styles}>
+            {immagini.concat(immagini, immagini).map((immagine, indice) => (
+              <img src={immagine} alt={`Logo ${indice + 1}`} className="img-fluid" key={indice} />
+            ))}
+          </animated.div>
+        </div>
       </Container>
     </>
   );
