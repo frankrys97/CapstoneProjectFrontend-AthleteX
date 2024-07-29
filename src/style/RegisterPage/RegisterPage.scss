@@ -41,6 +41,10 @@
   .page-title {
     margin-top: 6rem;
   }
+
+  footer {
+    display: none;
+  }
   
   @media (max-width: 767.98px) {
     .page-title {
@@ -68,8 +72,15 @@
       font-size: 0.875rem; /* Reduce font size for buttons */
       padding: 0.5rem 1rem; /* Adjust padding for buttons */
     }
+
+    .register-container {
+      margin-bottom: 6rem;  }
+
+    footer {
+      display: block;
+    }
   }
 
-  .register-container {
-margin-bottom: 6rem;  }
+
+
   
