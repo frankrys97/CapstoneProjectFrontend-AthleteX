@@ -52,25 +52,25 @@
     }
   
     .left-column {
-      display: none; /* Hide the left column on small screens */
+      display: none; 
     }
   
     .right-column {
-      padding: 1rem; /* Add padding for better spacing */
+      padding: 1rem; 
     }
   
     .form-group {
-      margin-bottom: 1rem; /* Reduce margin between form groups */
+      margin-bottom: 1rem; 
     }
   
     .form-control {
-      font-size: 0.875rem; /* Reduce font size for better readability on small screens */
-      padding: 0.5rem 0.75rem; /* Adjust padding for form controls */
+      font-size: 0.875rem; 
+      padding: 0.5rem 0.75rem; 
     }
   
     .btn {
-      font-size: 0.875rem; /* Reduce font size for buttons */
-      padding: 0.5rem 1rem; /* Adjust padding for buttons */
+      font-size: 0.875rem;
+      padding: 0.5rem 1rem; 
     }
 
     .register-container {
