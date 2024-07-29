@@ -18,16 +18,16 @@ const Footer = () => {
           <Col md={12} className="text-center mb-4">
             <div className="footer-social-icons">
               <a href="https://facebook.com" className="social-icon" data-aos="fade-left" data-aos-delay="200">
-                <FaFacebook />
+                <FaFacebook  className='icons' />
               </a>
               <a href="https://twitter.com" className="social-icon" data-aos="fade-left" data-aos-delay="400">
-                <FaTwitter />
+                <FaTwitter  className='icons'/>
               </a>
               <a href="https://instagram.com" className="social-icon" data-aos="fade-left" data-aos-delay="600">
-                <FaInstagram />
+                <FaInstagram  className='icons'/>
               </a>
               <a href="https://linkedin.com" className="social-icon" data-aos="fade-left" data-aos-delay="800">
-                <FaLinkedin />
+                <FaLinkedin className='icons' />
               </a>
             </div>
           </Col>

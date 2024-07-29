@@ -1,9 +1,16 @@
 import { Button, Col, Container, Row } from "react-bootstrap"
 import img1 from "../assets/Esecutivi/Img1.png"
 import HoverAnimatedImage from "./HoverAnimatedImage"
+import { useNavigate } from "react-router-dom";
 
 
 function SectionOne() {
+
+    const navigate = useNavigate();
+
+    const handleRegisterPage = () => {
+      navigate("/register");
+    }
     return (
         <Container className="my-5 p-5">
             <Row className="row-cols-lg-2 row-cols-1">
@@ -26,7 +33,7 @@ function SectionOne() {
                     <p style={{color: "#333333"}}>AthleteX è la soluzione easy  per l&#39;organizzazione della <br /> tua squadra.</p>
                     </div>
                     <div className="d-flex flex-column flex-md-row gap-4 mt-5">
-                        <Button variant="outline-primary" className="fw-semibold"> Iscrivi una squadra</Button>
+                        <Button variant="outline-primary" className="fw-semibold" onClick={handleRegisterPage}> Iscrivi una squadra</Button>
                         <Button variant="primary" className="fw-semibold text-secondary">Unisciti ad una squadra</Button>
                     </div>
                     </div>
