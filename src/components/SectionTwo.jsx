@@ -1,9 +1,16 @@
 import { Button, Col, Container, Row } from "react-bootstrap"
 import Img2 from "../assets/Esecutivi/Img2.png"
 import HoverAnimatedImage from "./HoverAnimatedImage";
+import { useNavigate } from "react-router-dom";
 
 
 function SectionTwo() {
+
+    const navigate = useNavigate();
+
+    const handleRegisterPage = () => {
+      navigate("/register");
+    }
 const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -36,7 +43,7 @@ const scrollToTop = () => {
                     <h2 className="text-secondary"> <span style={{fontStyle: "italic", fontWeight: "bold"}}> Tutte </span> le informazioni a portata <br /> di click!</h2>
                     <p style={{color: "#333333"}}>Tramite <span style={{fontStyle: "italic", fontWeight: "bold"}}>AthleteX</span> avrai la possibilità di consultare tutte le informazioni relative al tuo team, tutte le statistiche della squadra <br /> e dei tuoi giocatori</p>
                     <div className="d-flex flex-column flex-md-row gap-3 mt-3 align-items-center">
-                        <Button variant="outline-primary" className="fw-semibold">Iscriviti</Button>
+                        <Button variant="outline-primary" className="fw-semibold" onClick={handleRegisterPage}>Iscriviti</Button>
                         <Button variant="link" className="fw-semibold" onClick={scrollToTop} style={{textDecoration: "none"}}>Per saperne di più</Button>
                     </div>
                     </div>

@@ -1,6 +1,12 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
 import "../style/HeroSection.scss";
+import { useNavigate } from "react-router-dom";
 function HeroSection() {
+  const navigate = useNavigate();
+
+  const handleRegisterPage = () => {
+    navigate("/register");
+  }
   return (
     <Container className="hero-container">
       <Row className="justify-content-center align-items-center text-center">
@@ -12,7 +18,7 @@ function HeroSection() {
 
        
           <div className="d-flex flex-column flex-md-row gap-3 mt-5"  >
-            <Button variant="outline-light" className="btn-reg">Iscrivi una squadra</Button>
+            <Button variant="outline-light" className="btn-reg" onClick={handleRegisterPage}>Iscrivi una squadra</Button>
             <Button variant="light" className="btn-acc">Unisciti ad una squadra</Button>
           </div>
           </div>

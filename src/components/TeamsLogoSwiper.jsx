@@ -17,13 +17,13 @@ const immagini = [
 ];
 
 function TeamsLogoSwiper() {
-  const [styles] = useSpring(() => ({
+  const [styles, api] = useSpring(() => ({
     loop: true,
     from: { transform: 'translateX(0%)' },
     to: { transform: 'translateX(-100%)' },
     config: { duration: 500 },
     reset: true,
-    onRest: () => styles.start({ transform: 'translateX(0%)' }),
+    onRest: () => api.start({ transform: 'translateX(0%)' }),
   }));
 
   return (

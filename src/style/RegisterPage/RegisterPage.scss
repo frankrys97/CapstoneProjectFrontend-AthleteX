@@ -1,0 +1,113 @@
+.left-column {
+    background-image: url('../../assets/Esecutivi/Base colonna.png');
+    background-size: cover;
+    background-position: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+  }
+  
+  .right-column {
+    background-color: #f0f0f2;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 1rem;
+  }
+  
+  .logo {
+    max-width: 150px;
+  }
+  
+  .icon-success {
+    font-size: 1rem;
+    right: 10px;
+    top: 60%;
+  }
+  
+  .error-message {
+    color: #dc3545; 
+    font-size: 0.875rem; 
+    max-width: 100%; 
+    position: absolute; 
+    bottom: -1.5rem; 
+  }
+  
+  .page-title {
+    margin-top: 6rem;
+  }
+
+  .footer-wrapper footer {
+    display: none;
+   }
+
+
+  
+  @media (max-width: 767.98px) {
+    .page-title {
+      margin-top: 2rem;
+    }
+  
+    .left-column {
+      display: none; 
+    }
+  
+    .right-column {
+      padding: 1rem; 
+    }
+  
+    .form-group {
+      margin-bottom: 1rem; 
+    }
+  
+    .form-control {
+      font-size: 0.875rem; 
+      padding: 0.5rem 0.75rem; 
+    }
+  
+    .btn {
+      font-size: 0.875rem;
+      padding: 0.5rem 1rem; 
+    }
+
+    .register-container {
+      margin-bottom: 6rem;  }
+
+
+      .footer-wrapper footer {
+        display: block;
+       }
+  }
+
+  .shake-enter {
+    animation: shake 0.3s forwards;
+  }
+  
+  @keyframes shake {
+    10%, 90% {
+      transform: translate3d(-1px, 0, 0);
+    }
+  
+    20%, 80% {
+      transform: translate3d(2px, 0, 0);
+    }
+  
+    30%, 50%, 70% {
+      transform: translate3d(-4px, 0, 0);
+    }
+  
+    40%, 60% {
+      transform: translate3d(4px, 0, 0);
+    }
+  }
+
+
+
+
+
+  
