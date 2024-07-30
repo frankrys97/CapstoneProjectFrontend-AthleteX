@@ -9,7 +9,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import Footer from '../Footer.jsx';
 import { CSSTransition } from 'react-transition-group';
 import { useDispatch } from 'react-redux';
-import { login } from '../../redux/actions/index.js';
+import { login, recognizeUser } from '../../redux/actions/index.js';
 
 
 const LoginPage = () => {
@@ -21,7 +21,7 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [shake, setShake] = useState(false);
-  const [loading, setLoading] = useState(false); // Stato per gestire lo spinner
+  const [loading, setLoading] = useState(false);
   const formRef = useRef(null);
   const dispatch = useDispatch();
 
@@ -38,16 +38,30 @@ const LoginPage = () => {
     setLoading(true); 
     try {
       const response = await axios.post('http://localhost:3001/auth/login', formData);
-    
-      console.log(response.data.accessToken);
-      dispatch(login(response.data.accessToken));
-      
-      setFormData({
-        email: '',
-        password: ''
-      });
-      setLoading(false); 
-      navigate('/');
+      const token = response.data.accessToken;
+
+      dispatch(login(token));
+
+      try {
+        const userResponse = await axios.get('http://localhost:3001/auth/me', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        console.log(userResponse.data);
+
+        dispatch(recognizeUser(userResponse.data));
+        setFormData({
+          email: '',
+          password: ''
+        });
+        setLoading(false); 
+        navigate('/');
+      } catch (userError) {
+        console.error('Failed to fetch user data!', userError);
+        setError('Errore nel recupero delle informazioni utente.');
+        setLoading(false);
+      }
     } catch (error) {
       setError('Email o password non corretti.');
       setShake(true);
