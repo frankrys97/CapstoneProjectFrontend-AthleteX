@@ -42,9 +42,11 @@
     margin-top: 6rem;
   }
 
-  footer {
+  .footer-wrapper footer {
     display: none;
-  }
+   }
+
+
   
   @media (max-width: 767.98px) {
     .page-title {
@@ -76,10 +78,13 @@
     .register-container {
       margin-bottom: 6rem;  }
 
-    footer {
-      display: block;
-    }
+
+      .footer-wrapper footer {
+        display: block;
+       }
   }
+
+
 
 
 

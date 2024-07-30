@@ -155,8 +155,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <> 
-    
+    <>      
     <Container fluid className="vh-100 d-flex align-items-center justify-content-center p-0 text-secondary register-container">
       <Row className="w-100 h-100 m-0">
         <Col md={3} className="left-column position-relative d-none d-md-block" as={NavLink} to={"/"}>
@@ -290,7 +289,10 @@ const RegisterPage = () => {
         </Modal.Footer>
       </Modal>
     </Container>
-<Footer></Footer>
+    <div className='footer-wrapper'>
+
+    <Footer></Footer>
+    </div>
     </>
   );
 };

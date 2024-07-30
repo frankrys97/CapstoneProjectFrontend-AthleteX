@@ -13,13 +13,13 @@ import "../style/TeamLogos.scss";
 import { Col, Container, Row } from "react-bootstrap";
 
 function TeamsLogoSwiper() {
-  const [styles] = useSpring(() => ({
+  const [styles, api] = useSpring(() => ({
     loop: true,
     from: { transform: 'translateX(0%)' },
     to: { transform: 'translateX(-50%)' },
     config: { duration: 10000 },
     reset: true,
-    onRest: () => styles.start({ transform: 'translateX(0%)' }),
+    onRest: () => api.start({ transform: 'translateX(0%)' }),
   }));
 
   return (
