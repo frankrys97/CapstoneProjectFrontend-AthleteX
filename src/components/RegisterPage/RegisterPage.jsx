@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Col, Container, Row, Form, Button, Modal, InputGroup, Navbar, Spinner, Alert } from "react-bootstrap";
+import { Col, Container, Row, Form, Button, Modal, InputGroup, Navbar } from "react-bootstrap";
 import { FaInfoCircle, FaEye, FaEyeSlash, FaCheckCircle } from 'react-icons/fa';
 import logo from "../../assets/Esecutivi/Logo/svg/AthleteX - colore 1.svg";
 import logo2 from "../../assets/Esecutivi/Logo/svg/AthleteX - colore 4.svg";
@@ -23,9 +23,9 @@ const RegisterPage = () => {
   const [emailAvailable, setEmailAvailable] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [loading, setLoading] = useState(false); // Stato per il caricamento
-  const [successMessage, setSuccessMessage] = useState(""); // Messaggio di successo
-  const [errorMessage, setErrorMessage] = useState(""); // Messaggio di errore
+  const [loading, setLoading] = useState(false);
+  const [overlayVisible, setOverlayVisible] = useState(false);
+  const [overlayMessage, setOverlayMessage] = useState("");
 
   useEffect(() => {
     const checkAvailability = async () => {
@@ -141,14 +141,14 @@ const RegisterPage = () => {
       return;
     }
 
-    setLoading(true); // Inizio del caricamento
-    setSuccessMessage(""); // Resetta il messaggio di successo
-    setErrorMessage(""); // Resetta il messaggio di errore
+    setOverlayVisible(true);
+    setOverlayMessage("Registrazione in corso...");
+    setLoading(true);
 
     try {
       const response = await axios.post('http://localhost:3001/auth/register', formData);
       console.log(response.data);
-      setSuccessMessage("Registrazione effettuata con successo!"); // Mostra il messaggio di successo
+      setOverlayMessage("Registrazione avvenuta con successo!");
       setFormData({
         name: '',
         surname: '',
@@ -157,17 +157,18 @@ const RegisterPage = () => {
         password: '',
         userType: ''
       });
-      setTimeout(() => navigate('/login'), 3000); // Naviga verso la pagina di login dopo 2 secondi
+      setTimeout(() => navigate('/login'), 3000); // Naviga verso la pagina di login dopo 3 secondi
     } catch (error) {
-      setErrorMessage("C'è stato un errore durante la registrazione. Riprova."); // Mostra il messaggio di errore
+      setOverlayMessage("Registrazione fallita. Riprova.");
       console.error('There was an error!', error);
     } finally {
-      setLoading(false); // Fine del caricamento
+      setLoading(false);
+      setTimeout(() => setOverlayVisible(false), 3000); // Nascondi l'overlay dopo 3 secondi
     }
   };
 
   return (
-    <>      
+    <>
       <Container fluid className="vh-100 d-flex align-items-center justify-content-center p-0 text-secondary register-container">
         <Row className="w-100 h-100 m-0">
           <Col md={3} className="left-column position-relative d-none d-md-block">
@@ -188,13 +189,6 @@ const RegisterPage = () => {
           <Col md={9} className="d-flex flex-column align-items-center justify-content-center right-column" style={{ backgroundColor: "#f0f0f2" }}>
             <h1 className='page-title'>Benvenuto</h1>
             <Form onSubmit={handleSubmit} className="px-3 pb-3" style={{ width: '100%', maxWidth: '30rem' }}>
-              {loading && (
-                <div className="text-center mb-3">
-                  <Spinner animation="border" variant="primary" />
-                </div>
-              )}
-              {successMessage && <Alert variant="success">{successMessage}</Alert>}
-              {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
               <Form.Group controlId="name" className="mb-3 position-relative">
                 <Form.Label>Nome</Form.Label>
                 <Form.Control
@@ -291,7 +285,7 @@ const RegisterPage = () => {
                 </Form.Select>
               </Form.Group>
               <Button variant="primary" type="submit" className="fw-semibold" disabled={loading}>
-                {loading ? <Spinner animation="border" size="sm" /> : "Registrati"}
+                Registrati
               </Button>
             </Form>
           </Col>
@@ -313,6 +307,19 @@ const RegisterPage = () => {
           </Modal.Footer>
         </Modal>
       </Container>
+      {overlayVisible && (
+        <div className="overlay-wrapper">
+            {loading && (
+              <div className="loader">
+                <div className="ball ball1"></div>
+                <div className="ball ball2"></div>
+                <div className="ball ball3"></div>
+              </div>
+            )}
+            <div className="overlay-message">{overlayMessage}</div>
+        </div>
+      )}
+
       <div className='footer-wrapper'>
         <Footer />
       </div>
