@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Col, Container, Row, Form, Button, Modal, InputGroup, Navbar } from "react-bootstrap";
+import { Col, Container, Row, Form, Button, Modal, InputGroup, Navbar, Spinner, Alert } from "react-bootstrap";
 import { FaInfoCircle, FaEye, FaEyeSlash, FaCheckCircle } from 'react-icons/fa';
 import logo from "../../assets/Esecutivi/Logo/svg/AthleteX - colore 1.svg";
+import logo2 from "../../assets/Esecutivi/Logo/svg/AthleteX - colore 4.svg";
 import axios from 'axios';
 import "../../style/RegisterPage/RegisterPage.scss";
 import { NavLink, useNavigate } from 'react-router-dom';
-import "../Footer.jsx";
 import Footer from '../Footer.jsx';
 
 const RegisterPage = () => {
@@ -23,6 +23,9 @@ const RegisterPage = () => {
   const [emailAvailable, setEmailAvailable] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false); // Stato per il caricamento
+  const [successMessage, setSuccessMessage] = useState(""); // Messaggio di successo
+  const [errorMessage, setErrorMessage] = useState(""); // Messaggio di errore
 
   useEffect(() => {
     const checkAvailability = async () => {
@@ -58,7 +61,7 @@ const RegisterPage = () => {
 
     const handler = setTimeout(checkAvailability, 500);
     return () => clearTimeout(handler);
-  },[formData.username, formData.email, errors]);
+  }, [formData.username, formData.email, errors]);
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -137,9 +140,15 @@ const RegisterPage = () => {
       console.log('Ci sono errori nel form');
       return;
     }
+
+    setLoading(true); // Inizio del caricamento
+    setSuccessMessage(""); // Resetta il messaggio di successo
+    setErrorMessage(""); // Resetta il messaggio di errore
+
     try {
       const response = await axios.post('http://localhost:3001/auth/register', formData);
       console.log(response.data);
+      setSuccessMessage("Registrazione effettuata con successo!"); // Mostra il messaggio di successo
       setFormData({
         name: '',
         surname: '',
@@ -148,151 +157,165 @@ const RegisterPage = () => {
         password: '',
         userType: ''
       });
-      navigate('/');
+      setTimeout(() => navigate('/login'), 3000); // Naviga verso la pagina di login dopo 2 secondi
     } catch (error) {
+      setErrorMessage("C'è stato un errore durante la registrazione. Riprova."); // Mostra il messaggio di errore
       console.error('There was an error!', error);
+    } finally {
+      setLoading(false); // Fine del caricamento
     }
   };
 
   return (
     <>      
-    <Container fluid className="vh-100 d-flex align-items-center justify-content-center p-0 text-secondary register-container">
-      <Row className="w-100 h-100 m-0">
-        <Col md={3} className="left-column position-relative d-none d-md-block" as={NavLink} to={"/"}>
-          <h3 className="text-secondary position-absolute" style={{ top: "40%" }}>Crea la tua squadra in pochi click.</h3>
-        </Col>
-        <Col className='d-block d-md-none p-0'>
-          <Navbar expand="lg" className="bg-primary border-bottom border-3 border-white">
-            <Container fluid>
-              <Navbar.Brand as={NavLink} to={"/"}>
-                <img src={logo} width="100" height="50" alt="AthleteX logo" />
-              </Navbar.Brand>
-            </Container>
-          </Navbar>
-        </Col>
-        <Col md={9} className="d-flex flex-column align-items-center justify-content-center right-column" style={{ backgroundColor: "#f0f0f2" }}>
-          <h1 className='page-title'>Benvenuto</h1>
-          <Form onSubmit={handleSubmit} className="px-3 pb-3" style={{ width: '100%', maxWidth: '30rem' }}>
-            <Form.Group controlId="name" className="mb-3 position-relative">
-              <Form.Label>Nome</Form.Label>
-              <Form.Control
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="Inserisci il tuo nome"
-                required
-              />
-              {errors.name && formData.name && <p className="text-danger">{errors.name}</p>}
-              {!errors.name && formData.name && <FaCheckCircle className="text-success position-absolute icon-success" />}
-            </Form.Group>
-            <Form.Group controlId="surname" className="mb-3 position-relative">
-              <Form.Label>Cognome</Form.Label>
-              <Form.Control
-                type="text"
-                name="surname"
-                value={formData.surname}
-                onChange={handleChange}
-                placeholder="Inserisci il tuo cognome"
-                required
-              />
-              {errors.surname && formData.surname && <p className="text-danger">{errors.surname}</p>}
-              {!errors.surname && formData.surname && <FaCheckCircle className="text-success position-absolute icon-success" />}
-            </Form.Group>
-            <Form.Group controlId="email" className="mb-3 position-relative">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="Inserisci la tua email"
-                required
-              />
-              {errors.email && formData.email && <p className="text-danger">{errors.email}</p>}
-              {!errors.email && formData.email && emailAvailable && <FaCheckCircle className="text-success position-absolute icon-success" />}
-            </Form.Group>
-            <Form.Group controlId="username" className="mb-3 position-relative">
-              <Form.Label>Username</Form.Label>
-              <Form.Control
-                type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                placeholder="Inserisci il tuo username"
-                required
-              />
-              {errors.username && formData.username && <p className="text-danger">{errors.username}</p>}
-              {!errors.username && formData.username && usernameAvailable && <FaCheckCircle className="text-success position-absolute icon-success" />}
-            </Form.Group>
-            <Form.Group controlId="password" className="mb-3 position-relative">
-              <Form.Label>Password
-                <Button variant="link" className='p-0' onClick={() => setShowModal(true)}>
-                  <FaInfoCircle />
-                </Button>
-              </Form.Label>
-              <InputGroup>
+      <Container fluid className="vh-100 d-flex align-items-center justify-content-center p-0 text-secondary register-container">
+        <Row className="w-100 h-100 m-0">
+          <Col md={3} className="left-column position-relative d-none d-md-block">
+            <Navbar.Brand as={NavLink} to={"/"}>
+              <img src={logo2} width="150" height="75" alt="AthleteX logo" />
+            </Navbar.Brand>
+            <h3 className="text-secondary position-absolute" style={{ top: "40%" }}>Crea la tua squadra in pochi click.</h3>
+          </Col>
+          <Col className='d-block d-md-none p-0'>
+            <Navbar expand="lg" className="bg-primary border-bottom border-3 border-white">
+              <Container fluid>
+                <Navbar.Brand as={NavLink} to={"/"}>
+                  <img src={logo} width="100" height="50" alt="AthleteX logo" />
+                </Navbar.Brand>
+              </Container>
+            </Navbar>
+          </Col>
+          <Col md={9} className="d-flex flex-column align-items-center justify-content-center right-column" style={{ backgroundColor: "#f0f0f2" }}>
+            <h1 className='page-title'>Benvenuto</h1>
+            <Form onSubmit={handleSubmit} className="px-3 pb-3" style={{ width: '100%', maxWidth: '30rem' }}>
+              {loading && (
+                <div className="text-center mb-3">
+                  <Spinner animation="border" variant="primary" />
+                </div>
+              )}
+              {successMessage && <Alert variant="success">{successMessage}</Alert>}
+              {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
+              <Form.Group controlId="name" className="mb-3 position-relative">
+                <Form.Label>Nome</Form.Label>
                 <Form.Control
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  value={formData.password}
+                  type="text"
+                  name="name"
+                  value={formData.name}
                   onChange={handleChange}
-                  placeholder={showPassword ? "Inserisci la tua password" : "********"}
+                  placeholder="Inserisci il tuo nome"
                   required
                 />
-                <Button size='sm' variant="link" className='p-0 border-0 position-absolute' style={{ right: formData.password && !errors.password ? "10%" : "5%", top: '20%', zIndex: 9999 }} onClick={() => setShowPassword(!showPassword)}>
-                  {showPassword ? <FaEyeSlash /> : <FaEye />}
-                </Button>
-              </InputGroup>
-              {errors.password && formData.password && <p className="text-danger">{errors.password}</p>}
-              {formData.password && !errors.password && <FaCheckCircle className="text-success position-absolute icon-success" style={{ zIndex: 9999 }} />}
-            </Form.Group>
-            <Form.Group controlId="confirmPassword" className="mb-3 position-relative">
-              <Form.Label>Conferma Password</Form.Label>
-              <Form.Control
-                type={showPassword ? "text" : "password"}
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                placeholder={showPassword ? "Conferma la tua password" : "********"}
-                required
-              />
-              {errors.confirmPassword && formData.confirmPassword && formData.password && <p className="text-danger">{errors.confirmPassword}</p>}
-              {formData.confirmPassword && !errors.confirmPassword && <FaCheckCircle className="text-success position-absolute icon-success" />}
-            </Form.Group>
-            <Form.Group controlId="userType" className="mb-4">
-              <Form.Label>Tipo di Utente</Form.Label>
-              <Form.Select name="userType" value={formData.userType} onChange={handleChange}>
-                <option value="" disabled>Seleziona il tipo di utente</option>
-                <option value="Coach">Coach</option>
-                <option value="Giocatore">Giocatore</option>
-              </Form.Select>
-            </Form.Group>
-            <Button variant="primary" type="submit" className="fw-semibold">Registrati</Button>
-          </Form>
-        </Col>
-      </Row>
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Regole della Password</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <ul>
-            <li>Almeno 8 caratteri</li>
-            <li>Almeno una lettera maiuscola</li>
-            <li>Almeno un numero</li>
-            <li>Almeno un carattere speciale</li>
-          </ul>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="outline-secondary" onClick={() => setShowModal(false)}>Chiudi</Button>
-        </Modal.Footer>
-      </Modal>
-    </Container>
-    <div className='footer-wrapper'>
-
-    <Footer></Footer>
-    </div>
+                {errors.name && formData.name && <p className="text-danger">{errors.name}</p>}
+                {!errors.name && formData.name && <FaCheckCircle className="text-success position-absolute icon-success" />}
+              </Form.Group>
+              <Form.Group controlId="surname" className="mb-3 position-relative">
+                <Form.Label>Cognome</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="surname"
+                  value={formData.surname}
+                  onChange={handleChange}
+                  placeholder="Inserisci il tuo cognome"
+                  required
+                />
+                {errors.surname && formData.surname && <p className="text-danger">{errors.surname}</p>}
+                {!errors.surname && formData.surname && <FaCheckCircle className="text-success position-absolute icon-success" />}
+              </Form.Group>
+              <Form.Group controlId="email" className="mb-3 position-relative">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="Inserisci la tua email"
+                  required
+                />
+                {errors.email && formData.email && <p className="text-danger">{errors.email}</p>}
+                {!errors.email && formData.email && emailAvailable && <FaCheckCircle className="text-success position-absolute icon-success" />}
+              </Form.Group>
+              <Form.Group controlId="username" className="mb-3 position-relative">
+                <Form.Label>Username</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleChange}
+                  placeholder="Inserisci il tuo username"
+                  required
+                />
+                {errors.username && formData.username && <p className="text-danger">{errors.username}</p>}
+                {!errors.username && formData.username && usernameAvailable && <FaCheckCircle className="text-success position-absolute icon-success" />}
+              </Form.Group>
+              <Form.Group controlId="password" className="mb-3 position-relative">
+                <Form.Label className='position-relative'>Password
+                  <Button variant="link" className='p-0 position-absolute' style={{ right: '-40%', top: '-25%', zIndex: 9999 }} size='lg' onClick={() => setShowModal(true)}>
+                    <FaInfoCircle />
+                  </Button>
+                </Form.Label>
+                <InputGroup>
+                  <Form.Control
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder={showPassword ? "Inserisci la tua password" : "********"}
+                    required
+                  />
+                  <Button size='sm' variant="link" className='p-0 border-0 position-absolute' style={{ right: formData.password && !errors.password ? "10%" : "5%", top: '20%', zIndex: 9999 }} onClick={() => setShowPassword(!showPassword)}>
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </Button>
+                </InputGroup>
+                {errors.password && formData.password && <p className="text-danger">{errors.password}</p>}
+                {formData.password && !errors.password && <FaCheckCircle className="text-success position-absolute icon-success" style={{ zIndex: 9999 }} />}
+              </Form.Group>
+              <Form.Group controlId="confirmPassword" className="mb-3 position-relative">
+                <Form.Label>Conferma Password</Form.Label>
+                <Form.Control
+                  type={showPassword ? "text" : "password"}
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  placeholder={showPassword ? "Conferma la tua password" : "********"}
+                  required
+                />
+                {errors.confirmPassword && formData.confirmPassword && formData.password && <p className="text-danger">{errors.confirmPassword}</p>}
+                {formData.confirmPassword && !errors.confirmPassword && <FaCheckCircle className="text-success position-absolute icon-success" />}
+              </Form.Group>
+              <Form.Group controlId="userType" className="mb-4">
+                <Form.Label>Tipo di Utente</Form.Label>
+                <Form.Select name="userType" value={formData.userType} onChange={handleChange}>
+                  <option value="" disabled>Seleziona il tipo di utente</option>
+                  <option value="Coach">Coach</option>
+                  <option value="Giocatore">Giocatore</option>
+                </Form.Select>
+              </Form.Group>
+              <Button variant="primary" type="submit" className="fw-semibold" disabled={loading}>
+                {loading ? <Spinner animation="border" size="sm" /> : "Registrati"}
+              </Button>
+            </Form>
+          </Col>
+        </Row>
+        <Modal show={showModal} onHide={() => setShowModal(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Regole della Password</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <ul>
+              <li>Almeno 8 caratteri</li>
+              <li>Almeno una lettera maiuscola</li>
+              <li>Almeno un numero</li>
+              <li>Almeno un carattere speciale</li>
+            </ul>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="outline-secondary" onClick={() => setShowModal(false)}>Chiudi</Button>
+          </Modal.Footer>
+        </Modal>
+      </Container>
+      <div className='footer-wrapper'>
+        <Footer />
+      </div>
     </>
   );
 };
