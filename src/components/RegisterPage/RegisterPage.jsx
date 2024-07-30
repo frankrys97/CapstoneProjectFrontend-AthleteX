@@ -281,7 +281,7 @@ const RegisterPage = () => {
                 <Form.Select name="userType" value={formData.userType} onChange={handleChange}>
                   <option value="" disabled>Seleziona il tipo di utente</option>
                   <option value="Coach">Coach</option>
-                  <option value="Giocatore">Giocatore</option>
+                  <option value="Player">Giocatore</option>
                 </Form.Select>
               </Form.Group>
               <Button variant="primary" type="submit" className="fw-semibold" disabled={loading}>
