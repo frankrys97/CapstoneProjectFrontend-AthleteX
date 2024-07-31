@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Card, Button, Container, Row, Col } from 'react-bootstrap';
+import { Card, Button, Container, Row, Col, Dropdown, ButtonGroup } from 'react-bootstrap';
 import NavbarHomePage from './NavbarHomePage';
 import apiClient from '../../utils/axiosConfig';
 import '../../style/HomePage/HomePage.scss';
 import iconaScudetto from "../../assets/HomePage/Icona-scudetto.svg";
 import { IoIosInformationCircleOutline } from 'react-icons/io';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 
 const Homepage = () => {
   const user = useSelector((state) => state.authenticate.user);
@@ -18,7 +19,6 @@ const Homepage = () => {
       try {
         if (user.userType === 'COACH') {
           const response = await apiClient.get('/teams');
-          console.log(response);
           setTeams(response.data.content);
         } else if (user.userType === 'PLAYER' && user.team) {
           const response = await apiClient.get(`/teams/${user.team}`);
@@ -36,13 +36,20 @@ const Homepage = () => {
     navigate(path);
   };
 
+  const handleTeamSettings = (teamId) => {
+    console.log(`Naviga alle impostazioni per la squadra con ID: ${teamId}`);
+  };
+
+  const handleTeamDelete = (teamId) => {
+    console.log(`Elimina squadra con ID: ${teamId}`);
+  };
+
   return (
     <div className='homepage'>
       <NavbarHomePage />
+          {user.userType === 'COACH' && teams && teams.length === 0 && (
       <Container fluid className="main-content d-flex align-items-center justify-content-center text-secondary mt-2 ">
         <Row className="w-100 gap-3">
-          {user.userType === 'COACH' && teams && teams.length === 0 && (
-            <>
               <Col xs={12}>
                 <div className='d-flex flex-column align-items-center mb-4 gap-3'>
                   <h3 className="text-center">Non gestisci nessuna squadra ... ancora!</h3>
@@ -63,8 +70,50 @@ const Homepage = () => {
                 <p className="text-center mt-5"><IoIosInformationCircleOutline /> Per vivere al meglio l&apos;esperienza con AthleteX ti consigliamo di creare una squadra al più presto!
                 </p>
               </Col>
-            </>
+          </Row>
+          </Container>
           )}
+
+          {user.userType === 'COACH' && teams && teams.length > 0 && (
+            <Container className='mt-3'> 
+            <Row className="w-100 h-100 gap-3 d-flex ">
+                <div className='d-flex justify-content-between align-items-center'>
+                <h3 className="text-start mt-2">Le mie squadre</h3>
+                <Button>Crea una nuova squadra</Button>
+                </div>
+             
+                <hr />
+
+              {teams.map((team) => (
+                <Col key={team.id} md={4}>
+                  <Card className="mb-3 team-card shadow-sm border-0 d-flex flex-column">
+                    <Card.Body className="d-flex flex-column justify-content-between">
+                      <div className="d-flex justify-content-between align-items-start">
+                        <img src={team.avatar} alt={`${team.name} logo`} className="team-avatar" />
+                        <Dropdown as={ButtonGroup}>
+                          <Dropdown.Toggle variant="light" className="p-0 shadow-none">
+                            <BsThreeDotsVertical />
+                          </Dropdown.Toggle>
+
+                          <Dropdown.Menu align="end">
+                            <Dropdown.Item onClick={() => handleTeamSettings(team.id)}>
+                              Impostazioni
+                            </Dropdown.Item>
+                            <Dropdown.Item onClick={() => handleTeamDelete(team.id)} className="text-danger">
+                              Elimina squadra
+                            </Dropdown.Item>
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      </div>
+                      <Card.Title className="mt-3">{team.name}</Card.Title>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+            </Container>
+          )}
+
           {user.userType === 'PLAYER' && !user.team && (
             <>
               <Col xs={12}>
@@ -84,8 +133,7 @@ const Homepage = () => {
               </Col>
             </>
           )}
-        </Row>
-      </Container>
+        
     </div>
   );
 };

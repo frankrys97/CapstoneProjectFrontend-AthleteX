@@ -38,16 +38,45 @@
     }
   }
   
-
-
 .navbar .dropdown-menu {
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    opacity: 0;
-    transform: translateY(-10px);
-  }
+    width: 100%;
+    border-radius: 0%;
+}
   
   .navbar .dropdown-menu.show {
-    opacity: 1;
-    transform: translateY(0);
+    border-radius: 0%;
+    width: 100%;
   }
+
+  
+  .team-card {
+    min-height: 280px; /* Altezza minima per mantenere uniformità */
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Spaziatura uniforme */
+  }
+  
+  .team-avatar {
+    position: absolute;
+    top: -30px;
+    left: 10%;
+    z-index: 999;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+  }
+  
+  .dropdown-toggle::after {
+    display: none;
+  }
+  
+  .dropdown-menu {
+    min-width: 150px;
+  }
+  
+
+
   
