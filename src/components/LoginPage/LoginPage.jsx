@@ -56,13 +56,14 @@ const LoginPage = () => {
           password: ''
         });
         setLoading(false); 
-        navigate('/');
+        navigate('/homepage');
       } catch (userError) {
-        console.error('Failed to fetch user data!', userError);
+        console.error('Failed to fetch user data!', userError.response.data);
         setError('Errore nel recupero delle informazioni utente.');
         setLoading(false);
       }
     } catch (error) {
+      console.error('There was an error!', error.response.data);
       setError('Email o password non corretti.');
       setShake(true);
       setFormData({
