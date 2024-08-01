@@ -1,6 +1,6 @@
 // src/redux/reducers/AuthenticateReducer.js
 
-import { LOGIN, LOGOUT, RECOGNIZE_USER } from "../actions";
+import { LOGIN, LOGOUT, RECOGNIZE_USER, CANCEL_TEAM_OF_PLAYER  } from "../actions";
 
 const initialState = {
   isAuthenticated: false,
@@ -27,6 +27,14 @@ const authenticateReducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.payload,
+      };
+      case CANCEL_TEAM_OF_PLAYER:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          team: null
+        }
       };
     default:
       return state;

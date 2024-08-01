@@ -17,7 +17,7 @@
   
 .card-create {
     width: 100%;
-    max-width: 22rem;  
+    max-width: 23rem;  
     aspect-ratio: 1;  
     margin: 0 auto;    
   
@@ -30,44 +30,65 @@
   
     &:hover {
       box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
-      cursor: pointer;
-  
-      .btn-create {
-        background-color: #fd4742;
-      }
     }
   }
-  
 .navbar .dropdown-menu {
     width: 100%;
     border-radius: 0%;
+    min-width: none !important;
 }
   
   .navbar .dropdown-menu.show {
     border-radius: 0%;
     width: 100%;
+    min-width: none !important;
   }
 
   
-  .team-card {
-    min-height: 280px; /* Altezza minima per mantenere uniformità */
-    border-radius: 8px;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Spaziatura uniforme */
-  }
+  // .team-card {
+  //   min-height: 280px; /* Altezza minima per mantenere uniformità */
+  //   border-radius: 8px;
+  //   position: relative;
+  //   overflow: hidden;
+  //   display: flex;
+  //   flex-direction: column;
+  //   justify-content: space-between;
+  // }
   
   .team-avatar {
     position: absolute;
     top: -30px;
-    left: 10%;
+    left: 7%;
     z-index: 999;
-    width: 60px;
-    height: 60px;
     border-radius: 50%;
+    border: white solid 10px;
   }
+
+.team-card.equal-height {
+  height: 150px; 
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  &:hover {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    transform: scale(1.05);
+  }
+}
+
+.team-avatar {
+  max-width: 70px;
+  max-height: 70px;
+  object-fit: contain;
+}
+
+.team-card .card-body {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
   
   .dropdown-toggle::after {
     display: none;
@@ -75,6 +96,21 @@
   
   .dropdown-menu {
     min-width: 150px;
+  }
+
+
+  .dropstyle {
+    &:hover {
+      background-color: #f0f0f2;
+      border-color: #f0f0f2;
+    border: 1px solid black;
+    }
+  }
+
+  .btn-create {
+   &:hover {
+    background-color: #fd4742;
+    }
   }
   
 

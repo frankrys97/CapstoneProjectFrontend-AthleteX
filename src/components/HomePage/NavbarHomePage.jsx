@@ -54,17 +54,20 @@ const NavbarHomePage = () => {
               }
               id="user-nav-dropdown"
               align="end"
-              className="no-caret"
+              className="no-caret d-flex align-items-center"
             >
-              <NavDropdown.Item as={NavLink} to="/account">
-                <AiOutlineUser className="me-2" style={{ fontSize: '1.5rem' }} /> Il mio account
+              <NavDropdown.Item as={NavLink} to="/account" >
+                <AiOutlineUser className="me-2" />
+                <span>Il mio account</span>
               </NavDropdown.Item>
               <NavDropdown.Item as={NavLink} to="/preferences">
-                <IoSettingsOutline className="me-2" style={{ fontSize: '1.5rem' }} /> Preferenze
+                <IoSettingsOutline className="me-2"  />
+                <span>Preferenze</span>
               </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={handleLogout}>
-                <AiOutlinePoweroff className="me-2" style={{ fontSize: '1.5rem' }} /> Logout
+                <AiOutlinePoweroff className="me-2"  />
+                <span>Logout</span>
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>

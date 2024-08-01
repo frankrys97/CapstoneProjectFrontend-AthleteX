@@ -1,18 +1,32 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { Card, Button, Container, Row, Col, Dropdown, ButtonGroup } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Card, Button, Container, Row, Col, Dropdown, ButtonGroup, Modal } from 'react-bootstrap';
 import NavbarHomePage from './NavbarHomePage';
 import apiClient from '../../utils/axiosConfig';
 import '../../style/HomePage/HomePage.scss';
 import iconaScudetto from "../../assets/HomePage/Icona-scudetto.svg";
+import iconaMaglia from "../../assets/HomePage/Icona-maglia.svg";
 import { IoIosInformationCircleOutline } from 'react-icons/io';
-import { BsThreeDotsVertical } from 'react-icons/bs';
+import { BsThreeDots } from 'react-icons/bs';
+import { MdOutlineLocalPostOffice } from 'react-icons/md';
+import { IoCalendarOutline } from 'react-icons/io5';
+import { PiSoccerBallThin } from 'react-icons/pi';
+import { cancelTeamOfPlayer } from '../../redux/actions';
 
 const Homepage = () => {
   const user = useSelector((state) => state.authenticate.user);
   const navigate = useNavigate();
   const [teams, setTeams] = useState([]);
+  const [show, setShow] = useState(false);
+  const [selectedTeam, setSelectedTeam] = useState(null); 
+  const dispatch = useDispatch();
+
+  const handleClose = () => setShow(false);
+  const handleShow = (team) => {
+    setSelectedTeam(team);
+    setShow(true);
+  };
 
   useEffect(() => {
     const fetchTeams = async () => {
@@ -21,7 +35,7 @@ const Homepage = () => {
           const response = await apiClient.get('/teams');
           setTeams(response.data.content);
         } else if (user.userType === 'PLAYER' && user.team) {
-          const response = await apiClient.get(`/teams/${user.team}`);
+          const response = await apiClient.get(`/teams/${user.team.id}`);
           setTeams([response.data]);
         }
       } catch (error) {
@@ -30,7 +44,7 @@ const Homepage = () => {
     };
 
     fetchTeams();
-  }, [user]);
+  }, [user, teams]);
 
   const handleNavigate = (path) => {
     navigate(path);
@@ -40,8 +54,39 @@ const Homepage = () => {
     console.log(`Naviga alle impostazioni per la squadra con ID: ${teamId}`);
   };
 
-  const handleTeamDelete = (teamId) => {
-    console.log(`Elimina squadra con ID: ${teamId}`);
+  const deleteTeamFetch = async () => {
+    try {
+      const response = await apiClient.delete(`/teams/${selectedTeam.id}`);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const leaveTeamFetch = async () => {
+    try {
+      const response = await apiClient.patch(`/teams/me/leave`);
+      console.log(response.data);
+      dispatch(cancelTeamOfPlayer());
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleTeamDelete = () => {
+    if (selectedTeam) {
+      console.log(`Elimina squadra con ID: ${selectedTeam.id}`);
+      deleteTeamFetch();
+      handleClose(); 
+    }
+  };
+
+  const handleTeamLeave = () => {
+    if (selectedTeam) {
+      console.log(`Lascia squadra con ID: ${selectedTeam.id}`);
+      leaveTeamFetch();
+      handleClose(); 
+    }
   };
 
   return (
@@ -64,7 +109,7 @@ const Homepage = () => {
                     <Card.Text>
                       Pianifica ed amministra la tua squadra a 360°
                     </Card.Text>
-                    <Button variant="secondary" size='sm' className='px-3 py-2 btn-create border-0'>Creare una nuova squadra</Button>
+                    <Button variant="secondary" size='sm' className='px-3 py-2 btn-create border-0' onClick={() => handleNavigate('/team/create')}>Creare una nuova squadra</Button>
                   </Card.Body>
                 </Card>
                 <p className="text-center mt-5"><IoIosInformationCircleOutline /> Per vivere al meglio l&apos;esperienza con AthleteX ti consigliamo di creare una squadra al più presto!
@@ -74,66 +119,167 @@ const Homepage = () => {
           </Container>
           )}
 
-          {user.userType === 'COACH' && teams && teams.length > 0 && (
-            <Container className='mt-3'> 
-            <Row className="w-100 h-100 gap-3 d-flex ">
-                <div className='d-flex justify-content-between align-items-center'>
+      {user.userType === 'COACH' && teams && teams.length > 0 && (
+        <Container className='mt-3'> 
+          <Row className="w-100 h-100 g-3 d-flex justify-content-start gy-5">
+            <Col xs={12} className='mb-3' >
+              <div className='d-flex flex-column flex-md-row justify-content-between align-items-center'>
                 <h3 className="text-start mt-2">Le mie squadre</h3>
-                <Button>Crea una nuova squadra</Button>
-                </div>
-             
-                <hr />
+                <Button variant="secondary" size='sm' className='px-3 py-2 border-0 btn-create d-none d-md-block' onClick={() => handleNavigate('/team/create')}>Crea una nuova squadra</Button>
+              </div>
 
-              {teams.map((team) => (
-                <Col key={team.id} md={4}>
-                  <Card className="mb-3 team-card shadow-sm border-0 d-flex flex-column">
-                    <Card.Body className="d-flex flex-column justify-content-between">
-                      <div className="d-flex justify-content-between align-items-start">
-                        <img src={team.avatar} alt={`${team.name} logo`} className="team-avatar" />
-                        <Dropdown as={ButtonGroup}>
-                          <Dropdown.Toggle variant="light" className="p-0 shadow-none">
-                            <BsThreeDotsVertical />
+              <hr />
+            </Col>
+
+            {teams.map((team) => {
+              const formattedDate = new Date(team.creationDate).toLocaleDateString('it-IT');
+
+              return (
+                <Col key={team.id} xs={12} sm={6} md={4} className="d-flex">
+                  <Card className="mb-3 team-card shadow-sm border-0 d-flex flex-column equal-height w-100 h-100 ">
+                    <Card.Body className="d-flex flex-column justify-content-start">
+                      <img src={team.avatar} alt={`${team.name} logo`} className="team-avatar" />
+                      <div className=' d-flex justify-content-end align-items-center gap-2 align-self-end'>
+                        <MdOutlineLocalPostOffice className='fs-4' as={NavLink} to={"/team/message"} style={{cursor: 'pointer'}}/>
+                        <Dropdown as={ButtonGroup} >
+                          <Dropdown.Toggle variant="transparent" className="py-1 px-2 border-1 dropstyle">
+                            <BsThreeDots className="fs-4" />
                           </Dropdown.Toggle>
 
                           <Dropdown.Menu align="end">
                             <Dropdown.Item onClick={() => handleTeamSettings(team.id)}>
                               Impostazioni
                             </Dropdown.Item>
-                            <Dropdown.Item onClick={() => handleTeamDelete(team.id)} className="text-danger">
+                            <Dropdown.Item onClick={() => handleShow(team)} className="text-danger">
                               Elimina squadra
                             </Dropdown.Item>
                           </Dropdown.Menu>
                         </Dropdown>
                       </div>
-                      <Card.Title className="mt-3">{team.name}</Card.Title>
+                      <Link to={`/team/${team.id}`} className="text-decoration-none w-100 text-secondary"> 
+                        <Card.Title className="mt-3 text-nowrap overflow-auto">{team.name}</Card.Title>
+                        <Card.Text className='text-muted d-flex align-items-center gap-2'> <IoCalendarOutline />
+                          <span>{formattedDate}</span>
+                        </Card.Text>
+                      </Link>
                     </Card.Body>
                   </Card>
                 </Col>
-              ))}
-            </Row>
-            </Container>
-          )}
+              );
+            })}
+            <Button variant="secondary" size='sm' className='px-3 py-2 border-0 btn-create d-block d-md-none mb-2' onClick={() => handleNavigate('/team/create')}>Crea una nuova squadra</Button>
+          </Row>
+          
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Eliminazione squadra</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              {selectedTeam ? `Sei sicuro di voler eliminare la squadra: ${selectedTeam.name}?` : 'Seleziona una squadra per eliminarla.'}
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" size='sm' onClick={handleClose}>
+                Chiudi
+              </Button>
+              <Button variant="primary" size='sm' onClick={handleTeamDelete}>
+                Elimina
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </Container>
+      )}
 
-          {user.userType === 'PLAYER' && !user.team && (
-            <>
-              <Col xs={12}>
-                <h1 className="text-center mb-4">Non fai parte di nessuna squadra ... ancora!</h1>
-              </Col>
-              <Col>
-                <Card className="text-center" onClick={() => handleNavigate('/team/join')} style={{ cursor: 'pointer' }}>
-                  <Card.Body>
-                    <i className="fa fa-futbol-o" style={{ fontSize: '2rem' }}></i>
-                    <Card.Title>Entra a far parte della tua prima squadra</Card.Title>
-                    <Card.Text>
-                      Per utilizzare AthleteX, devi entrare a far parte di una squadra.
-                    </Card.Text>
-                    <Button variant="primary">Unisciti ad una nuova squadra</Button>
-                  </Card.Body>
-                </Card>
-              </Col>
-            </>
-          )}
-        
+      {user.userType === 'PLAYER' && !user.team && (
+       <Container fluid className="main-content d-flex align-items-center justify-content-center text-secondary mt-2 ">
+       <Row className="w-100 gap-3">
+             <Col xs={12}>
+               <div className='d-flex flex-column align-items-center mb-4 gap-3'>
+                 <h3 className="text-center">Non fai parte di nessuna squadra ... ancora!</h3>
+                 <p>Per utilizzare AthleteX, devi unirti ad una squadra.</p>
+               </div>
+             </Col>
+             <Col md={6} className='mx-auto'>
+               <Card className="text-center p-3 mx-auto border-0 text-secondary rounded-0 card-create">
+                 <Card.Body className='d-flex flex-column align-items-center gap-3'>
+                   <img src={iconaMaglia} alt="Icona Maglia" style={{ width: '4rem', height: '4rem' }} />     
+                   <Card.Title>Unisciti alla tua nuova squadra</Card.Title>
+                   <Card.Text>
+                     Pianifica ed amministra la tua squadra a 360°
+                   </Card.Text>
+                   <Button variant="secondary" size='sm' className='px-3 py-2 btn-create border-0 mt-2' onClick={() => handleNavigate('/team/join')}>Unisciti alla squadra</Button>
+                 </Card.Body>
+               </Card>
+               <p className="text-center mt-5"><IoIosInformationCircleOutline /> Per vivere al meglio l&apos;esperienza con AthleteX ti consigliamo di unirti ad una squadra al più presto!
+               </p>
+             </Col>
+         </Row>
+         </Container>
+      )}
+
+      {user.userType === 'PLAYER' && user.team && (
+         <Container className='mt-3'> 
+         <Row className="w-100 h-100 g-3 d-flex justify-content-start gy-5">
+           <Col xs={12} className='mx-auto' >
+             <div className='d-flex justify-content-center align-items-center'>
+               <h3 className="text-start mt-2">La mia squadra</h3>
+             </div>
+
+           </Col>
+             <hr className='m-1' />
+
+           {teams.map((team) => {
+             return (
+              <Col md={6} key={team.id} className='mx-auto'>
+               <Card className="text-center p-3 mx-auto border-0 text-secondary rounded-0 card-create position-relative">
+                 <Card.Body className='d-flex flex-column align-items-center gap-3'>
+                   <img src={team.avatar} alt="Logo squadra" style={{ width: '4rem', height: '5rem' }} />    
+                   <div className=' d-flex justify-content-end align-items-center gap-2 position-absolute' style={{top: '10px', right: '10px'}}>
+                        <MdOutlineLocalPostOffice className='fs-4' as={NavLink} to={"/team/message"} style={{cursor: 'pointer'}}/>
+                        <Dropdown as={ButtonGroup} >
+                          <Dropdown.Toggle variant="transparent" className="py-1 px-2 border-1 dropstyle">
+                            <BsThreeDots className="fs-4" />
+                          </Dropdown.Toggle>
+
+                          <Dropdown.Menu align="end">
+                            <Dropdown.Item onClick={() => handleShow(team)} className="text-danger">
+                              Lascia la squadra
+                            </Dropdown.Item>
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      </div> 
+                   <Card.Title className='d-flex align-items-center gap-1 mt-2'> <PiSoccerBallThin  />
+<span>{team.name}</span>                   </Card.Title>
+                   <Card.Text>
+                     Non perderti nessun aggionamento!
+                   </Card.Text>
+                   <Button variant="secondary" size='sm' className='px-3 py-2 btn-create border-0 mt-2' onClick={() => handleNavigate('/team/' + team.id + '')}>Vai alla squadra</Button>
+                 </Card.Body>
+               </Card>
+               <p className="text-center mt-5"><IoIosInformationCircleOutline /> Grazie ad AthleteX, sarai in grado di far parte di una squadra in modo smart e non perderti più alcuna informazione!
+               </p>
+             </Col>
+             );
+           })}
+         </Row>
+         
+         <Modal show={show} onHide={handleClose}>
+           <Modal.Header closeButton>
+             <Modal.Title>Eliminazione squadra</Modal.Title>
+           </Modal.Header>
+           <Modal.Body>
+             {selectedTeam ? `Sei sicuro di voler lasciare la squadra: ${selectedTeam.name}?` : 'Seleziona una squadra per lascire.'}
+           </Modal.Body>
+           <Modal.Footer>
+             <Button variant="secondary" size='sm' onClick={handleClose}>
+               Chiudi
+             </Button>
+             <Button variant="primary" size='sm' onClick={handleTeamLeave}>
+               Abbandona
+             </Button>
+           </Modal.Footer>
+         </Modal>
+       </Container>
+      )}
     </div>
   );
 };
