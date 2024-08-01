@@ -20,3 +20,5 @@ export const recognizeUser = (user) => ({
 export const cancelTeamOfPlayer = () => ({
   type: CANCEL_TEAM_OF_PLAYER,
 });
+
+

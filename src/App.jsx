@@ -5,6 +5,8 @@ import LandingPage from "./components/LandingPage";
 import RegisterPage from "./components/RegisterPage/RegisterPage";
 import LoginPage from "./components/LoginPage/LoginPage";
 import HomePage from "./components/HomePage/HomePage";
+import JoinPage from "./components/JoinPage/JoinPage";
+import CreateTeamPage from "./components/CreateTeamPage/CreateTeamPage";
 
 function App() {
   console.log(apiClient); 
@@ -17,6 +19,8 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/homepage" element={<HomePage />} />
+        <Route path="/team/join" element={<JoinPage />} />
+        <Route path="/team/create" element={<CreateTeamPage />} />
       </Routes>
     </BrowserRouter>
     </div>

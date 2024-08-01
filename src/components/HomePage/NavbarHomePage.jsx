@@ -30,6 +30,8 @@ const NavbarHomePage = () => {
     fetchLogout();
   };
 
+  const isDefaultAvatar = !user?.avatar || user?.avatar?.includes('https://ui-avatars.com/api/');
+
   return (
     <Navbar bg="white">
       <Container className='d-flex align-items-center justify-content-between'>
@@ -48,8 +50,11 @@ const NavbarHomePage = () => {
             <NavDropdown
               title={
                 <div className="d-flex align-items-center" style={{ cursor: 'pointer' }}>
-                  <img src= {iconaProfilo} alt="Icona profilo" style={{ maxWidth: '40px', height: '30px', borderRadius: '50%', marginRight: '10px' }} />
-                  <p className='m-0 d-none d-md-block'>{user && `${user.name} ${user.surname}`}</p>
+ <img
+                  src={isDefaultAvatar ? iconaProfilo : user.avatar}
+                  alt="Icona profilo"
+                  style={{ maxWidth: '40px', height: '30px', borderRadius: '50%', marginRight: '10px' }}
+                />                  <p className='m-0 d-none d-md-block'>{user && `${user.name} ${user.surname}`}</p>
                 </div>
               }
               id="user-nav-dropdown"

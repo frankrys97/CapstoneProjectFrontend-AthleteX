@@ -89,6 +89,8 @@ const Homepage = () => {
     }
   };
 
+
+
   return (
     <div className='homepage'>
       <NavbarHomePage />
@@ -133,12 +135,14 @@ const Homepage = () => {
 
             {teams.map((team) => {
               const formattedDate = new Date(team.creationDate).toLocaleDateString('it-IT');
+              const isDefaultAvatar = !team?.avatar || team?.avatar?.includes('https://ui-avatars.com/api/');
+
 
               return (
                 <Col key={team.id} xs={12} sm={6} md={4} className="d-flex">
                   <Card className="mb-3 team-card shadow-sm border-0 d-flex flex-column equal-height w-100 h-100 ">
                     <Card.Body className="d-flex flex-column justify-content-start">
-                      <img src={team.avatar} alt={`${team.name} logo`} className="team-avatar" />
+                      <img src={isDefaultAvatar ? iconaScudetto : team.avatar} alt={`${team.name} logo`} className="team-avatar" />
                       <div className=' d-flex justify-content-end align-items-center gap-2 align-self-end'>
                         <MdOutlineLocalPostOffice className='fs-4' as={NavLink} to={"/team/message"} style={{cursor: 'pointer'}}/>
                         <Dropdown as={ButtonGroup} >
