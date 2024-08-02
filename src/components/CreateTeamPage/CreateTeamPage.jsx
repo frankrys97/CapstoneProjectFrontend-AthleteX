@@ -115,7 +115,7 @@ const navigate = useNavigate();
                         <div className="d-flex flex-column align-items-center mt-5">
                             <h4>Crea la tua squadra</h4>
                             <p className="text-muted">Completa le informazioni sulla tua squadra, personalizza il logo e il colore.</p>
-                            <Row className="card-team-create bg-white p-4 w-100">
+                            <Row className="card-team-create bg-white p-4 w-100" style={{borderTop: `5px solid ${formData.primaryColor}`}}>
                                 <Col md={4} >
                                     <div className="d-flex flex-column align-items-center w-100">
                                         <div className="bg-light rounded-circle p-3 border border-1 position-relative" style={{ width: '150px', height: '150px' }}>
