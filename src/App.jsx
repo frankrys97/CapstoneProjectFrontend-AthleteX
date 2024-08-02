@@ -7,6 +7,7 @@ import LoginPage from "./components/LoginPage/LoginPage";
 import HomePage from "./components/HomePage/HomePage";
 import JoinPage from "./components/JoinPage/JoinPage";
 import CreateTeamPage from "./components/CreateTeamPage/CreateTeamPage";
+import ProfilePage from "./components/ProfilePage/ProfilePage";
 
 function App() {
   console.log(apiClient); 
@@ -21,6 +22,7 @@ function App() {
         <Route path="/homepage" element={<HomePage />} />
         <Route path="/team/join" element={<JoinPage />} />
         <Route path="/team/create" element={<CreateTeamPage />} />
+        <Route path="/account" element={<ProfilePage />} />
       </Routes>
     </BrowserRouter>
     </div>

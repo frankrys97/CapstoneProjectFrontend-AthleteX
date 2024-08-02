@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 
 
 
+
 const CreateTeamPage = () => {
     const [formData, setFormData] = useState({
         name: '',
@@ -47,9 +48,12 @@ const navigate = useNavigate();
     }, []);
 
     const handleColorChange = (color, type) => {
-        setFormData({ ...formData, [type]: color.hex });
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            [type]: color 
+        }));
     };
-
+    
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -65,6 +69,8 @@ const navigate = useNavigate();
         Object.keys(formData).forEach(key => {
             data.append(key, formData[key]);
         });
+
+        console.log(formData);
 
         if (avatar) { 
             data.append('avatar', avatar);
@@ -119,17 +125,16 @@ const navigate = useNavigate();
                                                 <MdOutlineAddAPhoto style={{ width: '20px', height: '20px' }} />
                                             </div>
                                         </div>
-                                        <div className="d-flex flex-column w-100 align-items-start mt-5">
+                                        <div className="d-flex flex-column w-100 align-items-start mt-5 gap-2">
                                             <div className="d-flex justify-content-between align-items-center w-100" >
-                                                <p className="text-muted">Colore primario</p>
-                                        <ColorPickerButton color={formData.primaryColor} onChangeComplete={(color) => handleColorChange(color, 'primaryColor')} />
-
+                                                <p className="text-muted m-0">Colore primario</p>
+                                        <ColorPickerButton color={formData.primaryColor} onColorChange={(color) => handleColorChange(color, 'primaryColor')} />
                                         </div>
 
 
                                             <div className="d-flex justify-content-between align-items-center w-100">
-                                                <p className="text-muted">Colore secondario</p>
-                                        <ColorPickerButton color={formData.secondaryColor} onChangeComplete={(color) => handleColorChange(color, 'secondaryColor')} />
+                                                <p className="text-muted m-0">Colore secondario</p>
+                                        <ColorPickerButton color={formData.secondaryColor} onColorChange={(color) => handleColorChange(color, 'secondaryColor')} />
                                             </div>
 
                                         </div>
@@ -158,6 +163,7 @@ const navigate = useNavigate();
                     onChange={handlePhoneChange}
                     inputClass="w-100" 
                     enableSearch={true} 
+                    
                     
                 />
             </Form.Group>

@@ -1,35 +1,42 @@
-import { useState } from 'react';
-import { ChromePicker } from 'react-color';
-import { Button, Popover, OverlayTrigger } from 'react-bootstrap';
-import PropTypes from 'prop-types'; // Importa PropTypes
+import { useState, useEffect } from 'react';
+import { Popover, OverlayTrigger, Button } from 'react-bootstrap';
+import { HexColorPicker } from 'react-colorful';
+import PropTypes from 'prop-types';
 
-const ColorPickerButton = ({ color, onChangeComplete }) => {
-    const [showPicker, setShowPicker] = useState(false);
+const ColorPickerButton = ({ color, onColorChange }) => {
+    const [currentColor, setCurrentColor] = useState(color || '#000000'); // Colore di fallback
 
-    const togglePicker = () => {
-        setShowPicker(!showPicker);
-    };
+    useEffect(() => {
+        if (color) {
+            setCurrentColor(color);  // Sincronizza il colore con la prop se definito
+        }
+    }, [color]);
 
     const handleColorChange = (newColor) => {
-        onChangeComplete(newColor);
-        setShowPicker(false);  
+        setCurrentColor(newColor);
+        onColorChange(newColor);  // Comunica il nuovo colore al genitore
     };
 
     const popover = (
         <Popover id="color-picker-popover">
             <Popover.Body>
-                <ChromePicker color={color} onChangeComplete={handleColorChange} />
+                <HexColorPicker color={currentColor} onChange={handleColorChange} />
             </Popover.Body>
         </Popover>
     );
 
     return (
-        <div className="color-picker-button mb-3">
-            <OverlayTrigger trigger="click" placement="bottom" overlay={popover} show={showPicker} rootClose onToggle={togglePicker}>
+        <div className="color-picker-button">
+            <OverlayTrigger
+                trigger="click"
+                placement="bottom"
+                overlay={popover}
+                rootClose
+            >
                 <Button 
                     variant="outline-secondary" 
                     className="color-display-button" 
-                    style={{ backgroundColor: color, width: '20px', height: '20px', padding: 0, borderRadius: '4px' }}
+                    style={{ backgroundColor: currentColor, width: '20px', height: '20px', padding: 0, borderRadius: '4px' }}
                 />
             </OverlayTrigger>
         </div>
@@ -38,7 +45,7 @@ const ColorPickerButton = ({ color, onChangeComplete }) => {
 
 ColorPickerButton.propTypes = {
     color: PropTypes.string.isRequired,
-    onChangeComplete: PropTypes.func.isRequired
+    onColorChange: PropTypes.func.isRequired
 };
 
 export default ColorPickerButton;

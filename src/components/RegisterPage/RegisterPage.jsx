@@ -74,7 +74,7 @@ const RegisterPage = () => {
     const hasNumber = /[0-9]/.test(password);
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
 
-    return hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar;
+    return password.length >= 8 && hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar;
   };
 
   const handleChange = (e) => {
@@ -116,7 +116,7 @@ const RegisterPage = () => {
     // Validazione per password
     if (name === 'password') {
       if (!validatePassword(value)) {
-        newErrors.password = 'La password deve contenere almeno una lettera maiuscola, una minuscola, un numero e un carattere speciale.';
+        newErrors.password = 'La password deve contenere almeno 8 caratteri, contenere almeno una lettera maiuscola, una minuscola, un numero e un carattere speciale.';
       } else {
         delete newErrors.password;
       }
@@ -157,13 +157,13 @@ const RegisterPage = () => {
         password: '',
         userType: ''
       });
-      setTimeout(() => navigate('/login'), 3000); // Naviga verso la pagina di login dopo 3 secondi
+      setTimeout(() => navigate('/login'), 3000);
     } catch (error) {
       setOverlayMessage("Registrazione fallita. Riprova.");
       console.error('There was an error!', error);
     } finally {
       setLoading(false);
-      setTimeout(() => setOverlayVisible(false), 3000); // Nascondi l'overlay dopo 3 secondi
+      setTimeout(() => setOverlayVisible(false), 3000);
     }
   };
 
