@@ -1,16 +1,17 @@
-import { useState } from "react";
-import { Col, Container, Row, Form, Button, ListGroup, InputGroup } from "react-bootstrap";
+import { useRef, useState } from "react";
+import { Col, Container, Row, Form, Button, ListGroup, InputGroup, Spinner, Modal, Alert } from "react-bootstrap";
 import NavbarHomePage from "../HomePage/NavbarHomePage";
 import './ProfilePage.scss';
 import iconaProfilo from "../../assets/HomePage/Icona-profilo.svg";
 import { MdOutlineAddAPhoto } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { IoIosInformationCircleOutline } from "react-icons/io";
-import { FcDeleteDatabase } from "react-icons/fc";
+import { FcDeleteDatabase, FcUpload } from "react-icons/fc";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import apiClient from "../../utils/axiosConfig";
 import { useNavigate } from "react-router-dom";
-import { recognizeUser } from "../../redux/actions";
+import { logout, recognizeUser } from "../../redux/actions";
+import { IoCloudUploadOutline } from "react-icons/io5";
 const ProfilePage = () => {
     const user = useSelector((state) => state.authenticate.user);
     const [activeSection, setActiveSection] = useState("profile");
@@ -23,12 +24,54 @@ const ProfilePage = () => {
         password: "",
         confirmPassword: "",
     });
+    const [showModal, setShowModal] = useState(false);
     const [errors, setErrors] = useState({});
     const [showOldPassword, setShowOldPassword] = useState(false);
     const [showpassword, setShowpassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [loadingAvatar, setLoadingAvatar] = useState(false);
+    const [showModalInput, setShowModalInput] = useState(false);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const fileInputRef = useRef(null); 
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const handleFileChange = (e) => {
+        setSelectedFile(e.target.files[0]);
+    };
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        setSelectedFile(e.dataTransfer.files[0]);
+        if (fileInputRef.current) {
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(e.dataTransfer.files[0]);
+            fileInputRef.current.files = dataTransfer.files;
+        }
+    };
+
+    const handleDragOver = (e) => {
+        e.preventDefault();
+    };
+
+    const handleShowModalInput = () => {
+        setShowModalInput(true);
+    }
+
+    const handleCloseModalInput = () => {
+        setShowModalInput(false);
+        setSelectedFile(null);
+    }
+
+    const handleShowModal = () => {
+        setShowModal(true);
+    }
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    }
 
     const validateEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -102,6 +145,7 @@ const ProfilePage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         const newErrors = { ...errors };
     
         // Se la password è cambiata, controlla la conferma della password
@@ -124,8 +168,15 @@ const ProfilePage = () => {
             try {
                 const endpoint = user.userType === 'COACH' ? '/coaches/me' : '/players/me';
                 const response = await apiClient.put(endpoint, formData);
+                setIsLoading(false);
                 console.log(response.data);
                 dispatch(recognizeUser(response.data));
+                setFormData({
+                    ...formData,
+                    oldPassword: "",
+                    password: "",
+                    confirmPassword: "",
+                })
             } catch (error) {
                 // Verifica il tipo di errore e imposta un messaggio specifico
                 if (error.response && error.response.data) {
@@ -138,8 +189,67 @@ const ProfilePage = () => {
                     console.log("Errore sconosciuto:", error);
                 }
             }
+            finally {
+                setIsLoading(false);
+            }
         }
     };
+
+    const handleDeleteAccount = async () => {
+        setIsLoading(true);
+        try {
+            const endpoint = user.userType === 'COACH' ? '/coaches/me' : '/players/me';
+            const response = await apiClient.delete(endpoint);
+            console.log(response.data);
+            setIsLoading(false);
+            dispatch(logout());
+            navigate('/');
+        } catch (error) {
+            console.log("Errore:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+    
+    const isDefaultAvatar = !user?.avatar || user?.avatar?.includes('https://ui-avatars.com/api/');
+
+    const handleClickInput = () => {
+        fileInputRef.current.click();
+    }
+
+    const handleUploadAvatar = async (e) => {
+        e.preventDefault();
+        
+        // Verifica se è stato selezionato un file
+        if (!selectedFile) {
+            // Imposta un errore per l'avatar
+            setErrors({ ...errors, avatar: "Caricare un file per poter modificare" });
+            setTimeout(() => {
+                setErrors({ avatar: "" });
+            }, 3000);
+    
+            return;
+        }
+    
+        setLoadingAvatar(true);
+        const data = new FormData();
+        data.append('avatar', selectedFile);
+    
+        try {
+            const endpoint = user.userType === 'COACH' ? '/coaches/me/avatar' : '/players/me/avatar';
+            const response = await apiClient.patch(endpoint, data);
+            console.log(response.data);
+            dispatch(recognizeUser(response.data));
+            setSelectedFile(null);
+            setErrors({ ...errors, avatar: "" });
+            handleCloseModalInput();
+        } catch (error) {
+            console.log("Errore:", error);
+            // Gestione degli errori
+        } finally {
+            setLoadingAvatar(false);}
+    };
+    
     
 
     return (
@@ -154,10 +264,9 @@ const ProfilePage = () => {
                     <Col md={3}>
                         <div className="left-column-profile-page">
                             <div className="d-flex flex-column align-items-center">
-                                <div className="bg-light rounded-circle p-3 border border-1 position-relative mt-3" style={{ width: '120px', height: '120px' }}>
-                                    <img src={iconaProfilo} alt="icona profilo" className="img-fluid" style={{ cursor: 'pointer' }} />
+                                <div className="bg-light rounded-circle p-3 border border-1 position-relative mt-3" style={{ width: '120px', height: '120px', cursor: 'pointer' }} onClick={handleShowModalInput}>
+                                    <img src={isDefaultAvatar ? iconaProfilo : user.avatar} alt="icona profilo" style={{ cursor: 'pointer', width: '100%', height: '100%', objectFit: 'contain' }} />
                                     <div className="position-absolute bottom-0 end-0 bg-light rounded-circle border border-3 border-white p-1" style={{ cursor: 'pointer' }}>
-                                        <input type="file" style={{ opacity: 0, width: '100%', height: '100%', position: 'absolute', left: 0, top: 0, cursor: 'pointer' }} />
                                         <MdOutlineAddAPhoto style={{ width: '25px', height: '20px', cursor: 'pointer' }} />
                                     </div>
                                 </div>
@@ -182,6 +291,48 @@ const ProfilePage = () => {
                                 </ListGroup.Item>
                             </ListGroup>
                         </div>
+                        <Modal show={showModalInput} onHide={handleCloseModalInput}>
+                        {errors.avatar && <Alert variant="danger" className="m-3 p-3">{errors.avatar}</Alert>}
+                <Modal.Header closeButton>
+                    <Modal.Title>Carica immagine del profilo</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div
+                        className="drag-drop-area"
+                        onDragOver={handleDragOver}
+                        onDrop={handleDrop}
+                        style={{
+                            border: '2px dashed #ccc',
+                            borderRadius: '10px',
+                            padding: '20px',
+                            textAlign: 'center',
+                            cursor: 'pointer',
+                        }}
+                        onClick={handleClickInput}
+                    >
+                        <IoCloudUploadOutline className="fs-2" />
+
+                        <p>Trascina qui la tua immagine o clicca per selezionarla.</p>
+                        <Form.Control type="file" onChange={handleFileChange} accept="image/*" ref={fileInputRef} style={{ display: 'none' }} />
+                        {selectedFile && <div className="mt-3"> <FcUpload className="fs-3" />
+                            {selectedFile.name}</div>}
+                    </div>
+                </Modal.Body>
+                <Modal.Footer className="d-flex align-items-center">
+                    <Button variant="secondary" size="sm" className="btn-create px-4 py-2 rounded rounded-1" onClick={handleCloseModalInput}>
+                        Annulla
+                    </Button>
+                    <div style={{ width: '104px', height: '39px' }}>
+  <Button variant="primary" size="sm" className="w-100 h-100" onClick={handleUploadAvatar}>
+    {loadingAvatar ? (
+      <Spinner animation="border" size="sm" />
+    ) : (
+      "Convalida"
+    )}
+  </Button>
+</div>
+                </Modal.Footer>
+            </Modal>
                     </Col>
 
                     <Col md={9} >
@@ -296,7 +447,7 @@ const ProfilePage = () => {
 </Form.Group>
 
                                         <Button variant="secondary" type="submit" className="btn-create px-4 py-2 rounded rounded-1">
-                                            Salva
+                                            {isLoading ? <Spinner animation="border" variant="light" size="sm" /> : "Salva"}
                                         </Button>
                                     </Form>
                                 </div>
@@ -309,12 +460,30 @@ const ProfilePage = () => {
                                         <IoIosInformationCircleOutline />
                                         <p className="m-0">Ti informiamo che eliminare l&apos;account comporterà la cancellazione di tutti i tuoi dati</p>
                                     </div>
-                                    <Button variant="secondary" className="btn-create px-4 py-2 rounded rounded-1 border-0">Elimina Profilo</Button>
+                                    <Button variant="secondary" className="btn-create px-4 py-2 rounded rounded-1 border-0" onClick={handleShowModal}>
+                                        {isLoading ? <Spinner animation="border" variant="light" size="sm" /> : "Elimina"}
+                                    </Button>
                                 </div>
                             )}
                         </div>
                     </Col>
                 </Row>
+                <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Eliminazione account</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="d-flex flex-column align-items-center">
+            <p>Stai per eliminare il tuo account, tutti i tuoi dati saranno eliminati, sicuro di voler procedere?</p>
+        </Modal.Body>
+        <Modal.Footer >
+          <Button variant="secondary" size="sm" className="btn-create px-4 py-2 rounded rounded-1" onClick={handleCloseModal} >
+            Annulla
+          </Button>
+          <Button variant="primary" size="sm" className="px-4 py-2 rounded rounded-1" onClick={handleDeleteAccount} >
+            {isLoading ? <Spinner animation="border" variant="light" size="sm" /> : "Elimina"}
+          </Button>
+        </Modal.Footer>
+      </Modal>
             </Container>
         </div>
     );
