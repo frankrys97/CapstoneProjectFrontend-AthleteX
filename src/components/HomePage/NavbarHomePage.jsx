@@ -8,6 +8,7 @@ import { IoSettingsOutline } from 'react-icons/io5';
 import apiClient from '../../utils/axiosConfig';
 import { logout } from '../../redux/actions/index.js';
 import iconaProfilo from "../../assets/HomePage/Icona-profilo.svg";
+import "../../style/HomePage/HomePage.scss";
 
 
 const NavbarHomePage = () => {
@@ -50,7 +51,7 @@ const NavbarHomePage = () => {
             <NavDropdown
               title={
                 <div className="d-flex align-items-center" style={{ cursor: 'pointer' }}>
- <img
+                <img
                   src={isDefaultAvatar ? iconaProfilo : user.avatar}
                   alt="Icona profilo"
                   style={{ maxWidth: '40px', height: '30px', borderRadius: '50%', marginRight: '10px' }}
@@ -59,7 +60,7 @@ const NavbarHomePage = () => {
               }
               id="user-nav-dropdown"
               align="end"
-              className="no-caret d-flex align-items-center"
+              className="no-caret d-flex align-items-center w-100"
             >
               <NavDropdown.Item as={NavLink} to="/account" >
                 <AiOutlineUser className="me-2" />

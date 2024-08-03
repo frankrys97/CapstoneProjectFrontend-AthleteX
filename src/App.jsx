@@ -1,4 +1,5 @@
 import "./style/custom.scss";
+import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import apiClient from "./utils/axiosConfig";
 import LandingPage from "./components/LandingPage";
@@ -8,6 +9,7 @@ import HomePage from "./components/HomePage/HomePage";
 import JoinPage from "./components/JoinPage/JoinPage";
 import CreateTeamPage from "./components/CreateTeamPage/CreateTeamPage";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
+import TeamPage from "./components/TeamPage/TeamPage";
 
 function App() {
   console.log(apiClient); 
@@ -23,6 +25,7 @@ function App() {
         <Route path="/team/join" element={<JoinPage />} />
         <Route path="/team/create" element={<CreateTeamPage />} />
         <Route path="/account" element={<ProfilePage />} />
+        <Route path="/team/:teamName" element={<TeamPage />} />
       </Routes>
     </BrowserRouter>
     </div>

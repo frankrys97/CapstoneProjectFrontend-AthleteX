@@ -12,6 +12,7 @@ import apiClient from "../../utils/axiosConfig";
 import { useNavigate } from "react-router-dom";
 import { logout, recognizeUser } from "../../redux/actions";
 import { IoCloudUploadOutline } from "react-icons/io5";
+import { Bounce, toast, ToastContainer } from "react-toastify";
 const ProfilePage = () => {
     const user = useSelector((state) => state.authenticate.user);
     const [activeSection, setActiveSection] = useState("profile");
@@ -171,6 +172,17 @@ const ProfilePage = () => {
                 setIsLoading(false);
                 console.log(response.data);
                 dispatch(recognizeUser(response.data));
+                toast.success("Modifiche salvate con successo", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    transition: Bounce,
+                    });
                 setFormData({
                     ...formData,
                     oldPassword: "",
@@ -178,7 +190,6 @@ const ProfilePage = () => {
                     confirmPassword: "",
                 })
             } catch (error) {
-                // Verifica il tipo di errore e imposta un messaggio specifico
                 if (error.response && error.response.data) {
                     if (error.response.data.message === "Wrong old password") {
                         setErrors({ ...errors, oldPassword: 'La vecchia password è errata.' });
@@ -255,6 +266,7 @@ const ProfilePage = () => {
     return (
         <div className="profile-page">
             <NavbarHomePage />
+            <ToastContainer />
             <Container>
                 <Row>
                     <h4 className="mt-5">Il mio account</h4>
@@ -403,7 +415,7 @@ const ProfilePage = () => {
             {showOldPassword ? <FaEyeSlash /> : <FaEye />}
         </Button>
     </InputGroup>
-    {errors.oldPassword && <div className="text-danger">{errors.oldPassword}</div>}
+    {errors.oldPassword && formData.password && <div className="text-danger">{errors.oldPassword}</div>}
 </Form.Group>
 
 <Form.Group controlId="password" className="mb-3 d-flex flex-column justify-content-start align-items-start flex-md-row align-items-md-center gap-3 form-group-profile-page">

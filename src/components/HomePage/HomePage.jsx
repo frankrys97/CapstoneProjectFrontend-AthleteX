@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { Card, Button, Container, Row, Col, Dropdown, ButtonGroup, Modal } from 'react-bootstrap';
 import NavbarHomePage from './NavbarHomePage';
 import apiClient from '../../utils/axiosConfig';
@@ -12,7 +12,7 @@ import { BsThreeDots } from 'react-icons/bs';
 import { MdOutlineLocalPostOffice } from 'react-icons/md';
 import { IoCalendarOutline } from 'react-icons/io5';
 import { PiSoccerBallThin } from 'react-icons/pi';
-import { cancelTeamOfPlayer } from '../../redux/actions';
+import { cancelTeamOfPlayer, getEventsOfTeam, getPlayersOfTeam, setTeam } from '../../redux/actions';
 
 const Homepage = () => {
   const user = useSelector((state) => state.authenticate.user);
@@ -20,6 +20,8 @@ const Homepage = () => {
   const [teams, setTeams] = useState([]);
   const [show, setShow] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState(null); 
+  const [loading, setLoading] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const dispatch = useDispatch();
 
   const handleClose = () => setShow(false);
@@ -30,12 +32,17 @@ const Homepage = () => {
 
   useEffect(() => {
     const fetchTeams = async () => {
+      setLoading(true);
       try {
         if (user.userType === 'COACH') {
           const response = await apiClient.get('/teams');
+          setLoading(false);
+
           setTeams(response.data.content);
         } else if (user.userType === 'PLAYER' && user.team) {
           const response = await apiClient.get(`/teams/${user.team.id}`);
+
+          setLoading(false);
           setTeams([response.data]);
         }
       } catch (error) {
@@ -44,7 +51,7 @@ const Homepage = () => {
     };
 
     fetchTeams();
-  }, [user, teams]);
+  }, [user, refresh]);
 
   const handleNavigate = (path) => {
     navigate(path);
@@ -58,6 +65,7 @@ const Homepage = () => {
     try {
       const response = await apiClient.delete(`/teams/${selectedTeam.id}`);
       console.log(response.data);
+      setRefresh(!refresh);
     } catch (error) {
       console.error(error);
     }
@@ -89,12 +97,34 @@ const Homepage = () => {
     }
   };
 
+  const handleTeamPage = async (teamId, teamName) => {
+    try {
+      const team = await apiClient.get(`/teams/${teamId}`);
+      const events = await apiClient.get(`/teams/${teamId}/events`);
+      const players = await apiClient.get(`/teams/${teamId}/components`);
+      console.log(team.data);
+      dispatch(setTeam(team.data));
+      dispatch(getPlayersOfTeam(players.data));
+      dispatch(getEventsOfTeam(events.data));
+      navigate(`/team/${teamName}`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
 
 
   return (
     <div className='homepage'>
       <NavbarHomePage />
-          {user.userType === 'COACH' && teams && teams.length === 0 && (
+      {loading && (
+        <div className="d-flex justify-content-center align-items-center h-100">
+          <div className="spinner-border text-secondary" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      )}
+          { !loading &&  user.userType === 'COACH' && teams && teams.length === 0 && (
       <Container fluid className="main-content d-flex align-items-center justify-content-center text-secondary mt-2 ">
         <Row className="w-100 gap-3">
               <Col xs={12}>
@@ -121,7 +151,7 @@ const Homepage = () => {
           </Container>
           )}
 
-      {user.userType === 'COACH' && teams && teams.length > 0 && (
+      { !loading && user.userType === 'COACH' && teams && teams.length > 0 && (
         <Container className='mt-3'> 
           <Row className="w-100 h-100 g-3 d-flex justify-content-start gy-5">
             <Col xs={12} className='mb-3' >
@@ -160,12 +190,12 @@ const Homepage = () => {
                           </Dropdown.Menu>
                         </Dropdown>
                       </div>
-                      <Link to={`/team/${team.id}`} className="text-decoration-none w-100 text-secondary"> 
+                      <div onClick={() => handleTeamPage(team.id, team.name)} className="text-decoration-none w-100 text-secondary" style={{ cursor: 'pointer' }}> 
                         <Card.Title className="mt-3 text-nowrap overflow-auto">{team.name}</Card.Title>
                         <Card.Text className='text-muted d-flex align-items-center gap-2'> <IoCalendarOutline />
                           <span>{formattedDate}</span>
                         </Card.Text>
-                      </Link>
+                      </div>
                     </Card.Body>
                   </Card>
                 </Col>
@@ -193,7 +223,7 @@ const Homepage = () => {
         </Container>
       )}
 
-      {user.userType === 'PLAYER' && !user.team && (
+      { !loading && user.userType === 'PLAYER' && !user.team && (
        <Container fluid className="main-content d-flex align-items-center justify-content-center text-secondary mt-2 ">
        <Row className="w-100 gap-3">
              <Col xs={12}>
@@ -220,7 +250,7 @@ const Homepage = () => {
          </Container>
       )}
 
-      {user.userType === 'PLAYER' && user.team && (
+      {!loading && user.userType === 'PLAYER' && user.team && (
          <Container className='mt-3'> 
          <Row className="w-100 h-100 g-3 d-flex justify-content-start gy-5">
            <Col xs={12} className='mx-auto' >

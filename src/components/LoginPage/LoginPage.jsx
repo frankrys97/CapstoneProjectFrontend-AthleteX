@@ -5,7 +5,7 @@ import logo from "../../assets/Esecutivi/Logo/svg/AthleteX - colore 1.svg";
 import logo2 from "../../assets/Esecutivi/Logo/svg/AthleteX - colore 4.svg";
 import axios from 'axios';
 import "../../style/RegisterPage/RegisterPage.scss";
-import { NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import Footer from '../Footer.jsx';
 import { CSSTransition } from 'react-transition-group';
 import { useDispatch } from 'react-redux';
@@ -136,6 +136,12 @@ const LoginPage = () => {
                     </Button>
                   </InputGroup>
                 </Form.Group>
+
+                <div className='d-flex flex-column align-items-start gap-3'>
+
+           
+
+                <Link to="/register" className="text-decoration-none" style={{fontSize: '14px'}} >Non hai un account? Registrati!</Link>
                 
                 <Button variant="primary" type="submit" className="fw-semibold" disabled={loading} style={{ minWidth: '150px', height: '50px' }}>
                   {loading ? (
@@ -153,6 +159,7 @@ const LoginPage = () => {
                     'Accedi'
                   )}
                 </Button>
+                </div>
               </Form>
             </CSSTransition>
           </Col>

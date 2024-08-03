@@ -34,15 +34,17 @@
     }
   }
 .navbar .dropdown-menu {
-    width: 100%;
+    width: 100% !important;
     border-radius: 0%;
-    min-width: none !important;
 }
   
   .navbar .dropdown-menu.show {
     border-radius: 0%;
-    width: 100%;
-    min-width: none !important;
+    width: 100% !important;
+  }
+
+  .dropdown-menu {
+    min-width: 250px !important;
   }
 
   

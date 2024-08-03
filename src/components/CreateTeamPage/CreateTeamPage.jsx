@@ -30,6 +30,9 @@ const CreateTeamPage = () => {
 const navigate = useNavigate();
     const [countries, setCountries] = useState([]);
 
+    const [errors, setErrors] = useState({});
+
+
     useEffect(() => {
         const fetchCountries = async () => {
             try {
@@ -57,14 +60,44 @@ const navigate = useNavigate();
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+
+        const newErrors = { ...errors };
+        if (value.trim() !== '') {
+            delete newErrors[name];
+        }
+    
+        setErrors(newErrors);
     };
 
     const handleAvatarChange = (e) => {
         setAvatar(e.target.files[0]);
     };
 
+    const validateEmail = (email) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      };
+    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        let newErrors = {};
+        if (!formData.name) newErrors.name = "Il nome è obbligatorio";
+        if (!formData.creationDate) newErrors.creationDate = "La data di creazione è obbligatoria";
+        if (!formData.email) newErrors.email = "L'email è obbligatoria";
+        if (!validateEmail(formData.email)) newErrors.email = "L'email non è valida, deve essere nel formato 'nJ9oJ@example.com'";
+        if (!formData.address) newErrors.address = "L'indirizzo è obbligatorio";
+        if (!formData.country) newErrors.country = "Il paese è obbligatorio";
+        
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+        
+        setErrors({});
+
+
         const data = new FormData();
         Object.keys(formData).forEach(key => {
             data.append(key, formData[key]);
@@ -144,15 +177,17 @@ const navigate = useNavigate();
                                 <div className="vr h-100"></div>
                                 </Col>
                                 <Col md={7}>
-                                    <Form onSubmit={handleSubmit}>
+                                    <Form onSubmit={handleSubmit} >
                                         <Form.Group className="mb-3">
                                             <Form.Label>Nome</Form.Label>
-                                            <Form.Control type="text" name="name" value={formData.name} onChange={handleChange} required />
+                                            <Form.Control isInvalid={!!errors.name} type="text" name="name" value={formData.name} onChange={handleChange} required />
+                                            <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
                                         </Form.Group>
                                         <Form.Group className="mb-3">
                                             <Form.Label>Data di Creazione</Form.Label>
-                                            <Form.Control type="date" name="creationDate" value={formData.creationDate} onChange={handleChange} required    max={new Date().toISOString().split('T')[0]} 
- />
+                                            <Form.Control isInvalid={!!errors.creationDate} type="date" name="creationDate" value={formData.creationDate} onChange={handleChange} required    max={new Date().toISOString().split('T')[0]} 
+ /> 
+                                            <Form.Control.Feedback type="invalid">{errors.creationDate}</Form.Control.Feedback>
                                         </Form.Group>
                                         <Form.Group className="mb-3">
                 <Form.Label>Telefono</Form.Label>
@@ -169,12 +204,16 @@ const navigate = useNavigate();
             </Form.Group>
                                         <Form.Group className="mb-3">
                                             <Form.Label>Email</Form.Label>
-                                            <Form.Control type="email" name="email" value={formData.email} onChange={handleChange} required />
+                                            <Form.Control isInvalid={!!errors.email} type="email" name="email" value={formData.email} onChange={handleChange} required />
+                                            <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
                                         </Form.Group>
                                         <Form.Group className="mb-3">
                                             <Form.Label>Indirizzo</Form.Label>
-                                            <Form.Control type="text" name="address" value={formData.address} onChange={handleChange} required />
-                                        </Form.Group>
+                                            
+                                <Form.Control isInvalid={!!errors.address} type="text" name="address" value={formData.address} onChange={handleChange} required />
+        <Form.Control.Feedback type="invalid">{errors.address}</Form.Control.Feedback>
+    </Form.Group>
+
                                         <Form.Group className="mb-3">
                 <Form.Label>Paese</Form.Label>
                 <Form.Control 
@@ -183,11 +222,13 @@ const navigate = useNavigate();
                     value={formData.country} 
                     onChange={handleChange} 
                     required
+                    isInvalid={!!errors.country}
                 >
                     <option value="">Seleziona un paese</option>
                     {countries.map((country, index) => (
                         <option key={index} value={country}>{country}</option>
                     ))}
+{/* <Form.Control.Feedback type="invalid">{errors.country}</Form.Control.Feedback> */}
                 </Form.Control>
             </Form.Group>
                                     </Form>

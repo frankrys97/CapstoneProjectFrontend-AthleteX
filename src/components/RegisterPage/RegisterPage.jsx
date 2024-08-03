@@ -5,7 +5,7 @@ import logo from "../../assets/Esecutivi/Logo/svg/AthleteX - colore 1.svg";
 import logo2 from "../../assets/Esecutivi/Logo/svg/AthleteX - colore 4.svg";
 import axios from 'axios';
 import "../../style/RegisterPage/RegisterPage.scss";
-import { NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import Footer from '../Footer.jsx';
 
 const RegisterPage = () => {
@@ -284,9 +284,13 @@ const RegisterPage = () => {
                   <option value="Player">Giocatore</option>
                 </Form.Select>
               </Form.Group>
+              <div className='d-flex flex-column align-items-start gap-3'>
+
+              <Link to="/login" className="text-decoration-none" style={{fontSize: '14px'}} >Hai un account? Accedi!</Link>
               <Button variant="primary" type="submit" className="fw-semibold" disabled={loading}>
                 Registrati
               </Button>
+              </div>
             </Form>
           </Col>
         </Row>
