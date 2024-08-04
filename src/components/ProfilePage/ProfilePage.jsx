@@ -272,12 +272,12 @@ const ProfilePage = () => {
                     <h4 className="mt-5">Il mio account</h4>
                 </Row>
 
-                <Row>
+                <Row className="g-3">
                     <Col md={3}>
                         <div className="left-column-profile-page">
                             <div className="d-flex flex-column align-items-center">
-                                <div className="bg-light rounded-circle p-3 border border-1 position-relative mt-3" style={{ width: '120px', height: '120px', cursor: 'pointer' }} onClick={handleShowModalInput}>
-                                    <img src={isDefaultAvatar ? iconaProfilo : user.avatar} alt="icona profilo" style={{ cursor: 'pointer', width: '100%', height: '100%', objectFit: 'contain' }} />
+                                <div className="bg-light rounded-circle border border-1 position-relative mt-3" style={{ width: '100px', height: '100px', cursor: 'pointer' }} onClick={handleShowModalInput}>
+                                    <img src={isDefaultAvatar ? iconaProfilo : user.avatar} alt="icona profilo" className="w-100 h-100 rounded-circle" />
                                     <div className="position-absolute bottom-0 end-0 bg-light rounded-circle border border-3 border-white p-1" style={{ cursor: 'pointer' }}>
                                         <MdOutlineAddAPhoto style={{ width: '25px', height: '20px', cursor: 'pointer' }} />
                                     </div>

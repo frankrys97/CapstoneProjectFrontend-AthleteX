@@ -50,12 +50,17 @@ const NavbarHomePage = () => {
             <div className="vr mx-2"></div>
             <NavDropdown
               title={
-                <div className="d-flex align-items-center" style={{ cursor: 'pointer' }}>
+                <div className="d-flex align-items-center gap-2" style={{ cursor: 'pointer' }}>
+                  <div style={{ width: '30px', height: '30px', borderRadius: '50%' }}>
+
                 <img
                   src={isDefaultAvatar ? iconaProfilo : user.avatar}
                   alt="Icona profilo"
-                  style={{ maxWidth: '40px', height: '30px', borderRadius: '50%', marginRight: '10px' }}
-                />                  <p className='m-0 d-none d-md-block'>{user && `${user.name} ${user.surname}`}</p>
+                 className='w-100 h-100 rounded-circle' 
+                  
+                  />                  
+                  </div>
+                  <p className='m-0 d-none d-md-block'>{user && `${user.name} ${user.surname}`}</p>
                 </div>
               }
               id="user-nav-dropdown"

@@ -5,6 +5,8 @@
 body {
     font-family: 'Montserrat', sans-serif;
     color: #161834;
+    box-sizing: border-box;
+    
 }
 
 

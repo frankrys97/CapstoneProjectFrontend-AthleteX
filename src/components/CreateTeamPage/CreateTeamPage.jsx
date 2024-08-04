@@ -123,7 +123,7 @@ const navigate = useNavigate();
                 secondaryColor: '#161832',
             })
             setAvatar(null);
-            handleNavigate(`/teams/${response.data.id}`);
+            handleNavigate(`/homepage`);
         } catch (error) {
             console.error(error);
         }
@@ -140,7 +140,7 @@ const navigate = useNavigate();
     
 
     return (
-        <div className="create-team-page">
+        <div className="create-team-page ">
             <NavbarHomePage />
             <Container>
                 <Row>

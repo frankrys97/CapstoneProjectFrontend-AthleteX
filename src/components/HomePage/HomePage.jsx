@@ -119,9 +119,15 @@ const Homepage = () => {
       <NavbarHomePage />
       {loading && (
         <div className="d-flex justify-content-center align-items-center h-100">
-          <div className="spinner-border text-secondary" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
+<div className="honeycomb">
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
         </div>
       )}
           { !loading &&  user.userType === 'COACH' && teams && teams.length === 0 && (
@@ -152,7 +158,7 @@ const Homepage = () => {
           )}
 
       { !loading && user.userType === 'COACH' && teams && teams.length > 0 && (
-        <Container className='mt-3'> 
+        <Container className='mt-5 main-content-profile-coach-teams'> 
           <Row className="w-100 h-100 g-3 d-flex justify-content-start gy-5">
             <Col xs={12} className='mb-3' >
               <div className='d-flex flex-column flex-md-row justify-content-between align-items-center'>
@@ -224,7 +230,7 @@ const Homepage = () => {
       )}
 
       { !loading && user.userType === 'PLAYER' && !user.team && (
-       <Container fluid className="main-content d-flex align-items-center justify-content-center text-secondary mt-2 ">
+       <Container fluid className="main-content d-flex align-items-center justify-content-center text-secondary ">
        <Row className="w-100 gap-3">
              <Col xs={12}>
                <div className='d-flex flex-column align-items-center mb-4 gap-3'>
