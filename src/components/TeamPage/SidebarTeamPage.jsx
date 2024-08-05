@@ -8,6 +8,7 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import iconaProfilo from "../../assets/HomePage/Icona-profilo.svg";
 import tinycolor from "tinycolor2";
+import { Col } from "react-bootstrap";
 
 const SidebarTeamPage = () => {
   const team = useSelector((state) => state.team.content);
@@ -24,7 +25,8 @@ const SidebarTeamPage = () => {
   };
 
   return (
-    <div
+    <Col 
+      md={1}
       className="sidebar-team-page"
       style={{ backgroundColor: team ? `${team.primaryColor}` : "#161832" }}
     >
@@ -181,7 +183,7 @@ const SidebarTeamPage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Col>
   );
 };
 

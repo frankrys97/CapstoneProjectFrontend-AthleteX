@@ -5,6 +5,8 @@ export const CANCEL_TEAM_OF_PLAYER =  "CANCEL_TEAM_OF_PLAYER";
 export const SET_TEAM = "SET_TEAM";
 export const GET_PLAYERS_OF_TEAM = "GET_PLAYERS_OF_TEAM";
 export const GET_EVENTS_OF_TEAM = "GET_EVENTS_OF_TEAM";
+export const REMOVE_PLAYER_FROM_TEAM = "REMOVE_PLAYER_FROM_TEAM";
+
 export const login = (token) => ({
   type: LOGIN,
   payload: token,
@@ -36,6 +38,11 @@ export const getPlayersOfTeam = (players) => ({
 export const getEventsOfTeam = (events) => ({
   type: GET_EVENTS_OF_TEAM,
   payload: events,
+});
+
+export const removePlayerFromTeam = (playerId) => ({
+  type: REMOVE_PLAYER_FROM_TEAM,
+  payload: playerId,
 });
 
 

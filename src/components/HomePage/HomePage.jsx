@@ -12,7 +12,7 @@ import { BsThreeDots } from 'react-icons/bs';
 import { MdOutlineLocalPostOffice } from 'react-icons/md';
 import { IoCalendarOutline } from 'react-icons/io5';
 import { PiSoccerBallThin } from 'react-icons/pi';
-import { cancelTeamOfPlayer, getEventsOfTeam, getPlayersOfTeam, setTeam } from '../../redux/actions';
+import { cancelTeamOfPlayer, getEventsOfTeam, setTeam } from '../../redux/actions';
 
 const Homepage = () => {
   const user = useSelector((state) => state.authenticate.user);
@@ -101,10 +101,8 @@ const Homepage = () => {
     try {
       const team = await apiClient.get(`/teams/${teamId}`);
       const events = await apiClient.get(`/teams/${teamId}/events`);
-      const players = await apiClient.get(`/teams/${teamId}/components`);
       console.log(team.data);
       dispatch(setTeam(team.data));
-      dispatch(getPlayersOfTeam(players.data));
       dispatch(getEventsOfTeam(events.data));
       navigate(`/team/${teamName}`);
     } catch (error) {
@@ -160,7 +158,7 @@ const Homepage = () => {
       { !loading && user.userType === 'COACH' && teams && teams.length > 0 && (
         <Container className='mt-5 main-content-profile-coach-teams'> 
           <Row className="w-100 h-100 g-3 d-flex justify-content-start gy-5">
-            <Col xs={12} className='mb-3' >
+            <Col xs={12} >
               <div className='d-flex flex-column flex-md-row justify-content-between align-items-center'>
                 <h3 className="text-start mt-2">Le mie squadre</h3>
                 <Button variant="secondary" size='sm' className='px-3 py-2 border-0 btn-create d-none d-md-block' onClick={() => handleNavigate('/team/create')}>Crea una nuova squadra</Button>
