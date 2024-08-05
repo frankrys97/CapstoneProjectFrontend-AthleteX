@@ -232,7 +232,7 @@ const MembersTeamPage = () => {
       title: "Azione",
       key: "operation",
       fixed: "right",
-      width: 150,
+      width: 70,
       render: (text, record) => {
         const isEditing = editingRowId === record.id;
     
@@ -244,7 +244,7 @@ const MembersTeamPage = () => {
                 variant="link"
                 className="text-decoration-none"
                 onClick={() => handleEdit(record)}
-                disabled={isEditing} // Disabilita il pulsante se in modalità editing
+                disabled={isEditing}
               >
                 Modifica
               </Button>

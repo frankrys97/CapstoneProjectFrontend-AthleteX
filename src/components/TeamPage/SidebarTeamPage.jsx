@@ -30,22 +30,18 @@ const SidebarTeamPage = () => {
       className="sidebar-team-page p-0"
       style={{ backgroundColor: team ? `${team.primaryColor}` : "#161832" }}
     >
-      <div className="d-flex flex-column align-items-center gap-3 py-3">
+      <div className="d-flex justify-content-start align-items-center flex-md-column gap-3 py-md-3 h-100 ">
         <div
           className={`sidebar-item-wrapper ${
             location.pathname === `/team/${team.name}` ? "active" : ""
           }`}
         >
-          <Link to={`/team/${team.name}`} className="w-100 h-100 p-1">
+          <Link to={`/team/${team.name}`} className="w-100 h-100 d-flex align-items-center justify-content-center">
             <img
               src={team.avatar ? team.avatar : iconaProfilo}
               alt="logo squadra"
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "contain",
-                borderRadius: "50%",
-              }}
+              className="img-logo"
+             
             />
           </Link>
           <div
@@ -69,9 +65,9 @@ const SidebarTeamPage = () => {
             location.pathname === "/calendar" ? "active" : ""
           }`}
         >
-          <Link to="/calendar" className="text-decoration-none w-100 h-100">
+          <Link to="/calendar" className="w-100 h-100 d-flex align-items-center justify-content-center">
             <IoCalendarOutline
-              className="w-100 h-100 p-2"
+              className="fs-4"
               style={{
                 color: getTextColor(team ? `${team.primaryColor}` : "#161832"),
               }}
@@ -98,9 +94,9 @@ const SidebarTeamPage = () => {
             location.pathname === "/members" ? "active" : ""
           }`}
         >
-          <Link to="/members" className="text-decoration-none w-100 h-100">
+          <Link to="/members" className=" w-100 h-100 d-flex align-items-center justify-content-center">
             <IoPeopleOutline
-              className="w-100 h-100 p-2"
+              className="fs-4"
               style={{
                 color: getTextColor(team ? `${team.primaryColor}` : "#161832"),
               }}
@@ -127,9 +123,9 @@ const SidebarTeamPage = () => {
             location.pathname === "/settingsTeam" ? "active" : ""
           }`}
         >
-          <Link to="/settingsTeam" className="text-decoration-none w-100 h-100">
+          <Link to="/settingsTeam" className=" w-100 h-100 d-flex align-items-center justify-content-center">
             <IoSettingsOutline
-              className="w-100 h-100 p-2"
+              className="fs-4"
               style={{
                 color: getTextColor(team ? `${team.primaryColor}` : "#161832"),
               }}
@@ -158,7 +154,7 @@ const SidebarTeamPage = () => {
         >
           <Link
             to="/account"
-            className="w-100 h-100 d-flex justify-content-center align-items-center"
+            className=" w-100 h-100 d-flex align-items-center justify-content-center"
           >
             <img
               src={isDefaultAvatar ? iconaProfilo : user.avatar}

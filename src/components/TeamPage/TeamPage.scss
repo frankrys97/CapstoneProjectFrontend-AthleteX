@@ -17,48 +17,104 @@
 
 
 
+@media screen and (min-width: 768px) {
+    .sidebar-team-page {
+        min-height: calc(100vh - 62px);
+        max-width: 80px;
+        
+       
+            
+            .sidebar-item-wrapper {
+                display: flex;
+                position: relative;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                height: 40px;
+                transition: background-color 0.3s ease-in-out;
+        
+                &:hover {
+                    background-color: rgba(0, 0, 0, 0.42);
+                }
+        
+                &.active {
+                    background-color: rgba(0, 0, 0, 0.42);
+                    border-left: 4px solid #333; // Indica lo stato attivo
+                }
+        
+                .popover-like {
+                    position: absolute;
+                    top: 50%;
+                    left: 110%;
+                    transform: translateY(-50%);
+                    padding: 5px 10px;
+                    border-radius: 4px;
+                    opacity: 0;
+                    transition: opacity 0.3s ease;
+                    pointer-events: none; 
+                    z-index: 10;
+                    white-space: nowrap;
+                }
+        
+                &:hover .popover-like {
+                    opacity: 1;
+                }
 
-.sidebar-team-page {
-min-height: calc(100vh - 62px);
-max-width: 60px;
-    
-    .sidebar-item-wrapper {
-        display: flex;
-        position: relative;
-        align-items: center;
-        justify-content: center;
+                .img-logo {
+                    height: 100%;
+                }
+            }
+        }
+}
+
+
+@media screen and (max-width: 767px) {
+    .sidebar-team-page {
+        height: 60px;
         width: 100%;
-        height: 40px;
-        transition: background-color 0.3s ease-in-out;
+       
+    
+        .sidebar-item-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            transition: background-color 0.3s ease-in-out;
+            padding: 0 10px;
+    
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.42);
+            }
+    
+            &.active {
+                background-color: rgba(0, 0, 0, 0.42);
+                border-top: 4px solid #333; // Indica lo stato attivo
+            }
+    
+            .popover-like {
+                display: none;
+            }
+    
+            &:hover .popover-like {
+                opacity: 1;
+            }
 
-        &:hover {
-            background-color: rgba(0, 0, 0, 0.42);
+            .img-logo {
+                height: 75%;
+            }
         }
-
-        &.active {
-            background-color: rgba(0, 0, 0, 0.42);
-            border-left: 4px solid #333; // Indica lo stato attivo
-        }
-
-        .popover-like {
-            position: absolute;
-            top: 50%;
-            left: 110%;
-            transform: translateY(-50%);
-            padding: 5px 10px;
-            border-radius: 4px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none; 
-            z-index: 10;
-            white-space: nowrap;
-        }
-
-        &:hover .popover-like {
-            opacity: 1;
-        }
+    
     }
 }
+
+   
+
+
+
+
+
+
 
 
 
