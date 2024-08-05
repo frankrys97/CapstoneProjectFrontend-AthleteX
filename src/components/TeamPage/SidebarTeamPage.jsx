@@ -27,7 +27,7 @@ const SidebarTeamPage = () => {
   return (
     <Col 
       md={1}
-      className="sidebar-team-page"
+      className="sidebar-team-page p-0"
       style={{ backgroundColor: team ? `${team.primaryColor}` : "#161832" }}
     >
       <div className="d-flex flex-column align-items-center gap-3 py-3">

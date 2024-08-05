@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import apiClient from "../../utils/axiosConfig";
 import { getPlayersOfTeam, removePlayerFromTeam } from "../../redux/actions";
 import { useEffect, useState } from "react";
+import "./TeamPage.scss";
 
 const MembersTeamPage = () => {
   const positionOptions = [
@@ -160,7 +161,7 @@ const MembersTeamPage = () => {
       title: "Numero maglia",
       dataIndex: "jerseyNumber",
       key: "jerseyNumber",
-      width: 150,
+      width: 100,
       render: (text, record) =>
         editingRowId === record.id ? (
           <Select
@@ -170,6 +171,7 @@ const MembersTeamPage = () => {
             }
             autoFocus
             options={generateJerseyNumberOptions(players)}
+            style={{ width: "100%" }}
           />
         ) : (
           <span>{text !== 0 ? text : "N/A"}</span>
@@ -370,6 +372,7 @@ const MembersTeamPage = () => {
       );
       setRefresh(!refresh);
       setEditingRowId(null);
+
     } catch (error) {
       console.error("Errore durante il salvataggio:", error);
     }
@@ -384,11 +387,11 @@ const MembersTeamPage = () => {
   return (
     <div className="members-team-page">
       <NavbarHomePage />
-      <Container fluid className="p-0">
-        <Row className="w-100">
+      <Container fluid>
+        <Row className="d-flex justify-content-between">
           <SidebarTeamPage />
-          <Col md={11} className="p-md-4">
-            <Row>
+          <Col md={11} className=" p-3 flex-grow-1 d-flex flex-column align-items-center h-100">
+            <Row className="w-100">
               <Col>
                 <h5 style={{ fontStyle: "italic" }} className="text-muted">
                   <span
@@ -403,8 +406,8 @@ const MembersTeamPage = () => {
               </Col>
             </Row>
 
-            <Row className="mt-5">
-              <Col>
+            <Row className="mt-5 w-100">
+              <Col className="w-100">
                 <div className="d-flex flex-column justify-content-between align-items-start gap-3 flex-sm-row align-items-sm-end">
                   <h5 className="text-dark mb-0">Membri</h5>
                   <div>
@@ -429,15 +432,17 @@ const MembersTeamPage = () => {
               </Col>
             </Row>
 
-            <Row className="p-2">
+            <Row className="w-100">
               <Col
                 style={{
                   minHeight: "60vh",
-                  maxHeight: "60vh",
-                  backgroundColor: "white",
+                  maxHeight: "60vh"
                 }}
-                className="mt-4 rounded rounded-2 border border-1 p-4"
               >
+                <div style={{backgroundColor: "white"}}                 className="mt-4 rounded rounded-2 border border-1 p-4"
+                >
+
+               
                 <div className="d-flex flex-column align-items-start justify-content-between flex-md-row align-items-md-center gap-3">
                   <h5>
                     {players && players.length === 0
@@ -459,7 +464,7 @@ const MembersTeamPage = () => {
                     </Button>
                   </div>
                 </div>
-                <div className="mt-3">
+                <div className="mt-3 d-flex">
                   <Table
                     columns={columns(
                       showDeleteConfirm,
@@ -469,11 +474,11 @@ const MembersTeamPage = () => {
                     )}
                     dataSource={players}
                     rowKey="id"
-                    pagination={{ pageSize: 10 }}
+                    pagination={{ pageSize: 5 }}
                     scroll={{ x: 1300, y: 220 }}
                     size="small"
-                    className="w-100"
                   />
+                </div>
                 </div>
               </Col>
             </Row>

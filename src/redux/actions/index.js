@@ -6,6 +6,7 @@ export const SET_TEAM = "SET_TEAM";
 export const GET_PLAYERS_OF_TEAM = "GET_PLAYERS_OF_TEAM";
 export const GET_EVENTS_OF_TEAM = "GET_EVENTS_OF_TEAM";
 export const REMOVE_PLAYER_FROM_TEAM = "REMOVE_PLAYER_FROM_TEAM";
+export const UPDATE_PLAYER_FROM_TEAM = "UPDATE_PLAYER_FROM_TEAM";
 
 export const login = (token) => ({
   type: LOGIN,
@@ -43,6 +44,11 @@ export const getEventsOfTeam = (events) => ({
 export const removePlayerFromTeam = (playerId) => ({
   type: REMOVE_PLAYER_FROM_TEAM,
   payload: playerId,
+});
+
+export const updatePlayerFromTeam = (team) => ({
+  type: UPDATE_PLAYER_FROM_TEAM,
+  payload: team,
 });
 
 

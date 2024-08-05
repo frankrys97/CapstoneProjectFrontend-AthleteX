@@ -1,4 +1,4 @@
-import { GET_EVENTS_OF_TEAM, GET_PLAYERS_OF_TEAM, SET_TEAM, REMOVE_PLAYER_FROM_TEAM } from "../actions";
+import { GET_EVENTS_OF_TEAM, GET_PLAYERS_OF_TEAM, SET_TEAM, REMOVE_PLAYER_FROM_TEAM, UPDATE_PLAYER_FROM_TEAM } from "../actions";
 
 const initialState = {
     content: null,
@@ -30,6 +30,11 @@ const teamReducer = (state = initialState, action) => {
                             ...state,
                             players: state.players.players.filter(player => player.id !== action.payload),
                         };
+                        case UPDATE_PLAYER_FROM_TEAM:
+                            return {
+                                ...state,
+                                players: action.payload
+                            }
         default:
             return state;
     }

@@ -1,8 +1,6 @@
 .team-page {
     background-color: #f0f0f2;
     min-height: 100vh;
-    position: relative;
-
 }
 
 .members-team-page {
@@ -22,11 +20,11 @@
 
 .sidebar-team-page {
 min-height: calc(100vh - 62px);
-    width: 60px;
-
+max-width: 60px;
+    
     .sidebar-item-wrapper {
-        position: relative;
         display: flex;
+        position: relative;
         align-items: center;
         justify-content: center;
         width: 100%;
@@ -44,8 +42,8 @@ min-height: calc(100vh - 62px);
 
         .popover-like {
             position: absolute;
-            left: 110%;
             top: 50%;
+            left: 110%;
             transform: translateY(-50%);
             padding: 5px 10px;
             border-radius: 4px;

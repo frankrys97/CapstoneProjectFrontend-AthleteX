@@ -7,13 +7,13 @@ const TeamPage = () => {
     return (
         <div className="team-page" >
             <NavbarHomePage />
-            <SidebarTeamPage />
             <Container fluid>
-                <Row className="w-100">
+                <Row>
+            <SidebarTeamPage />
 
 
 
-                    <Col className="right-side-team-page p-4">   
+                    <Col md={11}>   
                     
                     prova
                     
