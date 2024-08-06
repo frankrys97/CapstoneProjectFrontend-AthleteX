@@ -645,6 +645,8 @@ const MembersTeamPage = () => {
                 style={{
                   color: team ? `${team.secondaryColor}` : "#fd4742",
                 }}
+                as={Link}
+                to={`/team/${team.name}/settings`}
               >
                 <IoSettingsOutline />
                 <span>Impostazioni</span>

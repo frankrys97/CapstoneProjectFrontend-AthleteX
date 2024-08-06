@@ -9,6 +9,7 @@ import apiClient from '../../utils/axiosConfig';
 import { logout } from '../../redux/actions/index.js';
 import iconaProfilo from "../../assets/HomePage/Icona-profilo.svg";
 import "../../style/HomePage/HomePage.scss";
+import { RiTeamLine } from 'react-icons/ri';
 
 
 const NavbarHomePage = () => {
@@ -71,9 +72,9 @@ const NavbarHomePage = () => {
                 <AiOutlineUser className="me-2" />
                 <span>Il mio account</span>
               </NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/preferences">
-                <IoSettingsOutline className="me-2"  />
-                <span>Preferenze</span>
+              <NavDropdown.Item as={NavLink} to="/homepage">
+                <RiTeamLine className="me-2"  />
+                <span>Le mie squadre</span>
               </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={handleLogout}>
