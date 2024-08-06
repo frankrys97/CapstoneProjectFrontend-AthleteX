@@ -2,16 +2,15 @@ import { Button, Col, Row } from "react-bootstrap";
 import { Modal, Alert, Input, Select, DatePicker, TimePicker } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { Calendar, momentLocalizer } from 'react-big-calendar';
-import moment from 'moment';
+import moment from 'moment/min/moment-with-locales';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { useEffect, useState } from "react";
 import { addEventToTeam, updateEventInTeam, deleteEventFromTeam, fetchTeamEvents } from "../../redux/actions";
 import TeamPageLayout from "./TeamPageLayout";
 import "./TeamPage.scss";
 import { Link, useNavigate } from "react-router-dom";
-import 'moment/locale/it.js';
+import "moment/locale/it";
 
-console.log(moment.locales());
 moment.locale('it');
 const localizer = momentLocalizer(moment);
 
@@ -147,6 +146,21 @@ const CalendarPage = () => {
     description: event.description,
   }));
 
+  const messages = {
+    allDay: "Tutto il giorno",
+    previous: "Precedente",
+    next: "Successivo",
+    today: "Oggi",
+    month: "Mese",
+    week: "Settimana",
+    day: "Giorno",
+    agenda: "Agenda",
+    date: "Data",
+    time: "Ora",
+    event: "Evento",
+    showMore: (total) => `+${total} più`,
+  };
+
   return (
     <TeamPageLayout>
       <Row className="w-100">
@@ -163,11 +177,12 @@ const CalendarPage = () => {
           </div>
           <Calendar
             localizer={localizer}
-            locale="it"
+            messages={messages}
             events={formattedEvents}
             startAccessor="start"
             endAccessor="end"
             style={{ height: 400 }}
+            locale="it"
             selectable
             onSelectSlot={handleDateSelect}
             onSelectEvent={handleEventClick}

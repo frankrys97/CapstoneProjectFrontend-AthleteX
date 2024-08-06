@@ -17,13 +17,6 @@ import { useEffect, useRef, useState } from "react";
 import "./TeamPage.scss";
 import TeamPageLayout from "./TeamPageLayout";
 import { FcUpload } from "react-icons/fc";
-import moment from 'moment';
-import 'moment/locale/it'; // Importa il locale italiano
-
-moment.locale('it'); // Imposta il locale globale su italiano
-
-const formattedDate = moment().format('LLLL');
-console.log(formattedDate); // Es: "lunedì 6 agosto 2024 12:00"
 
 const MembersTeamPage = () => {
   const positionOptions = [
