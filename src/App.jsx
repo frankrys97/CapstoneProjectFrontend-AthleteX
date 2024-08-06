@@ -16,6 +16,10 @@ import AddPlayerPage from "./components/TeamPage/AddPlayerPage";
 import CreatePlayerPage from "./components/TeamPage/CreatePlayerPage";
 import SettingsPageTeam from "./components/TeamPage/SettingsPageTeam";
 import InvitePage from "./components/TeamPage/InvitePage";
+import CalendarPage from "./components/TeamPage/CalendarPage";import moment from 'moment';
+import 'moment/locale/it'; // Importa il locale italiano
+
+moment.locale('it'); // Imposta il locale globale su italiano
 
 function App() {
   console.log(apiClient); 
@@ -35,8 +39,9 @@ function App() {
         <Route path="/members" element={<MembersTeamPage />} />
         <Route path="/team/:teamName/add-member" element={<AddPlayerPage />} />
         <Route path="/team/:teamName/add-member/new" element={<CreatePlayerPage />} />
-        <Route path="team/:teamName/settings" element={<SettingsPageTeam />} />
-        <Route path="team/add-member/invite" element={<InvitePage />} />
+        <Route path="/team/:teamName/settings" element={<SettingsPageTeam />} />
+        <Route path="/team/add-member/invite" element={<InvitePage />} />
+        <Route path="/calendar" element={<CalendarPage />} />
          
       </Routes>
     </BrowserRouter>

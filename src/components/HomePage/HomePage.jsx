@@ -12,7 +12,7 @@ import { BsThreeDots } from 'react-icons/bs';
 import { MdOutlineLocalPostOffice } from 'react-icons/md';
 import { IoCalendarOutline } from 'react-icons/io5';
 import { PiSoccerBallThin } from 'react-icons/pi';
-import { cancelTeamOfPlayer, getEventsOfTeam, setTeam } from '../../redux/actions';
+import { cancelTeamOfPlayer, setTeam } from '../../redux/actions';
 
 const Homepage = () => {
   const user = useSelector((state) => state.authenticate.user);
@@ -102,10 +102,7 @@ const Homepage = () => {
   const handleTeamPage = async (teamId) => {
     try {
       const team = await apiClient.get(`/teams/${teamId}`);
-      const events = await apiClient.get(`/teams/${teamId}/events`);
-      console.log(team.data);
       dispatch(setTeam(team.data));
-      dispatch(getEventsOfTeam(events.data));
       navigate(`/team/${teamId}`);
     } catch (error) {
       console.error(error);

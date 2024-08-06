@@ -113,13 +113,13 @@ const CreatePlayerPage = () => {
           <div
             style={{
               minHeight: "400px",
-              width: "100%",
+              maxWidth: "950px",
               backgroundColor: "white",
               borderRadius: "8px",
               border: "1px solid #f0f0f2",
               boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.20)",
             }}
-            className="d-flex align-items-center gap-3 p-3 p-md-0"
+            className="d-flex align-items-center gap-3 p-3 p-md-0 mx-auto"
           >
             <Form onSubmit={handleSubmit} className="w-50 p-3 flex-grow-1 z-2 ">
               <Form.Group className="mb-3" controlId="formName">

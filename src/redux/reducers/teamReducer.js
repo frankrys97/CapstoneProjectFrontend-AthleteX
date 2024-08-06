@@ -3,7 +3,10 @@ import { GET_EVENTS_OF_TEAM,
     REMOVE_PLAYER_FROM_TEAM, 
     UPDATE_PLAYER_FROM_TEAM, 
     GET_PARTECIPATIONS_OF_TEAM,
-UPDATE_PLAYER_IN_TEAM } from "../actions";
+UPDATE_PLAYER_IN_TEAM, 
+ADD_EVENT_TO_TEAM,
+UPDATE_EVENT_IN_TEAM,
+DELETE_EVENT_FROM_TEAM} from "../actions";
 
 const initialState = {
     content: null,
@@ -30,8 +33,6 @@ const teamReducer = (state = initialState, action) => {
                         events: action.payload
                     }
                     case REMOVE_PLAYER_FROM_TEAM:
-                        console.log(action.payload)
-                        console.log(state.players)
                         return {
                             ...state,
                             players: state.players.players.filter(player => player.id !== action.payload),
@@ -51,6 +52,23 @@ const teamReducer = (state = initialState, action) => {
                                         ...state,
                                         players: state.players.players.map((player) => player.id === action.payload.id ? action.payload : player),
                                     }
+                                    case ADD_EVENT_TO_TEAM:
+                                        return {
+                                          ...state,
+                                          events: [...state.events, action.payload],
+                                        };
+                                      case UPDATE_EVENT_IN_TEAM:
+                                        return {
+                                          ...state,
+                                          events: state.events.map(event =>
+                                            event.id === action.payload.id ? action.payload : event
+                                          ),
+                                        };
+                                      case DELETE_EVENT_FROM_TEAM:
+                                        return {
+                                          ...state,
+                                          events: state.events.filter(event => event.id !== action.payload),
+                                        };
                           
         default:
             return state;

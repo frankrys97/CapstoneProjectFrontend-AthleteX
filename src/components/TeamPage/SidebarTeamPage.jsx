@@ -91,7 +91,7 @@ const SidebarTeamPage = () => {
 
         <div
           className={`sidebar-item-wrapper ${
-            location.pathname === "/members" ? "active" : location.pathname === `/team/add-member/invite` ? "active" : location.pathname === `/team/${team.name}/add-member` ? "active" : ""
+            location.pathname === "/members" ? "active" : location.pathname === `/team/add-member/invite` ? "active" : location.pathname === `/team/${team.name}/add-member/new` ? "active" : ""
           }`}
         >
           <Link to="/members" className=" w-100 h-100 d-flex align-items-center justify-content-center">
@@ -117,7 +117,7 @@ const SidebarTeamPage = () => {
             </span>
           </div>
         </div>
-
+{user.userType === "COACH" &&
         <div
           className={`sidebar-item-wrapper ${
             location.pathname === `/team/${team.name}/settings` ? "active" : ""
@@ -146,6 +146,7 @@ const SidebarTeamPage = () => {
             </span>
           </div>
         </div>
+        }
 
         <div
           className={`sidebar-item-wrapper ${

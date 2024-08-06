@@ -73,7 +73,7 @@ const NavbarHomePage = () => {
               </NavDropdown.Item>
               <NavDropdown.Item as={NavLink} to="/homepage">
                 <RiTeamLine className="me-2"  />
-                <span>Le mie squadre</span>
+                {user.userType === 'COACH' ? <span>Le mie squadre</span> : <span>La mia squadra</span>} 
               </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={handleLogout}>

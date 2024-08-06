@@ -238,7 +238,6 @@ const SettingsPageTeam = () => {
                             </Form.Control>
                             <Form.Control.Feedback type="invalid">{errors.country}</Form.Control.Feedback>
                         </Form.Group>
-                        <hr className="hr-line" />
                         <div className="d-flex justify-content-center">
                             <Button className="mt-3 px-3 py-2 rounded rounded-1 btn-add-member" style={{ backgroundColor: `${team.secondaryColor}`, color: `${getTextColor(`${team.secondaryColor}`)}`, borderColor: `${team.secondaryColor}` }} type="submit">Salva Modifiche</Button>
                         </div>
