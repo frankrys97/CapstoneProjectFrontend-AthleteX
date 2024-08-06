@@ -44,6 +44,8 @@ const Homepage = () => {
 
           setLoading(false);
           setTeams([response.data]);
+        } else {
+          setLoading(false);
         }
       } catch (error) {
         console.error("Error fetching teams", error);
@@ -51,7 +53,7 @@ const Homepage = () => {
     };
 
     fetchTeams();
-  }, [user, refresh]);
+  }, [user, refresh, dispatch]);
 
   const handleNavigate = (path) => {
     navigate(path);
@@ -97,14 +99,14 @@ const Homepage = () => {
     }
   };
 
-  const handleTeamPage = async (teamId, teamName) => {
+  const handleTeamPage = async (teamId) => {
     try {
       const team = await apiClient.get(`/teams/${teamId}`);
       const events = await apiClient.get(`/teams/${teamId}/events`);
       console.log(team.data);
       dispatch(setTeam(team.data));
       dispatch(getEventsOfTeam(events.data));
-      navigate(`/team/${teamName}`);
+      navigate(`/team/${teamId}`);
     } catch (error) {
       console.error(error);
     }
@@ -176,7 +178,10 @@ const Homepage = () => {
                 <Col key={team.id} xs={12} sm={6} md={4} className="d-flex">
                   <Card className="mb-3 team-card shadow-sm border-0 d-flex flex-column equal-height w-100 h-100 ">
                     <Card.Body className="d-flex flex-column justify-content-start">
-                      <img src={isDefaultAvatar ? iconaScudetto : team.avatar} alt={`${team.name} logo`} className="team-avatar" />
+                      <div className="team-avatar">
+
+                      <img src={isDefaultAvatar ? iconaScudetto : team.avatar} alt={`${team.name} logo`} style={{width: '100%', height: '100%', objectFit: 'contain' }} className={` ${!isDefaultAvatar ? 'default-avatar' : ''}`} />
+                      </div>
                       <div className=' d-flex justify-content-end align-items-center gap-2 align-self-end'>
                         <MdOutlineLocalPostOffice className='fs-4' as={NavLink} to={"/team/message"} style={{cursor: 'pointer'}}/>
                         <Dropdown as={ButtonGroup} >
@@ -231,7 +236,7 @@ const Homepage = () => {
        <Container fluid className="main-content d-flex align-items-center justify-content-center text-secondary ">
        <Row className="w-100 gap-3">
              <Col xs={12}>
-               <div className='d-flex flex-column align-items-center mb-4 gap-3'>
+               <div className='d-flex flex-column align-items-center mb-4'>
                  <h3 className="text-center">Non fai parte di nessuna squadra ... ancora!</h3>
                  <p>Per utilizzare AthleteX, devi unirti ad una squadra.</p>
                </div>
@@ -247,7 +252,7 @@ const Homepage = () => {
                    <Button variant="secondary" size='sm' className='px-3 py-2 btn-create border-0 mt-2' onClick={() => handleNavigate('/team/join')}>Unisciti alla squadra</Button>
                  </Card.Body>
                </Card>
-               <p className="text-center mt-5"><IoIosInformationCircleOutline /> Per vivere al meglio l&apos;esperienza con AthleteX ti consigliamo di unirti ad una squadra al più presto!
+               <p className="text-center mt-3"><IoIosInformationCircleOutline /> Per vivere al meglio l&apos;esperienza con AthleteX ti consigliamo di unirti ad una squadra al più presto!
                </p>
              </Col>
          </Row>
@@ -290,7 +295,7 @@ const Homepage = () => {
                    <Card.Text>
                      Non perderti nessun aggionamento!
                    </Card.Text>
-                   <Button variant="secondary" size='sm' className='px-3 py-2 btn-create border-0 mt-2' onClick={() => handleNavigate('/team/' + team.id + '')}>Vai alla squadra</Button>
+                   <Button variant="secondary" size='sm' className='px-3 py-2 btn-create border-0 mt-2' onClick={() => handleNavigate('/team/' + team.id)}>Vai alla squadra</Button>
                  </Card.Body>
                </Card>
                <p className="text-center mt-5"><IoIosInformationCircleOutline /> Grazie ad AthleteX, sarai in grado di far parte di una squadra in modo smart e non perderti più alcuna informazione!

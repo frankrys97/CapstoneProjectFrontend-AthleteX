@@ -7,12 +7,16 @@
     background-color: #f0f0f2;
 }
 
+.team-page-layout {
+    min-height: calc(100vh - 62px);
+    background-color: #f0f0f2;
+}
+
 
 
 .btn-add-member {
     &:hover {
-        background-color: #fd4742 !important;
-    }
+transform: scale(1.05);    }
 }
 
 
@@ -20,7 +24,7 @@
 @media screen and (min-width: 768px) {
     .sidebar-team-page {
         min-height: calc(100vh - 62px);
-        max-width: 80px;
+        max-width: 70px;
         
        
             
@@ -39,7 +43,7 @@
         
                 &.active {
                     background-color: rgba(0, 0, 0, 0.42);
-                    border-left: 4px solid #333; // Indica lo stato attivo
+                    border-left: 4px solid #333;
                 }
         
                 .popover-like {
@@ -105,6 +109,23 @@
             }
         }
     
+    }
+}
+
+.card-add-member {
+    cursor: pointer;
+    width: 18rem;
+
+    &:hover {
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.20);
+        transform: scale(1.05);
+    }
+}
+
+
+@media screen and (max-width: 576px) {
+    .card-add-member {
+        width: 100%;
     }
 }
 

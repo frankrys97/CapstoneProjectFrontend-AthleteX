@@ -12,7 +12,6 @@
   }
   
   .main-content {
-    padding-top: calc(60px);
     min-height: calc(100vh - 62px);
   }
   .main-content-profile-coach-teams {
@@ -20,8 +19,8 @@
   }
 .card-create {
     width: 100%;
-    max-width: 23rem;  
-    max-height: 20rem;
+    max-width: 20rem;  
+    max-height: 18rem;
     aspect-ratio: 1;  
     margin: 0 auto;    
   
@@ -69,6 +68,11 @@
     border-radius: 50%;
     border: white solid 10px;
     background-color: #f0f0f2;
+    width: 70px;
+    height: 70px;
+    .default-avatar {
+      background-color: white;
+    }
   }
 
 .team-card.equal-height {

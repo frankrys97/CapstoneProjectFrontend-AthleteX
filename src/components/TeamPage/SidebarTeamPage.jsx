@@ -33,10 +33,10 @@ const SidebarTeamPage = () => {
       <div className="d-flex justify-content-start align-items-center flex-md-column gap-3 py-md-3 h-100 ">
         <div
           className={`sidebar-item-wrapper ${
-            location.pathname === `/team/${team.name}` ? "active" : ""
+            location.pathname === `/team/${team.id}` ? "active" : ""
           }`}
         >
-          <Link to={`/team/${team.name}`} className="w-100 h-100 d-flex align-items-center justify-content-center">
+          <Link to={`/team/${team.id}`} className="w-100 h-100 d-flex align-items-center justify-content-center">
             <img
               src={team.avatar ? team.avatar : iconaProfilo}
               alt="logo squadra"
@@ -120,10 +120,10 @@ const SidebarTeamPage = () => {
 
         <div
           className={`sidebar-item-wrapper ${
-            location.pathname === "/settingsTeam" ? "active" : ""
+            location.pathname === `/team/${team.name}/settings` ? "active" : ""
           }`}
         >
-          <Link to="/settingsTeam" className=" w-100 h-100 d-flex align-items-center justify-content-center">
+          <Link to={`/team/${team.name}/settings`} className=" w-100 h-100 d-flex align-items-center justify-content-center">
             <IoSettingsOutline
               className="fs-4"
               style={{

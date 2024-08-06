@@ -5,7 +5,7 @@ import logo from "../../assets/Esecutivi/Logo/svg/AthleteX - colore 1.svg";
 import logo2 from "../../assets/Esecutivi/Logo/svg/AthleteX - colore 4.svg";
 import axios from 'axios';
 import "../../style/RegisterPage/RegisterPage.scss";
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import Footer from '../Footer.jsx';
 
 const RegisterPage = () => {
@@ -26,8 +26,26 @@ const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const [overlayVisible, setOverlayVisible] = useState(false);
   const [overlayMessage, setOverlayMessage] = useState("");
+const location = useLocation();
+const [userTypeDisabled, setUserTypeDisabled] = useState(false); 
+
+const getTeamIdFromQuery = () => {
+  const params = new URLSearchParams(location.search); 
+  return params.get('teamId');
+};
+
 
   useEffect(() => {
+    const getTeamIdFromQuery = () => {
+      const params = new URLSearchParams(location.search); 
+      return params.get('teamId');
+    };
+
+    const teamId = getTeamIdFromQuery();
+
+    if (teamId) {
+      setUserTypeDisabled(true);
+    }
     const checkAvailability = async () => {
       const newErrors = { ...errors };
       if (formData.username && !errors.username) {
@@ -61,7 +79,7 @@ const RegisterPage = () => {
 
     const handler = setTimeout(checkAvailability, 500);
     return () => clearTimeout(handler);
-  }, [formData.username, formData.email, errors]);
+  }, [formData.username, formData.email, errors, location.search]);
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -134,6 +152,8 @@ const RegisterPage = () => {
     setErrors(newErrors);
   };
 
+ 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (Object.keys(errors).length > 0 || !usernameAvailable || !emailAvailable) {
@@ -141,12 +161,17 @@ const RegisterPage = () => {
       return;
     }
 
+    const teamId = getTeamIdFromQuery();
+
+
     setOverlayVisible(true);
     setOverlayMessage("Registrazione in corso...");
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:3001/auth/register', formData);
+      const endpoint = teamId ? `http://localhost:3001/auth/register?teamId=${teamId}` : `http://localhost:3001/auth/register`;
+      const formDataToSubmit = teamId ? { ...formData, userType: 'PLAYER' } : formData;
+      const response = await axios.post(endpoint, formDataToSubmit);
       console.log(response.data);
       setOverlayMessage("Registrazione avvenuta con successo!");
       setFormData({
@@ -278,7 +303,7 @@ const RegisterPage = () => {
               </Form.Group>
               <Form.Group controlId="userType" className="mb-4">
                 <Form.Label>Tipo di Utente</Form.Label>
-                <Form.Select name="userType" value={formData.userType} onChange={handleChange}>
+                <Form.Select name="userType" value={formData.userType} onChange={handleChange} disabled={userTypeDisabled}>
                   <option value="" disabled>Seleziona il tipo di utente</option>
                   <option value="Coach">Coach</option>
                   <option value="Player">Giocatore</option>

@@ -42,7 +42,7 @@ const JoinPage = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         fetchJoinToTeam();
-        handleNavigate(`/teams/${formData.teamId}`);
+        handleNavigate(`/team/${formData.teamId}`);
         setFormData({
             teamId: ''
         })
@@ -59,10 +59,10 @@ const JoinPage = () => {
     return (
         <div className="homepage">
             <NavbarHomePage />
-            <Container fluid className="main-content d-flex align-items-center justify-content-center text-secondary mt-2 ">
+            <Container fluid className="main-content d-flex align-items-center justify-content-center text-secondary ">
         <Row className="w-100 gap-3">
               <Col xs={12}>
-                <div className='d-flex flex-column align-items-center mb-4 gap-3'>
+                <div className='d-flex flex-column align-items-center'>
                   <h3 className="text-center">Unisciti ad una squadra</h3>
                   <p>In questa sezione puoi unirti ad una squadra attraverso il codice segreto che ti è stato fornito!</p>
                 </div>
@@ -90,7 +90,7 @@ const JoinPage = () => {
                     <Button variant="secondary" size='sm' className='px-3 py-2 btn-create border-0' onClick={handleSubmit} >Unisciti al team</Button>
                   </Card.Body>
                 </Card>
-                <p className="text-center mt-5"><IoIosInformationCircleOutline /> Per vivere al meglio l&apos;esperienza con AthleteX ti consigliamo di unirti ad una squadra al più presto!
+                <p className="text-center mt-3"><IoIosInformationCircleOutline /> Per vivere al meglio l&apos;esperienza con AthleteX ti consigliamo di unirti ad una squadra al più presto!
                 </p>
               </Col>
           </Row>

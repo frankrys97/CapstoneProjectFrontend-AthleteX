@@ -7,6 +7,8 @@ export const GET_PLAYERS_OF_TEAM = "GET_PLAYERS_OF_TEAM";
 export const GET_EVENTS_OF_TEAM = "GET_EVENTS_OF_TEAM";
 export const REMOVE_PLAYER_FROM_TEAM = "REMOVE_PLAYER_FROM_TEAM";
 export const UPDATE_PLAYER_FROM_TEAM = "UPDATE_PLAYER_FROM_TEAM";
+export const GET_PARTECIPATIONS_OF_TEAM = "GET_PARTECIPATIONS_OF_TEAM";
+export const UPDATE_PLAYER_IN_TEAM = "UPDATE_PLAYER_IN_TEAM";
 
 export const login = (token) => ({
   type: LOGIN,
@@ -50,5 +52,16 @@ export const updatePlayerFromTeam = (team) => ({
   type: UPDATE_PLAYER_FROM_TEAM,
   payload: team,
 });
+
+export const getPartecipationsOfTeam = (partecipations) => ({
+  type: GET_PARTECIPATIONS_OF_TEAM,
+  payload: partecipations,
+});
+
+export const updatePlayerInTeam = (player) => ({
+  type: UPDATE_PLAYER_IN_TEAM,
+  payload: player,
+});
+
 
 

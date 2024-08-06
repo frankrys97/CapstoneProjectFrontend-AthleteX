@@ -12,6 +12,10 @@ import CreateTeamPage from "./components/CreateTeamPage/CreateTeamPage";
 import ProfilePage from "./components/ProfilePage/ProfilePage";
 import TeamPage from "./components/TeamPage/TeamPage";
 import MembersTeamPage from "./components/TeamPage/MembersTeamPage";
+import AddPlayerPage from "./components/TeamPage/AddPlayerPage";
+import CreatePlayerPage from "./components/TeamPage/CreatePlayerPage";
+import SettingsPageTeam from "./components/TeamPage/SettingsPageTeam";
+import InvitePage from "./components/TeamPage/InvitePage";
 
 function App() {
   console.log(apiClient); 
@@ -27,8 +31,12 @@ function App() {
         <Route path="/team/join" element={<JoinPage />} />
         <Route path="/team/create" element={<CreateTeamPage />} />
         <Route path="/account" element={<ProfilePage />} />
-        <Route path="/team/:teamName/*" element={<TeamPage />} />
+        <Route path="/team/:teamId" element={<TeamPage />} />
         <Route path="/members" element={<MembersTeamPage />} />
+        <Route path="/team/:teamName/add-member" element={<AddPlayerPage />} />
+        <Route path="/team/:teamName/add-member/new" element={<CreatePlayerPage />} />
+        <Route path="team/:teamName/settings" element={<SettingsPageTeam />} />
+        <Route path="team/add-member/invite" element={<InvitePage />} />
          
       </Routes>
     </BrowserRouter>
