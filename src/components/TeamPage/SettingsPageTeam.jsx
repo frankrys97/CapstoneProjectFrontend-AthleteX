@@ -163,7 +163,7 @@ const SettingsPageTeam = () => {
                     <h5 className="text-dark mb-0 ">Impostazioni</h5>
                 </Col>
             </Row>
-            <Row className="card-team-create bg-white p-4 w-100 mt-3" style={{ borderTop: `5px solid ${formData.primaryColor}` }}>
+            <Row className="bg-white p-4 w-100 mt-3 rounded" style={{ borderTop: `5px solid ${formData.primaryColor}`, maxWidth: '700px', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)' }}>
                 <Col md={4}>
                     <div className="d-flex flex-column align-items-center w-100">
                         <div className="bg-light rounded-circle p-3 border border-1 position-relative" style={{ width: '150px', height: '150px' }}>

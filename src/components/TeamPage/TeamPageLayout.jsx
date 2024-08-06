@@ -14,7 +14,7 @@ const TeamPageLayout = ({ children }) => {
           <SidebarTeamPage />
           <Col
             md={11}
-            className="p-3 flex-grow-1 d-flex flex-column align-items-center h-100"
+            className="p-3 flex-grow-1 d-flex flex-column align-items-center right-side-container"
           >
             {children}
           </Col>

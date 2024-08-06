@@ -91,11 +91,13 @@ const CreatePlayerPage = () => {
             >
               {team.name} </Link>{" "}
             /{" "}
-            <span
+            <Link
               style={{ color: team ? `${team.secondaryColor}` : "#fd4742" }}
+              className="text-decoration-none"
+              to={`/members`}
             >
               Membri /{" "}
-            </span>{" "}
+            </Link>{" "}
             Aggiungi membri
           </h5>
         </Col>

@@ -129,6 +129,11 @@ transform: scale(1.05);    }
     }
 }
 
+.right-side-container {
+   max-height: calc(100vh - 62px);
+    overflow-y: scroll;
+}
+
    
 
 

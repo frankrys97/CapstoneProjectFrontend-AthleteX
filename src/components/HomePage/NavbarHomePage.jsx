@@ -4,7 +4,6 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { FaRegBell } from 'react-icons/fa';
 import logo from "../../assets/Esecutivi/Logo/svg/AthleteX - colore 4.svg";
 import { AiOutlinePoweroff, AiOutlineUser } from 'react-icons/ai';
-import { IoSettingsOutline } from 'react-icons/io5';
 import apiClient from '../../utils/axiosConfig';
 import { logout } from '../../redux/actions/index.js';
 import iconaProfilo from "../../assets/HomePage/Icona-profilo.svg";

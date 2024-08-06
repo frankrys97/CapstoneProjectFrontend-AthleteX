@@ -91,7 +91,7 @@ const SidebarTeamPage = () => {
 
         <div
           className={`sidebar-item-wrapper ${
-            location.pathname === "/members" ? "active" : ""
+            location.pathname === "/members" ? "active" : location.pathname === `/team/add-member/invite` ? "active" : location.pathname === `/team/${team.name}/add-member` ? "active" : ""
           }`}
         >
           <Link to="/members" className=" w-100 h-100 d-flex align-items-center justify-content-center">
