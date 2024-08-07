@@ -87,6 +87,7 @@ const InvitePage = () => {
       key: "statusOfPartecipation",
       sorter: (a, b) => a.status.localeCompare(b.status),
       width: "20%",
+      render: (text) => (text === "PENDING" ? "In attesa" : text === "ACCEPTED" ? "Accettato" : "Rifiutato"),
     },
   ];
 
