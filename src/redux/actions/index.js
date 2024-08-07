@@ -38,6 +38,8 @@ export const addEventToTeam = (teamId, event) => async (dispatch) => {
       type: ADD_EVENT_TO_TEAM,
       payload: response.data,
     });
+
+    dispatch(fetchTeamEvents(teamId));
   } catch (error) {
     console.error("Errore nell'aggiunta dell'evento:", error);
   }
