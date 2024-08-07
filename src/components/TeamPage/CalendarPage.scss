@@ -20,3 +20,51 @@
     z-index: 1000;
   }
   
+  .search-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  .rbc-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font-size: clamp(6px, 2.5vw, 16px); 
+  }
+  
+  .rbc-toolbar-label {
+    flex-grow: unset;
+  }
+  .rbc-toolbar-label {
+    display: inline-block; 
+    text-transform: lowercase; 
+  }
+  
+  .rbc-toolbar-label::first-letter {
+    text-transform: uppercase; 
+  }
+  
+  .rbc-calendar {
+    .rbc-btn-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  
+  @media screen and (max-width: 998px) {
+    .rbc-toolbar {
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: start;
+      gap: 20px;
+    }
+  
+    .rbc-toolbar-label {
+      order: -1;
+    }
+  }
+  

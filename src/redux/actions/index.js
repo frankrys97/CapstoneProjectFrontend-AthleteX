@@ -16,6 +16,15 @@ export const ADD_EVENT_TO_TEAM = 'ADD_EVENT_TO_TEAM';
 export const UPDATE_EVENT_IN_TEAM = 'UPDATE_EVENT_IN_TEAM';
 export const DELETE_EVENT_FROM_TEAM = 'DELETE_EVENT_FROM_TEAM';
 
+export const fetchTeam = (teamId) => async (dispatch) => {
+  try {
+    const response = await apiClient.get(`/teams/${teamId}`);
+    dispatch(setTeam(response.data));
+  } catch (error) {
+    console.error("Errore nel recupero del team:", error);
+  }
+}
+
 export const fetchTeamEvents = (teamId) => async (dispatch) => {
   try {
     const response = await apiClient.get(`/teams/${teamId}/events`);
@@ -67,6 +76,15 @@ export const deleteEventFromTeam = (teamId, eventId) => async (dispatch) => {
     });
   } catch (error) {
     console.error("Errore nell'eliminazione dell'evento:", error);
+  }
+};
+
+export const getComponentsOfTeam = (teamId) => async (dispatch) => {
+  try {
+    const response = await apiClient.get(`/teams/${teamId}/components`);
+    dispatch(getPlayersOfTeam(response.data));
+  } catch (error) {
+    console.error("Errore nel recupero dei giocatori del team:", error);
   }
 };
 

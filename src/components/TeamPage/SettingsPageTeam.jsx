@@ -1,6 +1,6 @@
 import { Col, Row, Button, Form } from "react-bootstrap";
 import TeamPageLayout from "./TeamPageLayout";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import ColorPickerButton from "../CreateTeamPage/ColorPickerButton";
 import PhoneInput from "react-phone-input-2";
@@ -11,6 +11,7 @@ import { MdOutlineAddAPhoto } from "react-icons/md";
 import iconaScudetto from "../../assets/HomePage/Icona-scudetto.svg";
 import './TeamPage.scss';
 import tinycolor from "tinycolor2";
+import { setTeam } from "../../redux/actions";
 
 const SettingsPageTeam = () => {
     const team = useSelector((state) => state.team.content);
@@ -90,6 +91,7 @@ const SettingsPageTeam = () => {
         return emailRegex.test(email);
     };
 
+    const dispatch = useDispatch();
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -120,6 +122,7 @@ const SettingsPageTeam = () => {
         try {
             const response = await apiClient.put(`/teams/${team.id}`, data);
             console.log(response.data);
+            dispatch(setTeam(response.data));
             handleNavigate(`/team/${team.id}`);
         } catch (error) {
             console.error(error);
@@ -168,8 +171,8 @@ const SettingsPageTeam = () => {
                     <div className="d-flex flex-column align-items-center w-100">
                         <div className="bg-light rounded-circle p-3 border border-1 position-relative" style={{ width: '150px', height: '150px' }}>
                             <img src={avatar ? (typeof avatar === 'string' ? avatar : URL.createObjectURL(avatar)) : iconaScudetto} alt="icona scudetto" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                                <input type="file" onChange={handleAvatarChange} style={{ opacity: 0, width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, cursor: 'pointer', zIndex: 4 }} />
                             <div className="position-absolute bottom-0 end-0 bg-light rounded-circle border border-3 border-white p-2" style={{ cursor: 'pointer' }}>
-                                <input type="file" onChange={handleAvatarChange} style={{ opacity: 0, width: '100%', height: '100%', position: 'absolute', left: 0, top: 0, cursor: 'pointer' }} />
                                 <MdOutlineAddAPhoto style={{ width: '20px', height: '20px' }} />
                             </div>
                         </div>

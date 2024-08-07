@@ -309,7 +309,7 @@ const MembersTeamPage = () => {
         key: "status",
         width: 150,
         render: (text) => (
-          <span style={{ width: "100%" }}>{text || "N/A"}</span>
+          <span style={{ width: "100%" }}>{text === "AVAILABLE" ? "Disponibile" : text === "INJURED" ? "Infortunato" : text === "OUT_OF_ROSTER" ? "Fuori rosa" : "N/A"}</span>
         ),
         sorter: (a, b) => a.status.localeCompare(b.status),
       },

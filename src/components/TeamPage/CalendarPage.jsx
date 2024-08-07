@@ -1,4 +1,4 @@
-import { Col, Row } from "react-bootstrap";
+import { Card, Col, Row } from "react-bootstrap";
 import {
   Modal,
   Alert,
@@ -31,7 +31,9 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import "./CalendarPage.scss";
 import CustomCheckbox from "./CustomCheckbox";
 import "./CustomCheckbox.scss";
-
+import immagineAllenamento from "../../assets/Esecutivi/immagine-allenamento.jpeg";
+import immaginePartita from "../../assets/Esecutivi/immagine-partita.jpg";
+import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
 moment.locale("it");
 
 moment.locale("it");
@@ -42,6 +44,8 @@ const DragAndDropCalendar = withDragAndDrop(Calendar);
 const { TextArea } = Input;
 
 const CalendarPage = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+
   const [showModal, setShowModal] = useState(false);
   const [eventDetails, setEventDetails] = useState({
     eventType: "",
@@ -80,10 +84,14 @@ const CalendarPage = () => {
 
   const filterEvents = useCallback(() => {
     if (!events) return [];
-    if (filters.ALL) return events;
+    const filteredByType = filters.ALL
+      ? events
+      : events.filter((event) => filters[event.eventType]);
 
-    return events.filter((event) => filters[event.eventType]);
-  }, [events, filters]);
+    return filteredByType.filter((event) =>
+      event.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [events, filters, searchTerm]);
 
   const [filteredEvents, setFilteredEvents] = useState([]);
   useEffect(() => {
@@ -225,8 +233,7 @@ const CalendarPage = () => {
   };
 
   const eventPropGetter = (event) => {
-    const backgroundColor =
-      event.eventType === "MATCH" ? `#fd4742` : "#2600ff";
+    const backgroundColor = event.eventType === "MATCH" ? `#fd4742` : "#2600ff";
     const textColor = getTextColor(backgroundColor);
     return {
       style: {
@@ -252,22 +259,21 @@ const CalendarPage = () => {
         [eventType]: !filters[eventType],
         ALL: false,
       };
-  
+
       if (newFilters.MATCH && newFilters.TRAINING) {
         newFilters.ALL = true;
       }
-  
+
       setFilters(newFilters);
     }
   };
-  
 
   const [isLoading, setIsLoading] = useState(false);
-  const [fadeClass, setFadeClass] = useState('');
+  const [fadeClass, setFadeClass] = useState("");
 
   const moveEvent = (draggedEvent, start, end) => {
     const formatTime = (time) => moment(time, "HH:mm:ss").format("HH:mm");
-    setFadeClass('hidden');
+    setFadeClass("hidden");
     setIsLoading(true);
 
     const updatedEvent = {
@@ -293,7 +299,7 @@ const CalendarPage = () => {
     dispatch(updateEventInTeam(team.id, draggedEvent.id, updatedEvent)).finally(
       () => {
         setIsLoading(false);
-        setFadeClass('');
+        setFadeClass("");
       }
     );
   };
@@ -315,76 +321,120 @@ const CalendarPage = () => {
             / Calendario
           </h5>
           <hr />
-          <div className="d-flex justify-content-start align-items-center">
-          <CustomCheckbox
-                  id="all-events"
-                  checked={filters.ALL}
-                  onChange={ () => handleFilterChange("ALL")}
-                  label="Tutti"
-                  boxClassName="checkbox-box-1"
-                  tickClassName="checkbox-tick-1"
-                 
-                />
-                <CustomCheckbox
-                  id="match-events"
-                  checked={filters.MATCH}
-                  onChange={ () => handleFilterChange("MATCH")}
-                  label="Partite"
-                  boxClassName="checkbox-box-2"
-                  tickClassName="checkbox-tick-2"
-                 
-                />
-                <CustomCheckbox
-                  id="training-events"
-                  checked={filters.TRAINING}
-                  onChange={ () => handleFilterChange("TRAINING")}
-                  label="Allenamenti"
-                  boxClassName="checkbox-box-3"
-                  tickClassName="checkbox-tick-3"
-                 
-                />
-            {user.userType === "COACH" && (
-              <div className="ms-auto">
-              <Button
-                onClick={() => navigate(`/team/${team.id}/add-event`)}
-                style={{ backgroundColor: `${team.secondaryColor}`, color: `${getTextColor(`${team.secondaryColor}`)}`, borderRadius: "5px", borderColor: `${team.secondaryColor}` }}
-                className="px-4 py-2 btn-add-member"
-              >
-                Aggiungi Evento
-              </Button>
+          <div className="d-flex flex-column flex-md-row justify-content-between justify-content-md-start align-items-center">
+            <div className="d-flex gap-2">
+
+        
+            <CustomCheckbox
+              id="all-events"
+              checked={filters.ALL}
+              onChange={() => handleFilterChange("ALL")}
+              label="Tutti"
+              boxClassName="checkbox-box-1"
+              tickClassName="checkbox-tick-1"
+            />
+
+            <CustomCheckbox
+              id="match-events"
+              checked={filters.MATCH}
+              onChange={() => handleFilterChange("MATCH")}
+              label="Partite"
+              boxClassName="checkbox-box-2"
+              tickClassName="checkbox-tick-2"
+            />
+            <CustomCheckbox
+              id="training-events"
+              checked={filters.TRAINING}
+              onChange={() => handleFilterChange("TRAINING")}
+              label="Allenamenti"
+              boxClassName="checkbox-box-3"
+              tickClassName="checkbox-tick-3"
+            />
+                </div>
+            <div className="mt-2 mt-md-0 ms-md-auto d-flex flex-column justify-content-center align-items-center flex-md-row align-item-md-center gap-2">
+              <div className="position-relative">
+              <input
+                type="text"
+                placeholder="Cerca eventi..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="form-control w-100"
+              />
+              <HiOutlineMagnifyingGlass className="search-icon" />
+
+
               </div>
-              
+              {user.userType === "COACH" && (
+                <Button
+                  onClick={() => navigate(`/calendar/add-event`)}
+                  style={{
+                    backgroundColor: `${team.secondaryColor}`,
+                    color: `${getTextColor(`${team.secondaryColor}`)}`,
+                    borderRadius: "5px",
+                    borderColor: `${team.secondaryColor}`,
+                  }}
+                  className="px-4 py-3 btn-add-member fs-6"
+                >
+                  Aggiungi Evento
+                </Button>
+              )}
+            </div>
+          </div>
+          <div
+            className="mt-4 bg-white p-4 rounded border position-relative"
+            style={{ boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.2)" }}
+          >
+            {isLoading && (
+              <div className="loading-overlay">Caricamento in corso...</div>
             )}
-          </div>
-          <div className="mt-4 bg-white p-4 rounded border position-relative" style={{boxShadow: "0 0 10px 0 rgba(0, 0, 0, 0.2)"}}>
-          {isLoading && <div className="loading-overlay">Caricamento in corso...</div>}
-      <div className={`calendar-container ${fadeClass}`}>
-        <DndProvider backend={HTML5Backend}>
-          <DragAndDropCalendar
-            localizer={localizer}
-            events={mapEvents(filteredEvents)}
-            startAccessor="start"
-            endAccessor="end"
-            style={{ height: 400 }}
-            onSelectEvent={handleEventClick}
-            messages={messages}
-            eventPropGetter={eventPropGetter}
-            draggableAccessor={() => true}
-            onEventDrop={({ event, start, end }) => moveEvent(event, start, end)}
-          />
-        </DndProvider>
-          </div>
+            <div className={`calendar-container ${fadeClass}`}>
+              <DndProvider backend={HTML5Backend}>
+                {user.userType === "COACH" ? (
+                  <DragAndDropCalendar
+                    localizer={localizer}
+                    events={mapEvents(filteredEvents)}
+                    startAccessor="start"
+                    endAccessor="end"
+                    style={{ height: 400 }}
+                    onSelectEvent={handleEventClick}
+                    messages={messages}
+                    eventPropGetter={eventPropGetter}
+                    draggableAccessor={() => true}
+                    onEventDrop={({ event, start, end }) =>
+                      moveEvent(event, start, end)
+                    }
+                  />
+                ) : (
+                  <Calendar
+                    localizer={localizer}
+                    events={mapEvents(filteredEvents)}
+                    startAccessor="start"
+                    endAccessor="end"
+                    style={{ height: 400 }}
+                    onSelectEvent={handleEventClick}
+                    messages={messages}
+                    eventPropGetter={eventPropGetter}
+                    draggableAccessor={() => true}
+                    onEventDrop={({ event, start, end }) =>
+                      moveEvent(event, start, end)
+                    }
+                  />
+                )}
+              </DndProvider>
+            </div>
           </div>
         </Col>
       </Row>
 
       <Modal
-        title={editingEventId ? "Modifica Evento" : "Dettagli Evento"}
+        title={
+          user.userType === "COACH" ? "Modifica Evento" : "Dettagli Evento"
+        }
         open={showModal}
         onCancel={() => setShowModal(false)}
         onOk={handleSave}
         width={600}
-        style={{ maxHeight: "60vh", overflowY: "auto" }}
+        style={{ maxHeight: "80vh", overflowY: "auto" }}
         footer={
           user.userType === "COACH"
             ? [
@@ -401,222 +451,345 @@ const CalendarPage = () => {
             : null
         }
       >
-        <Row className="row-cols-1 g-3">
-          <Col>
-            <div className="w-100 d-flex flex-column justify-content-start align-items-start">
-              <label>Tipo di Evento</label>
-              <Select
-                value={eventDetails.eventType}
-                onChange={(value) =>
-                  setEventDetails({ ...eventDetails, eventType: value })
-                }
-                disabled={user.userType === "PLAYER"}
-              >
-                <Select.Option value="MATCH">Partita</Select.Option>
-                <Select.Option value="TRAINING">Allenamento</Select.Option>
-              </Select>
-            </div>
-          </Col>
-          <Col>
-            <div className="w-100 d-flex flex-column justify-content-start align-items-start">
-              <label>Titolo</label>
-              <Input
-                value={eventDetails.title}
-                onChange={(e) =>
-                  setEventDetails({ ...eventDetails, title: e.target.value })
-                }
-                disabled={user.userType === "PLAYER"}
-              />
-            </div>
-          </Col>
-          <Col>
-            <div className="w-100 d-flex flex-column justify-content-start align-items-start">
-              <label>Descrizione</label>
-              <TextArea
-                value={eventDetails.description}
-                onChange={(e) =>
-                  setEventDetails({
-                    ...eventDetails,
-                    description: e.target.value,
-                  })
-                }
-                disabled={user.userType === "PLAYER"}
-              />
-            </div>
-          </Col>
-          <Col>
-            <div className="w-100 d-flex flex-column justify-content-start align-items-start">
-              <label>Data Inizio</label>
-              <DatePicker
-                value={
-                  eventDetails.startDate
-                    ? moment(eventDetails.startDate, "YYYY-MM-DD")
-                    : null
-                }
-                onChange={(date) =>
-                  setEventDetails({
-                    ...eventDetails,
-                    startDate: date ? date.format("YYYY-MM-DD") : null,
-                  })
-                }
-                disabled={user.userType === "PLAYER"}
-              />
-            </div>
-          </Col>
-          <Col>
-            <div className="w-100 d-flex flex-column justify-content-start align-items-start">
-              <label>Data Fine</label>
-              <DatePicker
-                value={
-                  eventDetails.endDate
-                    ? moment(eventDetails.endDate, "YYYY-MM-DD")
-                    : null
-                }
-                onChange={(date) =>
-                  setEventDetails({
-                    ...eventDetails,
-                    endDate: date ? date.format("YYYY-MM-DD") : null,
-                  })
-                }
-                disabled={user.userType === "PLAYER"}
-              />
-            </div>
-          </Col>
-          <Col>
-            <div className="w-100 d-flex flex-column justify-content-start align-items-start">
-              <label>Ora Inizio</label>
-              <TimePicker
-                value={
-                  eventDetails.startTime
-                    ? moment(eventDetails.startTime, "HH:mm")
-                    : null
-                }
-                onChange={(time) =>
-                  setEventDetails({
-                    ...eventDetails,
-                    startTime: time ? time.format("HH:mm") : null,
-                  })
-                }
-                disabled={user.userType === "PLAYER"}
-              />
-            </div>
-          </Col>
-          <Col>
-            <div className="w-100 d-flex flex-column justify-content-start align-items-start">
-              <label>Ora Fine</label>
-              <TimePicker
-                value={
-                  eventDetails.endTime
-                    ? moment(eventDetails.endTime, "HH:mm")
-                    : null
-                }
-                onChange={(time) =>
-                  setEventDetails({
-                    ...eventDetails,
-                    endTime: time ? time.format("HH:mm") : null,
-                  })
-                }
-                disabled={user.userType === "PLAYER"}
-              />
-            </div>
-          </Col>
-          <Col>
-            <div className="w-100 d-flex flex-column justify-content-start align-items-start">
-              <label>Ora di Incontro</label>
-              <TimePicker
-                value={
-                  eventDetails.meetTime
-                    ? moment(eventDetails.meetTime, "HH:mm")
-                    : null
-                }
-                onChange={(time) =>
-                  setEventDetails({
-                    ...eventDetails,
-                    meetTime: time ? time.format("HH:mm") : null,
-                  })
-                }
-                disabled={user.userType === "PLAYER"}
-              />
-            </div>
-          </Col>
-          <Col>
-            <div className="w-100 d-flex flex-column justify-content-start align-items-start">
-              <label>Avversario</label>
-              <Input
-                value={eventDetails.opponent}
-                onChange={(e) =>
-                  setEventDetails({ ...eventDetails, opponent: e.target.value })
-                }
-                disabled={user.userType === "PLAYER"}
-              />
-            </div>
-          </Col>
-          <Col>
-            <div className="w-100 d-flex flex-column justify-content-start align-items-start">
-              <label>Casa/Trasferta</label>
-              <Select
-                value={eventDetails.home}
-                onChange={(value) =>
-                  setEventDetails({ ...eventDetails, home: value })
-                }
-                disabled={user.userType === "PLAYER"}
-                style={{ width: "25%" }}
-              >
-                <Select.Option value="true">Casa</Select.Option>
-                <Select.Option value="false">Trasferta</Select.Option>
-              </Select>
-            </div>
-          </Col>
-          <Col>
-            <div className="w-100 d-flex flex-column justify-content-start align-items-start">
-              <label>Luogo</label>
-              <Select
-                value={eventDetails.locationType}
-                onChange={(value) =>
-                  setEventDetails({ ...eventDetails, locationType: value })
-                }
-                disabled={user.userType === "PLAYER"}
-              >
-                <Select.Option value="GYM">Palestra</Select.Option>
-                <Select.Option value="STADIUM">Stadio</Select.Option>
-                <Select.Option value="TRAINING_FIELD">
-                  Campo di allenamento
-                </Select.Option>
-              </Select>
-            </div>
-          </Col>
-          <Col>
-            <div className="w-100 d-flex flex-column justify-content-start align-items-start">
-              <label>Durata</label>
-              <Input
-                value={eventDetails.duration}
-                onChange={(e) =>
-                  setEventDetails({ ...eventDetails, duration: e.target.value })
-                }
-                disabled={user.userType === "PLAYER"}
-              />
-            </div>
-          </Col>
-          {eventDetails.eventType === "TRAINING" && (
+        {user.userType === "COACH" ? (
+          <Row className="row-cols-1 g-3">
             <Col>
               <div className="w-100 d-flex flex-column justify-content-start align-items-start">
-                <label>Tipo di Allenamento</label>
+                <label>Tipo di Evento</label>
                 <Select
-                  value={eventDetails.trainingType}
+                  value={eventDetails.eventType}
                   onChange={(value) =>
-                    setEventDetails({ ...eventDetails, trainingType: value })
+                    setEventDetails({ ...eventDetails, eventType: value })
                   }
                   disabled={user.userType === "PLAYER"}
                 >
-                  <Select.Option value="STRENGTH">Forza</Select.Option>
-                  <Select.Option value="TACTICS">Tattico</Select.Option>
-                  <Select.Option value="TECHNICAL">Tecnico</Select.Option>
-                  <Select.Option value="PRE_MATCH">Pre-Match</Select.Option>
+                  <Select.Option value="MATCH">Partita</Select.Option>
+                  <Select.Option value="TRAINING">Allenamento</Select.Option>
                 </Select>
               </div>
             </Col>
-          )}
-        </Row>
+            <Col>
+              <div className="w-100 d-flex flex-column justify-content-start align-items-start">
+                <label>Titolo</label>
+                <Input
+                  value={eventDetails.title}
+                  onChange={(e) =>
+                    setEventDetails({ ...eventDetails, title: e.target.value })
+                  }
+                  disabled={user.userType === "PLAYER"}
+                />
+              </div>
+            </Col>
+            <Col>
+              <div className="w-100 d-flex flex-column justify-content-start align-items-start">
+                <label>Descrizione</label>
+                <TextArea
+                  value={eventDetails.description}
+                  onChange={(e) =>
+                    setEventDetails({
+                      ...eventDetails,
+                      description: e.target.value,
+                    })
+                  }
+                  disabled={user.userType === "PLAYER"}
+                />
+              </div>
+            </Col>
+            <Col>
+              <div className="w-100 d-flex flex-column justify-content-start align-items-start">
+                <label>Data Inizio</label>
+                <DatePicker
+                  value={
+                    eventDetails.startDate
+                      ? moment(eventDetails.startDate, "YYYY-MM-DD")
+                      : null
+                  }
+                  onChange={(date) =>
+                    setEventDetails({
+                      ...eventDetails,
+                      startDate: date ? date.format("YYYY-MM-DD") : null,
+                    })
+                  }
+                  disabled={user.userType === "PLAYER"}
+                />
+              </div>
+            </Col>
+            <Col>
+              <div className="w-100 d-flex flex-column justify-content-start align-items-start">
+                <label>Data Fine</label>
+                <DatePicker
+                  value={
+                    eventDetails.endDate
+                      ? moment(eventDetails.endDate, "YYYY-MM-DD")
+                      : null
+                  }
+                  onChange={(date) =>
+                    setEventDetails({
+                      ...eventDetails,
+                      endDate: date ? date.format("YYYY-MM-DD") : null,
+                    })
+                  }
+                  disabled={user.userType === "PLAYER"}
+                />
+              </div>
+            </Col>
+            <Col>
+              <div className="w-100 d-flex flex-column justify-content-start align-items-start">
+                <label>Ora Inizio</label>
+                <TimePicker
+                  value={
+                    eventDetails.startTime
+                      ? moment(eventDetails.startTime, "HH:mm")
+                      : null
+                  }
+                  onChange={(time) =>
+                    setEventDetails({
+                      ...eventDetails,
+                      startTime: time ? time.format("HH:mm") : null,
+                    })
+                  }
+                  disabled={user.userType === "PLAYER"}
+                />
+              </div>
+            </Col>
+            <Col>
+              <div className="w-100 d-flex flex-column justify-content-start align-items-start">
+                <label>Ora Fine</label>
+                <TimePicker
+                  value={
+                    eventDetails.endTime
+                      ? moment(eventDetails.endTime, "HH:mm")
+                      : null
+                  }
+                  onChange={(time) =>
+                    setEventDetails({
+                      ...eventDetails,
+                      endTime: time ? time.format("HH:mm") : null,
+                    })
+                  }
+                  disabled={user.userType === "PLAYER"}
+                />
+              </div>
+            </Col>
+            <Col>
+              <div className="w-100 d-flex flex-column justify-content-start align-items-start">
+                <label>Ora di Incontro</label>
+                <TimePicker
+                  value={
+                    eventDetails.meetTime
+                      ? moment(eventDetails.meetTime, "HH:mm")
+                      : null
+                  }
+                  onChange={(time) =>
+                    setEventDetails({
+                      ...eventDetails,
+                      meetTime: time ? time.format("HH:mm") : null,
+                    })
+                  }
+                  disabled={user.userType === "PLAYER"}
+                />
+              </div>
+            </Col>
+            <Col>
+              <div className="w-100 d-flex flex-column justify-content-start align-items-start">
+                <label>Avversario</label>
+                <Input
+                  value={eventDetails.opponent}
+                  onChange={(e) =>
+                    setEventDetails({
+                      ...eventDetails,
+                      opponent: e.target.value,
+                    })
+                  }
+                  disabled={user.userType === "PLAYER"}
+                />
+              </div>
+            </Col>
+            <Col>
+              <div className="w-100 d-flex flex-column justify-content-start align-items-start">
+                <label>Casa/Trasferta</label>
+                <Select
+                  value={eventDetails.home === "true" ? "true" : "false"}
+                  onChange={(value) =>
+                    setEventDetails({ ...eventDetails, home: value })
+                  }
+                  disabled={user.userType === "PLAYER"}
+                  style={{ width: "25%" }}
+                >
+                  <Select.Option value="true">Casa</Select.Option>
+                  <Select.Option value="false">Trasferta</Select.Option>
+                </Select>
+              </div>
+            </Col>
+            <Col>
+              <div className="w-100 d-flex flex-column justify-content-start align-items-start">
+                <label>Luogo</label>
+                <Select
+                  value={eventDetails.locationType}
+                  onChange={(value) =>
+                    setEventDetails({ ...eventDetails, locationType: value })
+                  }
+                  disabled={user.userType === "PLAYER"}
+                >
+                  <Select.Option value="GYM">Palestra</Select.Option>
+                  <Select.Option value="STADIUM">Stadio</Select.Option>
+                  <Select.Option value="TRAINING_FIELD">
+                    Campo di allenamento
+                  </Select.Option>
+                </Select>
+              </div>
+            </Col>
+            <Col>
+              <div className="w-100 d-flex flex-column justify-content-start align-items-start">
+                <label>Durata</label>
+                <Input
+                  value={eventDetails.duration}
+                  onChange={(e) =>
+                    setEventDetails({
+                      ...eventDetails,
+                      duration: e.target.value,
+                    })
+                  }
+                  disabled={user.userType === "PLAYER"}
+                />
+              </div>
+            </Col>
+            {eventDetails.eventType === "TRAINING" && (
+              <Col>
+                <div className="w-100 d-flex flex-column justify-content-start align-items-start">
+                  <label>Tipo di Allenamento</label>
+                  <Select
+                    value={eventDetails.trainingType}
+                    onChange={(value) =>
+                      setEventDetails({ ...eventDetails, trainingType: value })
+                    }
+                    disabled={user.userType === "PLAYER"}
+                  >
+                    <Select.Option value="STRENGTH">Forza</Select.Option>
+                    <Select.Option value="TACTICS">Tattico</Select.Option>
+                    <Select.Option value="TECHNICAL">Tecnico</Select.Option>
+                    <Select.Option value="PRE_MATCH">Pre-Match</Select.Option>
+                  </Select>
+                </div>
+              </Col>
+            )}
+          </Row>
+        ) : (
+          <>
+            <Card
+              style={{
+                width: "100%",
+                borderBottomLeftRadius: "10px",
+                borderBottomRightRadius: "10px",
+                overflow: "hidden",
+              }}
+            >
+              <Card.Img
+                variant="top"
+                src={
+                  eventDetails.eventType === "TRAINING"
+                    ? immagineAllenamento
+                    : immaginePartita
+                }
+                style={{
+                  width: "100%",
+                  height: "200px",
+                  objectFit: "cover",
+                  aspectRatio: "16/9",
+                }}
+              />
+              <Card.Body>
+                <Card.Title>
+                  {eventDetails.eventType === "TRAINING"
+                    ? "Allenamento"
+                    : "Partita"}
+                </Card.Title>
+
+                <div>
+                  <p className="m-0 fw-semibold fs-6">Descrizione</p>
+                  {eventDetails.description}
+                  <p className="m-0 fw-semibold fs-6">Data inizio</p>
+                  {eventDetails.startDate && eventDetails.startDate.split("-").reverse().join("-")}
+                  <p className="m-0 fw-semibold fs-6">Data fine</p>
+                  {eventDetails.endDate && eventDetails.endDate.split("-").reverse().join("-")}
+                  <p className="m-0 fw-semibold fs-6">Luogo</p>
+                  {eventDetails.locationType === "GYM"
+                    ? "Palestra"
+                    : eventDetails.locationType === "STADIUM"
+                    ? "Stadio"
+                    : "Campo di allenamento"}
+                  <p className="m-0 fw-semibold fs-6">Durata</p>
+                  {eventDetails.duration ? eventDetails.duration : "N/A"}
+                  {eventDetails.eventType === "TRAINING" && (
+                    <>
+                      <p className="m-0 fw-semibold fs-6">
+                        Tipo di allenamento
+                      </p>
+                      {eventDetails.trainingType === "STRENGTH"
+                        ? "Forza"
+                        : eventDetails.trainingType === "TACTICS"
+                        ? "Tattico"
+                        : eventDetails.trainingType === "TECHNICAL"
+                        ? "Tecnico"
+                        : "Pre-Match"}
+                    </>
+                  )}
+                  {eventDetails.eventType === "MATCH" && (
+                    <>
+                      <p className="m-0 fw-semibold fs-6">Casa/Trasferta</p>
+                      {eventDetails.home ? "Casa" : "Trasferta"}
+                    </>
+                  )}
+                  {eventDetails.eventType === "MATCH" && (
+                    <>
+                      <p className="m-0 fw-semibold fs-6">Avversario</p>
+                      {eventDetails.opponent ? eventDetails.opponent : "N/A"}
+                    </>
+                  )}
+                </div>
+              </Card.Body>
+              <div
+                style={{
+                  backgroundColor: `${
+                   eventDetails && eventDetails.eventType === "TRAINING" ? "#2600ff" : "#fd4742"
+                  }`,
+                  color: `${
+                    getTextColor(
+                      `${
+                       eventDetails && eventDetails.eventType === "TRAINING" ? "#2600ff" : "#fd4742"
+                      }`
+                    )
+                  }`
+                  ,
+                  width: "100%",
+                  height: "70px",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                <div className="d-flex justify-content-around align-items-center h-100">
+                  <div className="d-flex flex-column justify-content-center align-items-center">
+                    <p className="m-0 fw-semibold">Orario di inizio</p>
+                    <p className="m-0">{eventDetails.startTime}</p>
+                  </div>
+                  <div className="d-flex flex-column justify-content-center align-items-center">
+                    <p className="m-0 fw-semibold">Orario di fine</p>
+                    <p className="m-0">{eventDetails.endTime}</p>
+                  </div>
+                  <div className="d-flex flex-column justify-content-center align-items-center">
+                    <p className="m-0 fw-semibold">Orario d&apos;Incontro</p>
+                    {eventDetails.meetTime && (
+                      <p className="m-0">
+                        {eventDetails.meetTime.substring(0, 5)}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </>
+        )}
         {errors.form && <Alert message={errors.form} type="error" showIcon />}
       </Modal>
     </TeamPageLayout>
