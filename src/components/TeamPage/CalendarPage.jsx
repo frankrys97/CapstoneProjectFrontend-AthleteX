@@ -6,7 +6,6 @@ import {
   Select,
   DatePicker,
   TimePicker,
-  Checkbox,
   Button,
 } from "antd";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,6 +29,8 @@ import tinycolor from "tinycolor2";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import "./CalendarPage.scss";
+import CustomCheckbox from "./CustomCheckbox";
+import "./CustomCheckbox.scss";
 
 moment.locale("it");
 
@@ -225,7 +226,7 @@ const CalendarPage = () => {
 
   const eventPropGetter = (event) => {
     const backgroundColor =
-      event.eventType === "MATCH" ? `${team.secondaryColor}` : "blue";
+      event.eventType === "MATCH" ? `#fd4742` : "#2600ff";
     const textColor = getTextColor(backgroundColor);
     return {
       style: {
@@ -241,24 +242,25 @@ const CalendarPage = () => {
   const handleFilterChange = (eventType) => {
     if (eventType === "ALL") {
       setFilters({
-        ALL: true,
-        MATCH: true,
-        TRAINING: true,
+        ALL: !filters.ALL,
+        MATCH: !filters.ALL,
+        TRAINING: !filters.ALL,
       });
     } else {
       const newFilters = {
         ...filters,
-        ALL: false,
         [eventType]: !filters[eventType],
+        ALL: false,
       };
-      if (!newFilters.MATCH && !newFilters.TRAINING) {
+  
+      if (newFilters.MATCH && newFilters.TRAINING) {
         newFilters.ALL = true;
-        newFilters.MATCH = true;
-        newFilters.TRAINING = true;
       }
+  
       setFilters(newFilters);
     }
   };
+  
 
   const [isLoading, setIsLoading] = useState(false);
   const [fadeClass, setFadeClass] = useState('');
@@ -314,24 +316,33 @@ const CalendarPage = () => {
           </h5>
           <hr />
           <div className="d-flex justify-content-start align-items-center">
-            <Checkbox
-              checked={filters.ALL}
-              onChange={() => handleFilterChange("ALL")}
-            >
-              Tutti gli eventi
-            </Checkbox>
-            <Checkbox
-              checked={filters.MATCH}
-              onChange={() => handleFilterChange("MATCH")}
-            >
-              Partite
-            </Checkbox>
-            <Checkbox
-              checked={filters.TRAINING}
-              onChange={() => handleFilterChange("TRAINING")}
-            >
-              Allenamenti
-            </Checkbox>
+          <CustomCheckbox
+                  id="all-events"
+                  checked={filters.ALL}
+                  onChange={ () => handleFilterChange("ALL")}
+                  label="Tutti"
+                  boxClassName="checkbox-box-1"
+                  tickClassName="checkbox-tick-1"
+                 
+                />
+                <CustomCheckbox
+                  id="match-events"
+                  checked={filters.MATCH}
+                  onChange={ () => handleFilterChange("MATCH")}
+                  label="Partite"
+                  boxClassName="checkbox-box-2"
+                  tickClassName="checkbox-tick-2"
+                 
+                />
+                <CustomCheckbox
+                  id="training-events"
+                  checked={filters.TRAINING}
+                  onChange={ () => handleFilterChange("TRAINING")}
+                  label="Allenamenti"
+                  boxClassName="checkbox-box-3"
+                  tickClassName="checkbox-tick-3"
+                 
+                />
             {user.userType === "COACH" && (
               <div className="ms-auto">
               <Button
