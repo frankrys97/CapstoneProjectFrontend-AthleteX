@@ -107,7 +107,6 @@ const TeamPage = () => {
     ) : (
       <TeamPageLayout>
         <Row className="w-100 mt-4" style={{ maxWidth: "900px" }}>
-          {/* Sezione informazioni sul team */}
           <Col md={12} className="mb-4">
             <Row className="bg-white shadow" style={{ border: "1px solid #dee2e6", minHeight: "190px" }}>
               <Col md={4} className="bg-light d-flex justify-content-center align-items-center border">
@@ -154,7 +153,7 @@ const TeamPage = () => {
               </Col>
             </Row>
 
-            <Row className="mt-4 justify-content-between row-cols-1 row-cols-md-2">
+            <Row className="mt-4 justify-content-between row-cols-1 row-cols-md-2 g-3">
               <Col className="bg-white events-container shadow" style={{ border: "1px solid #dee2e6" }}>
                 <div className="p-4 d-flex flex-column h-100">
                   <h5>Ultimo evento</h5>
