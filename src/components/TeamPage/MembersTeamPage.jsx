@@ -309,7 +309,15 @@ const MembersTeamPage = () => {
         key: "status",
         width: 150,
         render: (text) => (
-          <span style={{ width: "100%" }}>{text === "AVAILABLE" ? "Disponibile" : text === "INJURED" ? "Infortunato" : text === "OUT_OF_ROSTER" ? "Fuori rosa" : "N/A"}</span>
+          <span style={{ width: "100%" }}>
+            {text === "AVAILABLE"
+              ? "Disponibile"
+              : text === "INJURED"
+              ? "Infortunato"
+              : text === "OUT_OF_ROSTER"
+              ? "Fuori rosa"
+              : "N/A"}
+          </span>
         ),
         sorter: (a, b) => a.status.localeCompare(b.status),
       },
@@ -575,13 +583,15 @@ const MembersTeamPage = () => {
       <Row className="w-100">
         <Col>
           <h5 style={{ fontStyle: "italic" }} className="text-muted">
-          <Link
+            <Link
               style={{
                 color: team ? `${team.secondaryColor}` : "#fd4742",
-              }} to={`/team/${team.id}`}
+              }}
+              to={`/team/${team.id}`}
               className="text-decoration-none"
             >
-              {team.name} </Link>
+              {team.name}{" "}
+            </Link>
             / Rosa
           </h5>
         </Col>
@@ -589,23 +599,74 @@ const MembersTeamPage = () => {
 
       <Row className="mt-5 w-100">
         <Col className="w-100">
-          <div className="d-flex flex-column justify-content-between align-items-start gap-3 flex-sm-row align-items-sm-end">
+          <div className="d-flex flex-column justify-content-between align-items-start gap-3 flex-sm-row align-items-sm-center">
             <h5 className="text-dark mb-0">Membri</h5>
             {user && user.userType === "COACH" ? (
-              <Button
-                as={Link}
-                to={`/team/${team.name}/add-member`}
-                style={{
-                  backgroundColor: team ? `${team.secondaryColor}` : "#fd4742",
-                  color: getTextColor(
-                    team ? `${team.secondaryColor}` : "#fd4742"
-                  ),
-                }}
-                className="d-flex align-items-center gap-2 border border-0 rounded rounded-2 px-3 py-2 btn-add-member"
-              >
-                <AiOutlineUserAdd className="fs-4" />
-                <span>Aggiungi un membro</span>
-              </Button>
+              <>
+                {/* <DynamicButton
+                  text="Aggiungi"
+                  icon={<AiOutlineUserAdd />}
+                  baseColor={`${team.secondaryColor}`}
+                  strokeColor={
+                    team && `${getTextColor(`${team.secondaryColor}`)}`
+                  }
+                ></DynamicButton> */}
+
+                <button
+                  type="button"
+                  onClick={() => navigate(`/team/${team.name}/add-member`)}
+                  className="button-dynamic px-3 py-2 rounded"
+                  style={{
+                    borderColor: team ? `${team.secondaryColor}` : "#fd4742",
+                    backgroundColor: team
+                      ? `${team.secondaryColor}`
+                      : "#fd4742",
+                    color: getTextColor(
+                      team ? `${team.secondaryColor}` : "#fd4742"
+                    ),
+                    fontFamily: "Montserrat",
+                    fontStyle: "normal",
+                  }}
+                >
+                  <span
+                    className="button__text"
+                    style={{
+                      color: getTextColor(
+                        team ? `${team.secondaryColor}` : "#fd4742"
+                      ),
+                    }}
+                  >
+                    Aggiungi membro
+                  </span>
+                  <span
+                    className="button__icon rounded"
+                    style={{
+                      backgroundColor: team
+                        ? `${tinycolor(team.secondaryColor).darken(5)}`
+                        : "#fd4742",
+                    }}
+                  >
+                    <AiOutlineUserAdd className="fs-5" />
+                  </span>
+                </button>
+
+                {/* <Button
+                  as={Link}
+                  to={`/team/${team.name}/add-member`}
+                  style={{
+                    backgroundColor: team
+                      ? `${team.secondaryColor}`
+                      : "#fd4742",
+                    color: getTextColor(
+                      team ? `${team.secondaryColor}` : "#fd4742"
+                    ),
+                  }}
+                  className="d-flex align-items-center gap-2 border border-0 rounded rounded-2 px-3 py-2 btn-add-member"
+                >
+                  <AiOutlineUserAdd className="fs-4" />
+                  <span>Aggiungi un membro</span>
+                </Button> */}
+              </>
             ) : (
               <Button
                 style={{
@@ -629,7 +690,7 @@ const MembersTeamPage = () => {
         <Col style={{ minHeight: "60vh", maxHeight: "60vh" }}>
           <div
             style={{ backgroundColor: "white" }}
-            className="mt-4 rounded rounded-2 border border-1 p-4"
+            className="mt-4 rounded rounded-2 border border-1 p-4 shadow"
           >
             <div className="d-flex flex-column align-items-start justify-content-between flex-md-row align-items-md-center gap-3">
               <h5>

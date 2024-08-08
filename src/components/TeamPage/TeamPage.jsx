@@ -172,7 +172,7 @@ const TeamPage = () => {
 
                   <hr className="hr-line mt-auto"></hr>
                   <div className="d-flex justify-content-end align-items-center">
-                    <Button onClick={() => navigate(`/calendar`)} variant="link" className="text-decoration-none p-0" style={{ color: `${team.secondaryColor}`}}>Vai al calendario</Button>
+                    <Button onClick={() => navigate(`/calendar`)} variant="link" className="text-decoration-none p-0 go-calendar-btn" style={{ color: `${team.secondaryColor}`}}>Vai al calendario</Button>
                   </div>
                 </div>
               </Col>
@@ -193,7 +193,7 @@ const TeamPage = () => {
                   )}
                   <hr className="hr-line mt-auto"></hr>
                   <div className="d-flex justify-content-end align-items-center">
-                    <Button onClick={() => navigate(`/calendar`)} variant="link" className="text-decoration-none p-0" style={{ color: `${team.secondaryColor}`}}>Vai al calendario</Button>
+                    <Button onClick={() => navigate(`/calendar`)} variant="link" className="text-decoration-none p-0 go-calendar-btn" style={{ color: `${team.secondaryColor}`}}>Vai al calendario</Button>
                   </div>
                 </div>
               </Col>

@@ -188,6 +188,67 @@ transform: scale(1.05);    }
     }
     
 }
+
+.button-dynamic {
+    position: relative;
+    width: 215px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    border: 1px solid #34974d;
+    background-color: #3aa856;
+  }
+  
+  .button-dynamic, .button__icon, .button__text {
+    transition: all 0.3s;
+  }
+  
+  .button-dynamic .button__text {
+    color: #fff;
+  }
+  
+  .button-dynamic .button__icon {
+    position: absolute;
+    transform: translateX(158px);
+    height: 100%;
+    width: 39px;
+    background-color: #34974d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .button-dynamic .svg {
+    width: 30px;
+    stroke: #fff;
+  }
+  
+  .button-dynamic:hover {
+    background: #34974d;
+  }
+  
+  .button-dynamic:hover .button__text {
+    color: transparent;
+  }
+  
+  .button-dynamic:hover .button__icon {
+    width: 215px;
+    transform: translateX(-18px);
+  }
+  
+  .button-dynamic:active .button__icon {
+    background-color: #2e8644;
+  }
+  
+  .button-dynamic:active {
+    border: 1px solid #2e8644;
+  }
+
+  .go-calendar-btn:hover {
+    transform: scale(1.05);
+  }
    
 
 

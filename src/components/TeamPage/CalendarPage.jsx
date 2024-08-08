@@ -324,63 +324,97 @@ const CalendarPage = () => {
           <hr />
           <div className="d-flex flex-column flex-md-row justify-content-between justify-content-md-start align-items-center">
             <div className="d-flex gap-2">
+              <CustomCheckbox
+                id="all-events"
+                checked={filters.ALL}
+                onChange={() => handleFilterChange("ALL")}
+                label="Tutti"
+                boxClassName="checkbox-box-1"
+                tickClassName="checkbox-tick-1"
+              />
 
-        
-            <CustomCheckbox
-              id="all-events"
-              checked={filters.ALL}
-              onChange={() => handleFilterChange("ALL")}
-              label="Tutti"
-              boxClassName="checkbox-box-1"
-              tickClassName="checkbox-tick-1"
-            />
-
-            <CustomCheckbox
-              id="match-events"
-              checked={filters.MATCH}
-              onChange={() => handleFilterChange("MATCH")}
-              label="Partite"
-              boxClassName="checkbox-box-2"
-              tickClassName="checkbox-tick-2"
-            />
-            <CustomCheckbox
-              id="training-events"
-              checked={filters.TRAINING}
-              onChange={() => handleFilterChange("TRAINING")}
-              label="Allenamenti"
-              boxClassName="checkbox-box-3"
-              tickClassName="checkbox-tick-3"
-            />
-                </div>
+              <CustomCheckbox
+                id="match-events"
+                checked={filters.MATCH}
+                onChange={() => handleFilterChange("MATCH")}
+                label="Partite"
+                boxClassName="checkbox-box-2"
+                tickClassName="checkbox-tick-2"
+              />
+              <CustomCheckbox
+                id="training-events"
+                checked={filters.TRAINING}
+                onChange={() => handleFilterChange("TRAINING")}
+                label="Allenamenti"
+                boxClassName="checkbox-box-3"
+                tickClassName="checkbox-tick-3"
+              />
+            </div>
             <div className="mt-2 mt-md-0 ms-md-auto d-flex flex-column justify-content-center align-items-center flex-md-row align-item-md-center gap-2">
               <div className="position-relative">
-              <input
-                type="text"
-                placeholder="Cerca eventi..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="form-control w-100"
-              />
-              <HiOutlineMagnifyingGlass className="search-icon" />
-
-
+                <input
+                  type="text"
+                  placeholder="Cerca eventi..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="form-control w-100"
+                />
+                <HiOutlineMagnifyingGlass className="search-icon" />
               </div>
               {user.userType === "COACH" && (
-                <Button
+                //                 <Button
+                //                   onClick={() => navigate(`/calendar/add-event`)}
+                //                   style={{
+                //                     backgroundColor: `${team.secondaryColor}`,
+                //                     color: `${getTextColor(`${team.secondaryColor}`)}`,
+                //                     borderRadius: "5px",
+                //                     borderColor: `${team.secondaryColor}`,
+                //                     fontFamily: "Montserrat",
+                //                     fontStyle: "normal",
+                //                   }}
+                //                   className="px-3 py-3 btn-add-member fs-6 d-flex justify-content-center align-items-center gap-2"
+                //                 >
+                //                   <MdOutlineEditCalendar />
+                // <span>Aggiungi un evento</span>
+                //                 </Button>
+                <button
+                  type="button"
                   onClick={() => navigate(`/calendar/add-event`)}
+                  className="button-dynamic px-3 py-2 rounded"
                   style={{
-                    backgroundColor: `${team.secondaryColor}`,
-                    color: `${getTextColor(`${team.secondaryColor}`)}`,
-                    borderRadius: "5px",
-                    borderColor: `${team.secondaryColor}`,
+                    borderColor: team ? `${team.secondaryColor}` : "#fd4742",
+                    backgroundColor: team
+                      ? `${team.secondaryColor}`
+                      : "#fd4742",
+                    color: getTextColor(
+                      team ? `${team.secondaryColor}` : "#fd4742"
+                    ),
                     fontFamily: "Montserrat",
                     fontStyle: "normal",
+                    height: "37px",
                   }}
-                  className="px-3 py-3 btn-add-member fs-6 d-flex justify-content-center align-items-center gap-2"
                 >
-                  <MdOutlineEditCalendar />
-<span>Aggiungi un evento</span>
-                </Button>
+                  <span
+                    className="button__text"
+                    style={{
+                      color: getTextColor(
+                        team ? `${team.secondaryColor}` : "#fd4742"
+                      ),
+                    }}
+                  >
+                    Aggiungi evento
+                  </span>
+                  <span
+                    className="button__icon rounded"
+                    style={{
+                      backgroundColor: team
+                        ? `${tinycolor(team.secondaryColor).darken(5)}`
+                        : "#fd4742",
+                    }}
+                  >
+                    <MdOutlineEditCalendar className="fs-5" />
+                  </span>
+                </button>
               )}
             </div>
           </div>
@@ -713,9 +747,11 @@ const CalendarPage = () => {
                   <p className="m-0 fw-semibold fs-6">Descrizione</p>
                   {eventDetails.description}
                   <p className="m-0 fw-semibold fs-6">Data inizio</p>
-                  {eventDetails.startDate && eventDetails.startDate.split("-").reverse().join("-")}
+                  {eventDetails.startDate &&
+                    eventDetails.startDate.split("-").reverse().join("-")}
                   <p className="m-0 fw-semibold fs-6">Data fine</p>
-                  {eventDetails.endDate && eventDetails.endDate.split("-").reverse().join("-")}
+                  {eventDetails.endDate &&
+                    eventDetails.endDate.split("-").reverse().join("-")}
                   <p className="m-0 fw-semibold fs-6">Luogo</p>
                   {eventDetails.locationType === "GYM"
                     ? "Palestra"
@@ -755,16 +791,17 @@ const CalendarPage = () => {
               <div
                 style={{
                   backgroundColor: `${
-                   eventDetails && eventDetails.eventType === "TRAINING" ? "#2600ff" : "#fd4742"
+                    eventDetails && eventDetails.eventType === "TRAINING"
+                      ? "#2600ff"
+                      : "#fd4742"
                   }`,
-                  color: `${
-                    getTextColor(
-                      `${
-                       eventDetails && eventDetails.eventType === "TRAINING" ? "#2600ff" : "#fd4742"
-                      }`
-                    )
-                  }`
-                  ,
+                  color: `${getTextColor(
+                    `${
+                      eventDetails && eventDetails.eventType === "TRAINING"
+                        ? "#2600ff"
+                        : "#fd4742"
+                    }`
+                  )}`,
                   width: "100%",
                   height: "70px",
                   overflow: "hidden",

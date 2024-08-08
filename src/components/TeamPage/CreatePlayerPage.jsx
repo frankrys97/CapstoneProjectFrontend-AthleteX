@@ -25,7 +25,6 @@ const CreatePlayerPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Genera opzioni per i numeri di maglia disponibili
   const generateJerseyNumberOptions = () => {
     const takenNumbers = new Set(players.map((player) => player.jerseyNumber));
     return Array.from({ length: 99 }, (_, i) => i + 1)
@@ -33,7 +32,6 @@ const CreatePlayerPage = () => {
       .map((num) => ({ label: num, value: num }));
   };
 
-  // Gestione delle modifiche al form
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues((prev) => ({ ...prev, [name]: value }));
@@ -43,7 +41,6 @@ const CreatePlayerPage = () => {
     setFormValues((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Gestione del submit del form
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -96,9 +93,9 @@ const CreatePlayerPage = () => {
               className="text-decoration-none"
               to={`/members`}
             >
-              Membri /{" "}
+              Membri {" "}
             </Link>{" "}
-            Aggiungi membri
+            / Aggiungi membri
           </h5>
         </Col>
       </Row>
