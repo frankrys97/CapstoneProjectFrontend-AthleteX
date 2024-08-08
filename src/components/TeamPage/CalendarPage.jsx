@@ -34,6 +34,7 @@ import "./CustomCheckbox.scss";
 import immagineAllenamento from "../../assets/Esecutivi/immagine-allenamento.jpeg";
 import immaginePartita from "../../assets/Esecutivi/immagine-partita.jpg";
 import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
+import { MdOutlineEditCalendar } from "react-icons/md";
 moment.locale("it");
 
 moment.locale("it");
@@ -375,9 +376,10 @@ const CalendarPage = () => {
                     fontFamily: "Montserrat",
                     fontStyle: "normal",
                   }}
-                  className="px-4 py-3 btn-add-member fs-6"
+                  className="px-3 py-3 btn-add-member fs-6 d-flex justify-content-center align-items-center gap-2"
                 >
-                  Aggiungi Evento
+                  <MdOutlineEditCalendar />
+<span>Aggiungi un evento</span>
                 </Button>
               )}
             </div>

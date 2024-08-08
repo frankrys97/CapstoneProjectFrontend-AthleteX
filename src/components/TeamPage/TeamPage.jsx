@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchTeam, fetchTeamEvents, getComponentsOfTeam } from "../../redux/actions";
 import LogoLoading from "../../assets/Pittogramma/png/Pittogramma - colore 5.png";
+import iconaScudetto from "../../assets/HomePage/Icona-scudetto.svg";
+
 
 const TeamPage = () => {
   const team = useSelector((state) => state.team.content);
@@ -14,10 +16,13 @@ const TeamPage = () => {
   const dispatch = useDispatch();
   const players = useSelector((state) => state.team.players.players);
   const events = useSelector((state) => state.team.events);
+  const [lastEvent, setLastEvent] = useState(null);
+  const [nextEvent, setNextEvent] = useState(null);
 
   const matches = events.filter((event) => event.eventType === "MATCH");
 
   const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     const loadData = async () => {
@@ -36,12 +41,63 @@ const TeamPage = () => {
 
         setTimeout(() => {
           setLoading(false);
-        }, 2000);
+        }, 1500);
       }
     };
 
     loadData();
   }, [dispatch, team.id]);
+
+  useEffect(() => {
+    if (events.length > 0) {
+      const today = new Date();
+      let closestPastEvent = null;
+      let closestFutureEvent = null;
+  
+      events.forEach(event => {
+        const eventDate = new Date(event.startDate);
+  
+        if (eventDate < today) {
+          if (!closestPastEvent || eventDate > new Date(closestPastEvent.startDate)) {
+            closestPastEvent = event;
+          }
+        }
+  
+        if (eventDate >= today) {
+          if (!closestFutureEvent || eventDate < new Date(closestFutureEvent.startDate)) {
+            closestFutureEvent = event;
+          }
+        }
+      });
+  
+      setLastEvent(closestPastEvent);
+      setNextEvent(closestFutureEvent);
+
+    }
+  }, [events]);
+  
+
+  const isDefaultAvatar =
+  !team?.avatar || team?.avatar?.includes("https://ui-avatars.com/api/");
+
+  function formatDateToReadableString(dateString) {
+    const date = new Date(dateString);
+  
+    const daysOfWeek = [
+      "Domenica", "Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato"
+    ];
+    const months = [
+      "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno",
+      "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre"
+    ];
+  
+    const dayOfWeek = daysOfWeek[date.getDay()];
+    const day = date.getDate();
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+  
+    return `${dayOfWeek} ${day} ${month} ${year}`;
+  }
 
   return (
     loading ? (
@@ -53,18 +109,18 @@ const TeamPage = () => {
         <Row className="w-100 mt-4" style={{ maxWidth: "900px" }}>
           {/* Sezione informazioni sul team */}
           <Col md={12} className="mb-4">
-            <Row className="bg-white" style={{ border: "1px solid #dee2e6", minHeight: "190px" }}>
-              <Col md={4} className="bg-light d-flex justify-content-center align-items-center">
+            <Row className="bg-white shadow" style={{ border: "1px solid #dee2e6", minHeight: "190px" }}>
+              <Col md={4} className="bg-light d-flex justify-content-center align-items-center border">
                 <div className="w-100 p-3" style={{ width: "100%", height: "150px", overflow: "hidden", margin: "0 auto" }}>
-                  <img src={team.avatar} alt="" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                  <img src={isDefaultAvatar ? iconaScudetto : team.avatar} alt="" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
                 </div>
               </Col>
               <Col md={8}>
                 <div className="p-4 d-flex flex-column gap-3">
                   <div className="w-100 d-flex justify-content-between align-items-center">
                     <h4 className="mb-0">{team.name}</h4>
-                    <Button onClick={() => navigate(`/team/${team.name}/settings`)} size="sm" variant="link" className="text-decoration-none text-muted btn-add-member">
-                      <FaRegPenToSquare className="fs-5" />
+                    <Button onClick={() => navigate(`/team/${team.name}/settings`)} size="sm" variant="link" className="text-decoration-none text-muted btn-add-member" style={{color: `${team.secondaryColor}`}}>
+                      <FaRegPenToSquare className="fs-5" style={{color: `${team.secondaryColor}`}} />
                     </Button>
                   </div>
 
@@ -99,18 +155,46 @@ const TeamPage = () => {
             </Row>
 
             <Row className="mt-4 justify-content-between row-cols-1 row-cols-md-2">
-              <Col className="bg-white" style={{ border: "1px solid #dee2e6", maxWidth: "440px" }}>
-                <div className="p-4">
+              <Col className="bg-white events-container shadow" style={{ border: "1px solid #dee2e6" }}>
+                <div className="p-4 d-flex flex-column h-100">
                   <h5>Ultimo evento</h5>
-                  <p>Martedì 6 Agosto 2024 22:00</p>
-                  <p>Allenamento</p>
+                    { lastEvent ? (
+                  <div className="d-flex flex-column">
+                        
+                    <p className="mb-0 text-muted">{lastEvent && formatDateToReadableString(lastEvent.startDate)}</p>
+                    <p className="mb-0 text-muted">{lastEvent && lastEvent.eventType === "TRAINING" ? "Allenamento" : "Partita"}</p>
+
+                    <h5 className="fs-6 mt-3">{lastEvent && lastEvent.title}</h5>
+                  </div>
+) : (
+                    <p className="mb-0 text-muted">Nessun evento</p>
+                  )}
+
+                  <hr className="hr-line mt-auto"></hr>
+                  <div className="d-flex justify-content-end align-items-center">
+                    <Button onClick={() => navigate(`/calendar`)} variant="link" className="text-decoration-none p-0" style={{ color: `${team.secondaryColor}`}}>Vai al calendario</Button>
+                  </div>
                 </div>
               </Col>
-              <Col className="bg-white" style={{ border: "1px solid #dee2e6", maxWidth: "440px" }}>
-                <div className="p-4">
+              <Col className="bg-white events-container shadow" style={{ border: "1px solid #dee2e6" }}>
+              <div className="p-4 d-flex flex-column h-100">
                   <h5>Prossimo evento</h5>
-                  <p>Sabato 10 Agosto 2024 10:00</p>
-                  <p>Allenamento</p>
+                  { nextEvent ? (
+                  <div className="d-flex flex-column">
+                    <p className="mb-0 text-muted">{nextEvent && formatDateToReadableString(nextEvent.startDate)}</p>
+                    <p className="mb-0 text-muted">{nextEvent && nextEvent.eventType === "TRAINING" ? "Allenamento" : "Partita"}</p>
+
+                    <h5 className="fs-6 mt-3">{nextEvent && nextEvent.title}</h5>
+
+                  </div>
+                      
+                  ) : (
+                    <p className="mb-0 text-muted">Nessun evento</p>
+                  )}
+                  <hr className="hr-line mt-auto"></hr>
+                  <div className="d-flex justify-content-end align-items-center">
+                    <Button onClick={() => navigate(`/calendar`)} variant="link" className="text-decoration-none p-0" style={{ color: `${team.secondaryColor}`}}>Vai al calendario</Button>
+                  </div>
                 </div>
               </Col>
             </Row>

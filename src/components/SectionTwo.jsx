@@ -19,7 +19,7 @@ const scrollToTop = () => {
 }
 
     return (
-        <Container className="my-5 p-5">
+        <Container className="my-5 p-5 overflow-hidden">
             <Row className="row-cols-lg-2 row-cols-1">
                 <Col
                  data-aos="fade-right"

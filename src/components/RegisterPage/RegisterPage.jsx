@@ -6,6 +6,7 @@ import logo2 from "../../assets/Esecutivi/Logo/svg/AthleteX - colore 4.svg";
 import axios from 'axios';
 import "../../style/RegisterPage/RegisterPage.scss";
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import LogoLoading from "../../assets/Pittogramma/png/Pittogramma - colore 5.png";
 import Footer from '../Footer.jsx';
 
 const RegisterPage = () => {
@@ -26,8 +27,10 @@ const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const [overlayVisible, setOverlayVisible] = useState(false);
   const [overlayMessage, setOverlayMessage] = useState("");
+  const [booleanTeamId, setBooleanTeamId] = useState(false);
 const location = useLocation();
 const [userTypeDisabled, setUserTypeDisabled] = useState(false); 
+const [emailDisabled, setEmailDisabled] = useState(false);
 
 const getTeamIdFromQuery = () => {
   const params = new URLSearchParams(location.search); 
@@ -44,8 +47,24 @@ const getTeamIdFromQuery = () => {
     const teamId = getTeamIdFromQuery();
 
     if (teamId) {
+      const userType = teamId
+      setFormData({ ...formData, userType: userType });
       setUserTypeDisabled(true);
+      setBooleanTeamId(true);
     }
+
+    const getEmailFromQuery = () => {
+      const params = new URLSearchParams(location.search); 
+      return params.get('email');
+    };
+
+    const email = getEmailFromQuery();
+
+    if (email) {
+      setFormData({ ...formData, email: email });
+      setEmailDisabled(true);
+    }
+
     const checkAvailability = async () => {
       const newErrors = { ...errors };
       if (formData.username && !errors.username) {
@@ -66,7 +85,7 @@ const getTeamIdFromQuery = () => {
           const response = await axios.get(`http://localhost:3001/users/check-email/${formData.email}`);
           setEmailAvailable(!response.data);
           if (response.data) {
-            newErrors.email = 'Email non disponibile.';
+            newErrors.email = 'Email non disponibile, esiste già un account associato a questa email.';
           } else {
             delete newErrors.email;
           }
@@ -79,7 +98,8 @@ const getTeamIdFromQuery = () => {
 
     const handler = setTimeout(checkAvailability, 500);
     return () => clearTimeout(handler);
-  }, [formData.username, formData.email, errors, location.search]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData.username, formData.email, formData.userType, errors, location.search]);
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -182,13 +202,14 @@ const getTeamIdFromQuery = () => {
         password: '',
         userType: ''
       });
-      setTimeout(() => navigate('/login'), 3000);
+      setTimeout(() => navigate('/login'), 2000);
     } catch (error) {
       setOverlayMessage("Registrazione fallita. Riprova.");
       console.error('There was an error!', error);
     } finally {
-      setLoading(false);
-      setTimeout(() => setOverlayVisible(false), 3000);
+      // setLoading(false);
+      setTimeout(() => setLoading(false), 2000);
+      setTimeout(() => setOverlayVisible(false), 2000);
     }
   };
 
@@ -211,9 +232,10 @@ const getTeamIdFromQuery = () => {
               </Container>
             </Navbar>
           </Col>
-          <Col md={9} className="d-flex flex-column align-items-center justify-content-center right-column" style={{ backgroundColor: "#f0f0f2" }}>
+          <Col md={9} className="right-column" style={{ backgroundColor: "#f0f0f2" }}>
+          <div className='d-flex flex-column align-items-center h-100 p-4 w-100'>
             <h1 className='page-title'>Benvenuto</h1>
-            <Form onSubmit={handleSubmit} className="px-3 pb-3" style={{ width: '100%', maxWidth: '30rem' }}>
+            <Form onSubmit={handleSubmit} className="px-3 pb-4" style={{ width: "100%", maxWidth: "500px" }} >
               <Form.Group controlId="name" className="mb-3 position-relative">
                 <Form.Label>Nome</Form.Label>
                 <Form.Control
@@ -249,6 +271,8 @@ const getTeamIdFromQuery = () => {
                   onChange={handleChange}
                   placeholder="Inserisci la tua email"
                   required
+                  disabled={emailDisabled}
+
                 />
                 {errors.email && formData.email && <p className="text-danger">{errors.email}</p>}
                 {!errors.email && formData.email && emailAvailable && <FaCheckCircle className="text-success position-absolute icon-success" />}
@@ -303,10 +327,10 @@ const getTeamIdFromQuery = () => {
               </Form.Group>
               <Form.Group controlId="userType" className="mb-4">
                 <Form.Label>Tipo di Utente</Form.Label>
-                <Form.Select name="userType" value={formData.userType} onChange={handleChange} disabled={userTypeDisabled}>
+                <Form.Select name="userType" value={booleanTeamId ? "PLAYER" : formData.userType} onChange={handleChange} disabled={userTypeDisabled}>
                   <option value="" disabled>Seleziona il tipo di utente</option>
-                  <option value="Coach">Coach</option>
-                  <option value="Player">Giocatore</option>
+                  <option value="COACH">Coach</option>
+                  <option value="PLAYER">Giocatore</option>
                 </Form.Select>
               </Form.Group>
               <div className='d-flex flex-column align-items-start gap-3'>
@@ -317,6 +341,7 @@ const getTeamIdFromQuery = () => {
               </Button>
               </div>
             </Form>
+            </div>
           </Col>
         </Row>
         <Modal show={showModal} onHide={() => setShowModal(false)}>
@@ -339,13 +364,9 @@ const getTeamIdFromQuery = () => {
       {overlayVisible && (
         <div className="overlay-wrapper">
             {loading && (
-              <div className="loader">
-                <div className="ball ball1"></div>
-                <div className="ball ball2"></div>
-                <div className="ball ball3"></div>
-              </div>
+               <img src={LogoLoading} alt="Caricamento..." className="loading-logo" />
             )}
-            <div className="overlay-message">{overlayMessage}</div>
+            <div className="overlay-message mt-3">{overlayMessage}</div>
         </div>
       )}
 

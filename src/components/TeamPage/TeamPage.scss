@@ -176,6 +176,18 @@ transform: scale(1.05);    }
   }
   
 
+  .events-container {
+    max-width: 440px;
+  }
+
+
+@media screen and (max-width: 767px) {
+
+    .events-container {
+       max-width: unset;
+    }
+    
+}
    
 
 

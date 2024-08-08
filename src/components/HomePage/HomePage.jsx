@@ -62,7 +62,7 @@ const Homepage = () => {
   };
 
   const handleTeamSettings = (teamId) => {
-    console.log(`Naviga alle impostazioni per la squadra con ID: ${teamId}`);
+    handleTeamPage(teamId);
   };
 
   const deleteTeamFetch = async () => {

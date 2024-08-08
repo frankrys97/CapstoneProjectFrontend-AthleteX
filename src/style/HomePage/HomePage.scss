@@ -7,7 +7,7 @@
 .homepage {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
     background-color: #f0f0f2;
   }
   
@@ -15,7 +15,7 @@
     min-height: calc(100vh - 62px);
   }
   .main-content-profile-coach-teams {
-    max-height: calc(100vh - 62px);
+    min-height: calc(100vh - 62px);
   }
 .card-create {
     width: 100%;
