@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import disegnoPartecipazione from "../../assets/Esecutivi/disegno-squadra.jpeg";
 import { getPartecipationsOfTeam } from "../../redux/actions";
 import tinycolor from "tinycolor2";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const InvitePage = () => {
   const team = useSelector((state) => state.team.content);
@@ -20,6 +20,7 @@ const InvitePage = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchPartecipations = async () => {
       try {
@@ -54,6 +55,7 @@ const InvitePage = () => {
       });
       const response = await apiClient.get(`/partecipations/${team.id}`);
       dispatch(getPartecipationsOfTeam(response.data.content));
+      navigate(`/team/${team.id}`);
     } catch (error) {
       console.error("Errore durante l'invito:", error);
     } finally {

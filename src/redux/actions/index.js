@@ -15,6 +15,11 @@ export const GET_EVENTS_OF_TEAM = 'GET_EVENTS_OF_TEAM';
 export const ADD_EVENT_TO_TEAM = 'ADD_EVENT_TO_TEAM';
 export const UPDATE_EVENT_IN_TEAM = 'UPDATE_EVENT_IN_TEAM';
 export const DELETE_EVENT_FROM_TEAM = 'DELETE_EVENT_FROM_TEAM';
+export const RESET_TEAM = 'RESET_TEAM';
+
+export const resetTeam = () => ({
+  type: RESET_TEAM,
+});
 
 export const fetchTeam = (teamId) => async (dispatch) => {
   try {

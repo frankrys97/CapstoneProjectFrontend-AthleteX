@@ -372,6 +372,8 @@ const CalendarPage = () => {
                     color: `${getTextColor(`${team.secondaryColor}`)}`,
                     borderRadius: "5px",
                     borderColor: `${team.secondaryColor}`,
+                    fontFamily: "Montserrat",
+                    fontStyle: "normal",
                   }}
                   className="px-4 py-3 btn-add-member fs-6"
                 >

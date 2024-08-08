@@ -6,7 +6,7 @@ import { GET_EVENTS_OF_TEAM,
 UPDATE_PLAYER_IN_TEAM, 
 ADD_EVENT_TO_TEAM,
 UPDATE_EVENT_IN_TEAM,
-DELETE_EVENT_FROM_TEAM} from "../actions";
+DELETE_EVENT_FROM_TEAM, RESET_TEAM} from "../actions";
 
 const initialState = {
     content: null,
@@ -68,6 +68,13 @@ const teamReducer = (state = initialState, action) => {
                                         return {
                                           ...state,
                                           events: state.events.filter(event => event.id !== action.payload),
+                                        };
+                                      case RESET_TEAM:
+                                        return {
+                                          content: null,
+                                          players: [],
+                                          events: [],
+                                          partecipations: [],
                                         };
                           
         default:

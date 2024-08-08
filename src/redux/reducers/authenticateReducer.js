@@ -1,5 +1,3 @@
-// src/redux/reducers/AuthenticateReducer.js
-
 import { LOGIN, LOGOUT, RECOGNIZE_USER, CANCEL_TEAM_OF_PLAYER } from "../actions";
 
 const initialState = {

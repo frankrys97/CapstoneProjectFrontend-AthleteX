@@ -2,6 +2,7 @@ import "./style/custom.scss";
 import 'react-toastify/dist/ReactToastify.css';
 import 'antd/dist/reset.css';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+// eslint-disable-next-line no-unused-vars
 import apiClient from "./utils/axiosConfig";
 import LandingPage from "./components/LandingPage";
 import RegisterPage from "./components/RegisterPage/RegisterPage";
@@ -17,14 +18,12 @@ import CreatePlayerPage from "./components/TeamPage/CreatePlayerPage";
 import SettingsPageTeam from "./components/TeamPage/SettingsPageTeam";
 import InvitePage from "./components/TeamPage/InvitePage";
 import CalendarPage from "./components/TeamPage/CalendarPage";import moment from 'moment';
-import 'moment/locale/it'; // Importa il locale italiano
+import 'moment/locale/it';
 import CreateEventPage from "./components/TeamPage/CreateEventPage";
 
-moment.locale('it'); // Imposta il locale globale su italiano
+moment.locale('it');
 
 function App() {
-  console.log(apiClient); 
-
   return (
     <div className="App">
     <BrowserRouter>

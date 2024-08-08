@@ -9,6 +9,8 @@ import { Link, useLocation } from "react-router-dom";
 import iconaProfilo from "../../assets/HomePage/Icona-profilo.svg";
 import tinycolor from "tinycolor2";
 import { Col } from "react-bootstrap";
+import iconaScudetto from "../../assets/HomePage/Icona-scudetto.svg";
+
 
 const SidebarTeamPage = () => {
   const team = useSelector((state) => state.team.content);
@@ -17,6 +19,8 @@ const SidebarTeamPage = () => {
 
   const isDefaultAvatar =
     !user?.avatar || user?.avatar?.includes("https://ui-avatars.com/api/");
+
+    const isDefaultTeamAvatar = !team?.avatar || team?.avatar?.includes("https://ui-avatars.com/api/");
 
   const getTextColor = (backgroundColor) => {
     const color = tinycolor(backgroundColor);
@@ -38,11 +42,12 @@ const SidebarTeamPage = () => {
         >
           <Link to={`/team/${team.id}`} className="w-100 h-100 d-flex align-items-center justify-content-center">
             <img
-              src={team.avatar ? team.avatar : iconaProfilo}
+             src={isDefaultTeamAvatar ? iconaScudetto : team.avatar}
               alt="logo squadra"
               className="img-logo"
-             
-            />
+            style={{
+              backgroundColor: isDefaultTeamAvatar ? "#f0f0f2" : ``, borderRadius: isDefaultTeamAvatar ? "50%" : ""}}
+           />
           </Link>
           <div
             className="popover-like"

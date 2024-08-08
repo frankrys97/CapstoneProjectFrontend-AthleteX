@@ -12,7 +12,7 @@ import { BsThreeDots } from 'react-icons/bs';
 import { MdOutlineLocalPostOffice } from 'react-icons/md';
 import { IoCalendarOutline } from 'react-icons/io5';
 import { PiSoccerBallThin } from 'react-icons/pi';
-import { cancelTeamOfPlayer, fetchTeamEvents, getComponentsOfTeam, setTeam } from '../../redux/actions';
+import { cancelTeamOfPlayer, fetchTeamEvents, getComponentsOfTeam, resetTeam, setTeam } from '../../redux/actions';
 
 const Homepage = () => {
   const user = useSelector((state) => state.authenticate.user);
@@ -53,6 +53,8 @@ const Homepage = () => {
     };
 
     fetchTeams();
+
+    dispatch(resetTeam());
   }, [user, refresh, dispatch]);
 
   const handleNavigate = (path) => {
