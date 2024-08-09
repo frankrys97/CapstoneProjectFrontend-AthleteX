@@ -4,9 +4,9 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-image: url("../../assets/Esecutivi/immagine-campo.jpg");
+  background-image: url("../../assets/Esecutivi/immagineThankYou.png");
   background-size: cover;
-  background-position: center;
+  background-position: top;
   color: white;
   font-family: "Montserrat", sans-serif;
 }
@@ -82,7 +82,7 @@
   gap: 10px;
   background-color: #161832;
   border-radius: 30px;
-  color: white;
+  color: #f0f0f2;
   font-weight: 600;
   border: none;
   position: relative;
@@ -96,7 +96,7 @@
 .svgIcon {
   height: 25px;
   transition-duration: 1.5s;
-  fill: white;
+  fill: #f0f0f2 ;
 }
 
 .bell path {
@@ -104,8 +104,12 @@
 }
 
 .button-home:hover {
-  background-color: #fd4742;
+  background-color: #f0f0f2;
   transition-duration: 0.5s;
+  color: #161832;
+  .svgIcon {
+    fill: #161832;
+  }
 }
 
 .button-home:active {
@@ -133,13 +137,13 @@
 }
 
 
-.thankyou-container::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(22, 24, 52, 0.50);
-    z-index: 1;
-  }
+// .thankyou-container::after {
+//     content: "";
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     width: 100%;
+//     height: 100%;
+//     background: rgba(22, 24, 52, 0.50);
+//     z-index: 1;
+//   }

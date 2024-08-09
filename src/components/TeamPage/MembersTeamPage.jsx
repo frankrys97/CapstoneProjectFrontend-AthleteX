@@ -554,7 +554,11 @@ const MembersTeamPage = () => {
               maxHeight: "42px",
             }}
           >
-            {loadingAvatar ? <Spinner style={{ width: "20px", height: "20px" }} /> : "Convalida"}
+            {loadingAvatar ? (
+              <Spinner style={{ width: "20px", height: "20px" }} />
+            ) : (
+              "Convalida"
+            )}
           </Button>,
         ]}
       >
@@ -683,19 +687,43 @@ const MembersTeamPage = () => {
                 </Button> */}
               </>
             ) : (
-              <Button
-                style={{
-                  backgroundColor: team ? `${team.secondaryColor}` : "#fd4742",
-                  color: getTextColor(
-                    team ? `${team.secondaryColor}` : "#fd4742"
-                  ),
-                }}
-                className="d-flex align-items-center gap-2 border border-0 rounded rounded-2 px-3 py-2 btn-add-member"
-                onClick={showLeaveConfirm}
-              >
-                <AiOutlineUserAdd className="fs-4" />
-                <span>Abbandona la squadra</span>
-              </Button>
+              <button
+                  type="button"
+                  onClick={showLeaveConfirm}
+                  className="button-dynamic px-3 py-2 rounded"
+                  style={{
+                    borderColor: team ? `${team.secondaryColor}` : "#fd4742",
+                    backgroundColor: team
+                      ? `${team.secondaryColor}`
+                      : "#fd4742",
+                    color: getTextColor(
+                      team ? `${team.secondaryColor}` : "#fd4742"
+                    ),
+                    fontFamily: "Montserrat",
+                    fontStyle: "normal",
+                  }}
+                >
+                  <span
+                    className="button__text"
+                    style={{
+                      color: getTextColor(
+                        team ? `${team.secondaryColor}` : "#fd4742"
+                      ),
+                    }}
+                  >
+                    Abbandona team
+                  </span>
+                  <span
+                    className="button__icon rounded"
+                    style={{
+                      backgroundColor: team
+                        ? `${tinycolor(team.secondaryColor).darken(5)}`
+                        : "#fd4742",
+                    }}
+                  >
+                    <AiOutlineUserAdd className="fs-5" />
+                  </span>
+                </button>
             )}
           </div>
         </Col>
@@ -715,18 +743,20 @@ const MembersTeamPage = () => {
                   ? "1 Membro"
                   : `${players.length} Membri`}
               </h5>
-              <Button
-                variant="link"
-                className="d-flex align-items-center gap-2 border border-1 rounded rounded-2 px-3 py-2 text-decoration-none"
-                style={{
-                  color: team ? `${team.secondaryColor}` : "#fd4742",
-                }}
-                as={Link}
-                to={`/team/${team.name}/settings`}
-              >
-                <IoSettingsOutline />
-                <span>Impostazioni</span>
-              </Button>
+              {user && user.userType === "COACH" && (
+                <Button
+                  variant="link"
+                  className="d-flex align-items-center gap-2 border border-1 rounded rounded-2 px-3 py-2 text-decoration-none"
+                  style={{
+                    color: team ? `${team.secondaryColor}` : "#fd4742",
+                  }}
+                  as={Link}
+                  to={`/team/${team.name}/settings`}
+                >
+                  <IoSettingsOutline />
+                  <span>Impostazioni</span>
+                </Button>
+              )}
             </div>
             <div className="mt-3 d-flex">
               <Table

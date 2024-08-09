@@ -18,6 +18,7 @@ const TeamPage = () => {
   const events = useSelector((state) => state.team.events);
   const [lastEvent, setLastEvent] = useState(null);
   const [nextEvent, setNextEvent] = useState(null);
+  const user = useSelector((state) => state.authenticate.user);
 
   const matches = events.filter((event) => event.eventType === "MATCH");
 
@@ -118,9 +119,11 @@ const TeamPage = () => {
                 <div className="p-4 d-flex flex-column gap-3">
                   <div className="w-100 d-flex justify-content-between align-items-center">
                     <h4 className="mb-0">{team.name}</h4>
+                    { user && user.userType === "COACH" &&
                     <Button onClick={() => navigate(`/team/${team.name}/settings`)} size="sm" variant="link" className="text-decoration-none text-muted btn-add-member" style={{color: `${team.secondaryColor}`}}>
                       <FaRegPenToSquare className="fs-5" style={{color: `${team.secondaryColor}`}} />
                     </Button>
+                    }
                   </div>
 
                   <div className="w-100 d-flex flex-column flex-sm-row justify-content-between align-items-start">

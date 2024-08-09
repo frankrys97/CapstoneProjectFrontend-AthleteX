@@ -69,7 +69,12 @@ const Homepage = () => {
 
     fetchTeams();
 
+
+    if (user.userType === "COACH") {
+
     dispatch(resetTeam());
+    }
+
   }, [user, refresh, dispatch]);
 
   const handleNavigate = (path) => {
@@ -428,7 +433,7 @@ const Homepage = () => {
                         variant="secondary"
                         size="sm"
                         className="px-3 py-2 btn-create border-0 mt-2"
-                        onClick={() => handleNavigate("/team/" + team.id)}
+                        onClick={() => handleTeamPage(team.id)}
                       >
                         Vai alla squadra
                       </Button>
