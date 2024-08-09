@@ -1,4 +1,4 @@
-import { Col, Row, Button, Form } from "react-bootstrap";
+import { Col, Row, Button, Form, Spinner } from "react-bootstrap";
 import TeamPageLayout from "./TeamPageLayout";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -12,6 +12,7 @@ import iconaScudetto from "../../assets/HomePage/Icona-scudetto.svg";
 import "./TeamPage.scss";
 import tinycolor from "tinycolor2";
 import { setTeam } from "../../redux/actions";
+import { Bounce, toast, ToastContainer } from "react-toastify";
 
 const SettingsPageTeam = () => {
   const team = useSelector((state) => state.team.content);
@@ -28,6 +29,7 @@ const SettingsPageTeam = () => {
   const [avatar, setAvatar] = useState(null);
   const [countries, setCountries] = useState([]);
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -95,6 +97,8 @@ const SettingsPageTeam = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setLoading(true);
+
     let newErrors = {};
     if (!formData.name) newErrors.name = "Il nome è obbligatorio";
     if (!formData.creationDate)
@@ -108,6 +112,7 @@ const SettingsPageTeam = () => {
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+      setLoading(false);
       return;
     }
 
@@ -126,9 +131,26 @@ const SettingsPageTeam = () => {
       const response = await apiClient.put(`/teams/${team.id}`, data);
       console.log(response.data);
       dispatch(setTeam(response.data));
-      handleNavigate(`/team/${team.id}`);
+
+      toast.success("Modifiche salvate con successo", {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        });
+        setTimeout(() => {
+          
+          handleNavigate(`/team/${team.id}`);
+        }, 3000);
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -151,6 +173,8 @@ const SettingsPageTeam = () => {
 
   return (
     <TeamPageLayout>
+                  <ToastContainer />
+
       <Row className="w-100">
         <Col>
           <h5 style={{ fontStyle: "italic" }} className="text-muted">
@@ -340,10 +364,13 @@ const SettingsPageTeam = () => {
                   backgroundColor: `${team.secondaryColor}`,
                   color: `${getTextColor(`${team.secondaryColor}`)}`,
                   borderColor: `${team.secondaryColor}`,
+                  minWidth: "180px",
+                  maxHeight: "42px",
                 }}
                 type="submit"
               >
-                Salva Modifiche
+              {loading ? <Spinner style={{ width: "20px", height: "20px" }} /> : "Salva modifiche"}
+
               </Button>
             </div>
           </Form>

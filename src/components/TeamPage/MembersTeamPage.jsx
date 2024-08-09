@@ -17,6 +17,7 @@ import { useEffect, useRef, useState } from "react";
 import "./TeamPage.scss";
 import TeamPageLayout from "./TeamPageLayout";
 import { FcUpload } from "react-icons/fc";
+import { Bounce, toast, ToastContainer } from "react-toastify";
 
 const MembersTeamPage = () => {
   const positionOptions = [
@@ -497,6 +498,17 @@ const MembersTeamPage = () => {
         editedValues
       );
       setRefresh(!refresh);
+      toast.success("Modifiche salvate con successo", {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
       setEditingRowId(null);
     } catch (error) {
       console.error("Errore durante il salvataggio:", error);
@@ -511,6 +523,7 @@ const MembersTeamPage = () => {
 
   return (
     <TeamPageLayout>
+      <ToastContainer></ToastContainer>
       <Modal
         title="Carica immagine del profilo"
         open={showModalInput}
@@ -537,9 +550,11 @@ const MembersTeamPage = () => {
               backgroundColor: `${team.secondaryColor}`,
               borderColor: `${team.secondaryColor}`,
               color: `${getTextColor(`${team.secondaryColor}`)}`,
+              width: "120px",
+              maxHeight: "42px",
             }}
           >
-            {loadingAvatar ? <Spinner size="small" /> : "Convalida"}
+            {loadingAvatar ? <Spinner style={{ width: "20px", height: "20px" }} /> : "Convalida"}
           </Button>,
         ]}
       >

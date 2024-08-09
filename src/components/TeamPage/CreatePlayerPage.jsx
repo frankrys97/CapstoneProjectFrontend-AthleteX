@@ -8,6 +8,7 @@ import { getPlayersOfTeam } from "../../redux/actions";
 import { Select } from "antd";
 import disegnoGiocatore from "../../assets/Esecutivi/disegno-giocatore.jpeg";
 import tinycolor from "tinycolor2";
+import { Bounce, toast, ToastContainer } from "react-toastify";
 
 const CreatePlayerPage = () => {
   const team = useSelector((state) => state.team.content);
@@ -51,6 +52,17 @@ const CreatePlayerPage = () => {
         formValues
       );
       dispatch(getPlayersOfTeam([...players, response.data]));
+      toast.success("Giocatore aggiunto con successo", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: 1500,
+        theme: "light",
+        transition: Bounce,
+        });
 
       setFormValues({
         name: "",
@@ -61,7 +73,7 @@ const CreatePlayerPage = () => {
         height: "",
         jerseyNumber: null,
       });
-      navigate("/members");
+      setTimeout(() => navigate("/members"), 1500);
     } catch (error) {
       console.error("Errore durante la creazione del giocatore:", error);
     } finally {
@@ -77,6 +89,7 @@ const CreatePlayerPage = () => {
 
   return (
     <TeamPageLayout>
+      <ToastContainer></ToastContainer>
       <Row className="w-100">
         <Col>
           <h5 style={{ fontStyle: "italic" }} className="text-muted">

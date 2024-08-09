@@ -20,6 +20,7 @@ import InvitePage from "./components/TeamPage/InvitePage";
 import CalendarPage from "./components/TeamPage/CalendarPage";import moment from 'moment';
 import 'moment/locale/it';
 import CreateEventPage from "./components/TeamPage/CreateEventPage";
+import ThankYouPage from "./components/ThankYouPage/ThankYouPage";
 
 moment.locale('it');
 
@@ -43,6 +44,7 @@ function App() {
         <Route path="/team/add-member/invite" element={<InvitePage />} />
         <Route path="/calendar" element={<CalendarPage />} />
         <Route path="/calendar/add-event" element={<CreateEventPage />} />
+        <Route path="/thankyou" element={<ThankYouPage />}></Route>
          
       </Routes>
     </BrowserRouter>

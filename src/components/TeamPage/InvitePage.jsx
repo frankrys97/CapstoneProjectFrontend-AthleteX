@@ -8,6 +8,7 @@ import disegnoPartecipazione from "../../assets/Esecutivi/disegno-squadra.jpeg";
 import { getPartecipationsOfTeam } from "../../redux/actions";
 import tinycolor from "tinycolor2";
 import { Link, useNavigate } from "react-router-dom";
+import { Bounce, toast, ToastContainer } from "react-toastify";
 
 const InvitePage = () => {
   const team = useSelector((state) => state.team.content);
@@ -55,7 +56,20 @@ const InvitePage = () => {
       });
       const response = await apiClient.get(`/partecipations/${team.id}`);
       dispatch(getPartecipationsOfTeam(response.data.content));
-      navigate(`/team/${team.id}`);
+      toast.success("Invito inviato con successo", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        });
+        setTimeout(() => {
+          navigate(`/team/${team.id}`);
+        }, 2500);
     } catch (error) {
       console.error("Errore durante l'invito:", error);
     } finally {
@@ -101,6 +115,7 @@ const InvitePage = () => {
 
   return (
     <TeamPageLayout>
+      <ToastContainer></ToastContainer>
       <Row className="w-100">
         <Col>
           <h5 style={{ fontStyle: "italic" }} className="text-muted">
@@ -113,7 +128,7 @@ const InvitePage = () => {
             >
               {team.name}{" "}
             </Link>{" "}
-            <span className="text-muted">/ Partecipazioni</span>
+            <span className="text-muted">/ Inviti</span>
           </h5>
         </Col>
       </Row>

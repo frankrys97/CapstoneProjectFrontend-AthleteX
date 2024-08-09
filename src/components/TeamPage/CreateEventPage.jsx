@@ -7,6 +7,7 @@ import { addEventToTeam } from "../../redux/actions";
 import { Select } from "antd";
 import tinycolor from "tinycolor2";
 import disegnoGiocatore from "../../assets/Esecutivi/disegno-calendario.jpeg";
+import { Bounce, toast, ToastContainer } from "react-toastify";
 
 const CreateEventPage = () => {
   const team = useSelector((state) => state.team.content);
@@ -75,6 +76,17 @@ const CreateEventPage = () => {
 
     try {
       dispatch(addEventToTeam(team.id, formValues));
+      toast.success("Evento aggiunto con successo", {
+        position: "top-right",
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        });
 
       setFormValues({
         eventType: "",
@@ -91,7 +103,9 @@ const CreateEventPage = () => {
         duration: "",
         trainingType: "",
       });
-      navigate("/calendar");
+      setTimeout(() => {
+        navigate("/calendar");
+      }, 2000);
     } catch (error) {
       console.error("Errore durante la creazione dell'evento:", error);
     } finally {
@@ -107,6 +121,7 @@ const CreateEventPage = () => {
 
   return (
     <TeamPageLayout>
+      <ToastContainer></ToastContainer>
       <Row className="w-100">
         <Col>
           <h5 style={{ fontStyle: "italic" }} className="text-muted">
@@ -117,9 +132,9 @@ const CreateEventPage = () => {
               to={`/team/${team.id}`}
               className="text-decoration-none"
             >
-              {team.name}
+              {team.name} /
+            {" "}
             </Link>{" "}
-            /{" "}
             <Link
               style={{ color: team ? `${team.secondaryColor}` : "#fd4742" }}
               className="text-decoration-none"
