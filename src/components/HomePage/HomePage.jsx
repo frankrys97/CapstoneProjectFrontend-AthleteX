@@ -393,7 +393,7 @@ const Homepage = () => {
                       <img
                         src={team.avatar}
                         alt="Logo squadra"
-                        style={{ width: "4rem", height: "5rem" }}
+                        style={{ height: "5rem" }}
                       />
                       <div
                         className=" d-flex justify-content-end align-items-center gap-2 position-absolute"

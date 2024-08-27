@@ -59,7 +59,7 @@ const CreatePlayerPage = () => {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: 1500,
+        progress: undefined,
         theme: "light",
         transition: Bounce,
         });
@@ -73,7 +73,7 @@ const CreatePlayerPage = () => {
         height: "",
         jerseyNumber: null,
       });
-      setTimeout(() => navigate("/members"), 1500);
+      setTimeout(() => navigate("/members"), 2000);
     } catch (error) {
       console.error("Errore durante la creazione del giocatore:", error);
     } finally {

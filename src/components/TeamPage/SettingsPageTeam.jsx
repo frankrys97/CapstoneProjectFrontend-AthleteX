@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import ColorPickerButton from "../CreateTeamPage/ColorPickerButton";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import apiClient from "../../utils/axiosConfig";
 import { MdOutlineAddAPhoto } from "react-icons/md";
 import iconaScudetto from "../../assets/HomePage/Icona-scudetto.svg";
@@ -30,7 +30,7 @@ const SettingsPageTeam = () => {
   const [countries, setCountries] = useState([]);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   useEffect(() => {
     if (team) {
@@ -143,10 +143,10 @@ const SettingsPageTeam = () => {
         theme: "light",
         transition: Bounce,
         });
-        setTimeout(() => {
+        // setTimeout(() => {
           
-          handleNavigate(`/team/${team.id}`);
-        }, 3000);
+        //   handleNavigate(`/team/${team.id}`);
+        // }, 3000);
     } catch (error) {
       console.error(error);
     } finally {
@@ -158,9 +158,9 @@ const SettingsPageTeam = () => {
     setFormData({ ...formData, phone: value });
   };
 
-  const handleNavigate = (path) => {
-    navigate(path);
-  };
+  // const handleNavigate = (path) => {
+  //   navigate(path);
+  // };
 
   const getTextColor = (backgroundColor) => {
     const color = tinycolor(backgroundColor);
