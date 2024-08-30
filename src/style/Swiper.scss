@@ -1,29 +1,26 @@
-/* Swiper base styles */
 .swiper {
     width: 100%;
     padding-block: 40px;
   }
   
-  /* Configurazione delle slide */
   .swiper-slide {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
-    max-width: 400px; /* Imposta una larghezza massima per le slide */
-    height: auto; /* Permette che l'altezza si adatti al contenuto */
-    padding: 20px; /* Aggiungi un po' di spazio interno */
+    max-width: 400px; 
+    height: auto; 
+    padding: 20px; 
     box-shadow: 0 10px 16px rgba(0, 0, 0, 0.1);
   }
   
-  /* Immagine del testimonial */
   .testimonial-image {
-    width: 120px; /* Dimensione fissa per l'immagine del testimonial */
-    height: 120px; /* Altezza fissa per l'immagine del testimonial */
-    border-radius: 50%; /* Fa sì che l'immagine sia un cerchio */
-    overflow: hidden; /* Assicura che l'immagine non esca dai bordi */
-    margin-bottom: 15px; /* Spazio tra l'immagine e il testo */
+    width: 120px;
+    height: 120px; 
+    border-radius: 50%; 
+    overflow: hidden; 
+    margin-bottom: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -32,17 +29,15 @@
   .testimonial-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Assicura che l'immagine riempia il cerchio senza distorsioni */
+    object-fit: cover;
   }
   
-  /* Testo del testimonial */
   .swiper-slide p {
     text-align: center;
     margin-bottom: 15px;
     font-size: 12px;
   }
   
-  /* Nome e posizione dell'autore */
   .swiper-slide h6 {
     margin-bottom: 5px;
     font-weight: bold;
@@ -52,24 +47,22 @@
     font-style: italic;
   }
   
-  /* Stili della paginazione */
   .swiper-pagination-bullet {
-    background: #fd484282; /* Cambia il colore delle palline della paginazione */
+    background: #fd484282; 
   }
   
   .swiper-pagination-bullet-active {
-    background: #fd4742; /* Colore della pallina attiva */
+    background: #fd4742; 
   }
   
-  /* Responsive adjustments */
   @media (max-width: 767px) {
     .swiper-slide {
-      max-width: 90%; /* Maggiore spazio su schermi più piccoli */
+      max-width: 90%; 
     }
   
     .testimonial-image {
-      width: 100px; /* Dimensione più piccola per dispositivi mobili */
-      height: 100px; /* Altezza più piccola per dispositivi mobili */
+      width: 100px;
+      height: 100px; 
     }
   }
 
@@ -82,20 +75,20 @@
   .team-logos-carousel {
     .swiper {
       width: 100%;
-      padding: 20px 0; // Padding per spazio sopra e sotto il carosello
+      padding: 20px 0; 
     }
   
     .swiper-slide {
       display: flex;
-      justify-content: center; // Centra l'immagine nella slide
+      justify-content: center; 
       align-items: center;
-      height: 100px; // Imposta l'altezza fissa per le slide
+      height: 100px;
     }
   
     .swiper-slide img {
       width: auto;
-      height: 80px; // Imposta l'altezza fissa per le immagini
-      object-fit: contain; // Mantiene le proporzioni dell'immagine
+      height: 80px; 
+      object-fit: contain;
     }
   }
   
