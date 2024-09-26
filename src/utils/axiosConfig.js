@@ -5,7 +5,7 @@ const apiClient = axios.create({
   baseURL: 'http://localhost:3001',
 });
 
-// Interceptor per le richieste: aggiunge automaticamente il token alle richieste
+// Interceptor per le richieste, in modo da aggiungere automaticamente il token alle richieste
 apiClient.interceptors.request.use(
   (config) => {
     const token = store.getState().authenticate.token;
